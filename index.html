@@ -65,12 +65,12 @@
                 <li>Processing is conducted on a line-by-line basis</li>
                 <li>The contents of a line cannot affect the output of any other line</li>
                 <li>Leading and trailing whitespace will be ignored (with the exception of code islands)</li>
-                <li>Any block/in/line spec can be suffixed with a CSS class spec <code>@@classSpec</code></li>
-                <li>Multiple CSS classes may be specified at once, seperated by the '.' character <code>@@classSpecOne.classSpecTwo</code></li>
+                <li>Any block/in/line spec can be suffixed with a CSS class spec <code>@classSpec</code></li>
+                <li>Multiple CSS classes may be specified at once, seperated by the '.' character <code>@classSpecOne.classSpecTwo</code></li>
                 <li>Any block/in/line spec can be suffixed with an Id spec <code>?idSpec</code></li>
-                <li>Any block/in/line spec can specify both a CSS and an Id spec in any order <code>@@classSpec?idSpec</code> and <code>?idSpec@@classSpec</code></li>
+                <li>Any block/in/line spec can specify both a CSS and an Id spec in any order <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
                 <li>When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec' class='classSpec'</code></li>
-                <li>By default any Id / CSS spec is valid, however whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignore and not output.</li>
+                <li>By default any Id / CSS spec is valid, however whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignored and not output.</li>
                 <li>Multiple blank lines will count as one blank line</li>
                 <li>So far - there is <strong>nah</strong> line-break</li>
             </ul>
@@ -89,7 +89,7 @@
             <h2>Inline Specifications</h2>
             <ul>
               <li>Inline specs format a section of a line.</li>
-              <li>Inline specs do not flow between lines - they finish when the line does (<code>strong em</code>)</li>
+              <li>Inline specs do not flow between lines - they finish when the line does</li>
             </ul>
 
             <h2>Block Specifications</h2>
