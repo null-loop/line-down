@@ -85,6 +85,8 @@
 
         var hasLineSpec;
 
+        var noOutput;
+
         // detect headings
         var headings = startsWith('#', trimmedContent);
         if (headings.startsWith) {
@@ -116,6 +118,9 @@
                 manyBlockCloseElements.push(block.element);
               }
               manyBlockCloseElements.reverse();
+            }
+            else{
+              noOutput = true;
             }
           }
         }
@@ -152,6 +157,7 @@
         }
 
         return {
+            noOutput: noOutput,
             lineIndex: lineIndex,
             lineContent: finalLineContent,
             lineElement: lineElement,
@@ -227,9 +233,12 @@
             result: function () {
                 var s = '';
                 $.each(this._outputLines, function (key, value) {
-                    var r = value.result();
-                    if (key > 0) s = s + '\r\n';
-                    s = s + r;
+                    if (!value.noOutput)
+                    {
+                      var r = value.result();
+                      if (key > 0) s = s + '\r\n';
+                      s = s + r;
+                    }
                 });
                 return s;
             }
