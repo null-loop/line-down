@@ -82,14 +82,15 @@
               <hr />
           </div>
           <div class="col-lg-12" data-bind="foreach: tests">
-              <h4 data-bind="text:description"></h4>
+              <div class="alert alert-success" data-bind="css:{'alert-success': passed(), 'alert-danger': !passed() && result()!='Not Run', 'alert-info': result()=='Not Run'}">
+                <h4><span data-bind="text:description"></span> - <span data-bind="text:result()"></span></h4>
+              </div>
               <h5>Line-Down input</h5>
               <pre><code data-bind="text:linedownInput"></code></pre>
               <h5>Expected HTML</h5>
               <pre><code data-bind="text:expectedHtmlOutput"></code></pre>
-              <div class="alert alert-success" data-bind="css:{'alert-success': passed(), 'alert-danger': !passed()}">
-                <h4>Result - <span data-bind="text:result()"></span></h4>
-              </div>
+              <h5>Actual HTML</h5>
+              <pre><code data-bind="text:actualHtmlOutput"></code></pre>
               <hr/>
           </div>
       </div>
