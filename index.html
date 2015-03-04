@@ -71,6 +71,7 @@
                 <li>Any block/in/line spec can specify both a CSS and an Id spec in any order <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
                 <li>When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec' class='classSpec'</code></li>
                 <li>By default any Id / CSS spec is valid, however whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignored and not output.</li>
+                <li>An Id / CSS spec is terminate either by a space or by the repeat of it's intial character <code>?idSpec?</code> <code>@classOne.classTwo@</code>
                 <li>Multiple blank lines will count as one blank line</li>
                 <li>So far - there is <strong>nah</strong> line-break</li>
             </ul>

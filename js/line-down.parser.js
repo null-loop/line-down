@@ -16,42 +16,50 @@
         while (r.length > 0 && !f) {
             var c = r[0];
             if (c == symbol) {
-                count++;
-                doesStartWith = true;
-                r = r.substring(1);
+              count++;
+              doesStartWith = true;
+              r = r.substring(1);
             }
             else if ($.inArray(c, digits) != -1 && !inClasses) {
-                numberCount = numberCount + c;
-                r = r.substring(1);
+              numberCount = numberCount + c;
+              r = r.substring(1);
             }
-            else if (c == '@') {
-                inClasses = true;
-                inId = false;
-                r = r.substring(1);
+            else if (c == '@' && !inClasses) {
+              inClasses = true;
+              inId = false;
+              r = r.substring(1);
             }
-            else if (c == '?') {
-                inId = true;
-                inClasses = false;
-                r = r.substring(1);
+            else if (c == '@' && inClasses) {
+              inClasses = false;
+              r = r.substring(1);
+            }
+            else if (c == '?' && !inId) {
+              inId = true;
+              inClasses = false;
+              r = r.substring(1);
+            }
+            else if (c == '?' && inId) {
+              inId = false;
+              r = r.substring(1);
             }
             else if (inClasses && c != ' ' && c!='?') {
-                classes = classes + c;
-                r = r.substring(1);
+              classes = classes + c;
+              r = r.substring(1);
             }
             else if (inId && c != ' ' && c!='@') {
-                id = id + c;
-                r = r.substring(1);
+              id = id + c;
+              r = r.substring(1);
             }
             else if (count > 0) {
-                f = true;
+              f = true;
             } else {
-                doesStartWith = false;
-                f = true;
+              doesStartWith = false;
+              f = true;
             }
         }
 
         if (numberCount.length > 0) {
-            count = parseInt(numberCount);
+          count = parseInt(numberCount);
         }
         r = r.trim();
 
@@ -231,12 +239,14 @@
             },
             result: function () {
                 var s = '';
+                var sKey = 0;
                 $.each(this._outputLines, function (key, value) {
                     if (!value.noOutput)
                     {
                       var r = value.result();
-                      if (key > 0) s = s + '\r\n';
+                      if (sKey > 0) s = s + '\r\n';
                       s = s + r;
+                      sKey = sKey + 1;
                     }
                 });
                 return s;
