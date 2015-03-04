@@ -101,8 +101,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         var blockOpenElement;
         var blockOpenId;
         var blockOpenClasses;
-
         var blockCloseElement;
+        var implicitBlockOpenElement;
         var manyBlockCloseElements;
 
         var lineElement;
@@ -110,8 +110,40 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         var lineId;
 
         var hasLineSpec;
+        var hasBlockSpec;
 
         var noOutput;
+
+        // detect block quotes
+        var blockQuotes = startsWith('\"', trimmedContent);
+        if (blockQuotes.startsWith && blockQuotes.symbolCount == 2) {
+          // TODO:check if there's a current block - if it matches our spec we need to close rather than open...
+          scope.pushBlock({
+            element:'blockquote',
+            spec:'\"\"'
+          });
+          blockOpenElement = 'blockquote';
+          blockOpenClasses = blockQuotes.classes;
+          blockOpenId = blockQuotes.id;
+          trimmedContent = blockQuotes.remaingLine;
+          hasBlockSpec = true;
+        }
+        else
+        {
+          // more block specs
+          var paragraph = startsWith('\'', trimmedContent);
+          if (paragraph.startsWith && paragraph.symbolCount == 2) {
+            scope.pushBlock({
+              element:'p',
+              spec:'\'\''
+            });
+            blockOpenElement = 'p';
+            blockOpenClasses = paragraph.classes;
+            blockOpenId = paragraph.id;
+            trimmedContent = paragraph.remaingLine;
+            hasBlockSpec = true;
+          }
+        }
 
         // detect headings
         var headings = startsWith('#', trimmedContent);
@@ -126,14 +158,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
         }
 
-        if (!hasLineSpec && !scope.hasCurrentBlock() && trimmedContent.length > 0) {
+        if (!hasLineSpec && (!scope.hasCurrentBlock() || scope.currentBlockElement() == 'blockquote') && trimmedContent.length > 0) {
           // push an implicit p block
           scope.pushBlock({
-            element:'p'
+            element:'p',
+            spec:'\'\'',
+            implicit:true
           });
-          blockOpenElement='p';
+          implicitBlockOpenElement='p';
         }
-        else if(!hasLineSpec){
+        else if(!hasLineSpec && !hasBlockSpec){
           if (trimmedContent.length == 0)
           {
             // close any open blocks
@@ -151,10 +185,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
           }
         }
 
+        // look for closes for open block specs
 
-        //TODO:For laters
-        var ignoreTrim = false;
-        var finalLineContent = ignoreTrim ? lineContent : trimmedContent;
+
+        var finalLineContent =  trimmedContent;
 
         // apply white lists
         if (cssWhitelist){
@@ -189,6 +223,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             lineElement: lineElement,
             lineId: lineId,
             lineClasses: lineClasses,
+            implicitBlockOpenElement: implicitBlockOpenElement,
             blockOpenElement: blockOpenElement,
             blockOpenId:blockOpenId,
             blockOpenClasses:blockOpenClasses,
@@ -197,6 +232,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
             result:function() {
                 var l = this.blockOpenElement ? this.open(this.blockOpenElement, this.blockOpenId, this.blockOpenClasses):'';
+                if (this.implicitBlockOpenElement) {
+                  l = l + this.open(this.implicitBlockOpenElement);
+                }
                 if (this.lineElement) {
                   l = l + this.open(this.lineElement, this.lineId, this.lineClasses) + this.lineContent + this.close(this.lineElement);
                 }
@@ -277,6 +315,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             hasCurrentBlock:function(){
               if (this._currentBlock!=null) return true;
               else return false;
+            },
+            currentBlockElement:function(){
+              if (!this.hasCurrentBlock()) return null;
+              return this._currentBlock.element;
             },
             pushBlock:function(block){
               this._scopeStack.push(block);

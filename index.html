@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="stylesheet" href="css/bootstrap.css" media="screen">
     <link rel="stylesheet" href="css/bootswatch.min.css">
+    <link rel="stylesheet" href="css/line-down.css">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="../bower_components/html5shiv/dist/html5shiv.js"></script>
@@ -88,7 +89,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>Any block/in/line spec can specify both a CSS and an Id spec in any order <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
                 <li>When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec' class='classSpec'</code></li>
                 <li>By default any Id / CSS spec is valid, however whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignored and not output.</li>
-                <li>An Id / CSS spec is terminate either by a space or by the repeat of it's intial character <code>?idSpec?</code> <code>@classOne.classTwo@</code>
+                <li>An Id / CSS spec is terminated either by a space or by the repeat of it's intial character <code>?idSpec?</code> <code>@classOne.classTwo@</code>
                 <li>Multiple blank lines will count as one blank line</li>
                 <li>So far - there is <strong>nah</strong> line-break</li>
             </ul>
@@ -109,6 +110,33 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
               <li>Inline specs format a section of a line.</li>
               <li>Inline specs do not flow between lines - they finish when the line does</li>
             </ul>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Spec</th>
+                  <th>Outputs</th>
+                  <th>Rendered As</th>
+                  <th>Comments</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Bold / strong</td>
+                  <td><code>*Something important*</code></td>
+                  <td><code>&lt;strong&gt;Something important&lt;/strong&gt;</code></td>
+                  <td><strong>Something important</strong></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Italics / emphasis</td>
+                  <td><code>/Something oblique/</code></td>
+                  <td><code>&lt;em&gt;Something oblique&lt;/em&gt;</code></td>
+                  <td><em>Something oblique</em></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
 
             <h2>Block Specifications</h2>
             <ul>
@@ -119,7 +147,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
               <li>Nested block spec open/closes must be on seperate lines</li>
               <li>Block specs may be explicitly closed</li>
               <li>All currently open block specs are implicitly closed by an empty line (a line with no non-whitespace characters)</li>
-              <li>A line that contains no line or block spec, and is not currently in a block will open a new paragraph block spec on the line</li>
+              <li>A line that contains no line or block spec, and is not currently in a non-blockquote block will open a new paragraph block spec on the line</li>
+            </ul>
+            <h3><small>Two double quotes</small> - <code>&quot;&quot;</code> - Block Quotes</h3>
+            <ul>
+              <li>Outputs as the <code>blockquote</code> element</li>
+            </ul>
+            <h3><small>Two apostrophes</small> - <code>&apos;&apos;</code> - Paragraph</h3>
+            <ul>
+              <li>Output as the <code>p</code> element</li>
+              <li>Use over the implicit paragraph block allows Id and CSS specs to be added</li>
             </ul>
         </div>
       </div>

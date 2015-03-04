@@ -7,9 +7,24 @@ textarea{
   box-sizing: border-box;         /* Opera/IE 8+ */
   padding:0;
   box-shadow:none;
-  font-family: Ubuntu Mono;
+  font-family: Ubuntu Mono, Menlo, Monaco, Consolas, "Courier New", monospace;
   font-size:1.1em;
   padding:0 4px 0 4px;
   background-color:#436280;
   color:rgb(235,235,235);
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: Ubuntu Mono, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+code {
+  padding: 4px 4px 4px 4px;
+  font-size: 90%;
+  color: rgb(235,235,235);
+  background-color:#436280;
+  border-radius: 0;
 }

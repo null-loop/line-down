@@ -86,7 +86,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i: 'Something before the heading # Oh noes not a heading - but a paragraph', o: '<p>Something before the heading # Oh noes not a heading - but a paragraph\r\n</p>', n: 'Text before hash, space before and after' },
         { i: 'Something before the heading #Oh noes not a heading - but a paragraph', o: '<p>Something before the heading #Oh noes not a heading - but a paragraph\r\n</p>', n: 'Text before hash, space before, no space after' },
         { i: 'Something before the heading# Oh noes not a heading - but a paragraph', o: '<p>Something before the heading# Oh noes not a heading - but a paragraph\r\n</p>', n: 'Text before hash, no space before, space after' },
-        { i: 'Something before the heading#Oh noes not a heading - but a paragraph', o: '<p>Something before the heading#Oh noes not a heading - but a paragraph\r\n</p>', n: 'Text before hash, no space before or after' }
+        { i: 'Something before the heading#Oh noes not a heading - but a paragraph', o: '<p>Something before the heading#Oh noes not a heading - but a paragraph\r\n</p>', n: 'Text before hash, no space before or after' },
+        { i: '\"\"A simple quote', o:'<blockquote><p>A simple quote\r\n</p>\r\n</blockquote>', n:'Double double quotes starts blockquote block over one line'},
+        { i: '\"\"\r\nA simple quote', o:'<blockquote>\r\n<p>A simple quote\r\n</p>\r\n</blockquote>', n:'Double double quotes starts blockquote block on new line over one line'},
+        { i: '\'\'A simple explicit paragraph', o:'<p>A simple explicit paragraph\r\n</p>', n:'Double single quote starts paragraph block over one line'},
+        { i: '\'\'\r\nA simple explicit paragraph', o:'<p>\r\nA simple explicit paragraph\r\n</p>', n:'Double single quote starts paragraph block on new line over one line'},
+        { i: '\'\'@explicit A simply classy explicit paragraph', o:'<p class=\'explicit\'>A simply classy explicit paragraph\r\n</p>', n:'Double single quote starts paragraph block over one line with open class spec'},
+        { i: '\'\'?summary This simple paragraph summarises everything', o:'<p id=\'summary\'>This simple paragraph summarises everything\r\n</p>', n:'Double single quote starts paragraph block over one line with id class spec'},
+        { i: '\'\'@explicit@?lead?This simple paragraph might be going somewhere', o:'<p id=\'lead\' class=\'explicit\'>This simple paragraph might be going somewhere\r\n</p>', n:'Double single quote starts paragraph block over one line with closed class and id spec with no space'},
+        { i: '\'\'@explicit@?lead?This longer paragraph is definitely going somwhere\r\nThis next line for example', o:'<p id=\'lead\' class=\'explicit\'>This longer paragraph is definitely going somwhere\r\nThis next line for example\r\n</p>', n:'Double single quote starts paragraph block over one line with closed class and id spec with no space'}
     ];
 
     function htmlEncode(value) {
