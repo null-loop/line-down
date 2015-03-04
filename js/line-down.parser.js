@@ -222,7 +222,6 @@
         var re=/\r\n|\n\r|\n|\r/g;
 
         var lines=linedownContent.replace(re,"\n").split("\n");
-        //var lines = linedownContent.match(/[^\r\n]+/g);
         var lineIndex = 0;
 
         var builder = {

@@ -2,6 +2,7 @@
 
     var testCases = [
         { i: '#Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, no spacing' },
+        { i: '\r\n#Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, newline before' },
         { i: '# Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, spacing after' },
         { i: ' #Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, spacing before' },
         { i: '  #Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, double spacing before' },
