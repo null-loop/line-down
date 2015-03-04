@@ -63,8 +63,8 @@
             <h2>General Rules</h2>
             <ul>
                 <li>Processing is conducted on a line-by-line basis</li>
-                <li>The contents of a line cannot affect the output of any other line</li>
-                <li>Leading and trailing whitespace will be ignored (with the exception of code islands)</li>
+                <li>The contents of a line cannot affect the output of any preceding line</li>
+                <li>Leading and trailing whitespace will be ignored (with the exception of code blocks)</li>
                 <li>Any block/in/line spec can be suffixed with a CSS class spec <code>@classSpec</code></li>
                 <li>Multiple CSS classes may be specified at once, seperated by the '.' character <code>@classSpecOne.classSpecTwo</code></li>
                 <li>Any block/in/line spec can be suffixed with an Id spec <code>?idSpec</code></li>
@@ -98,7 +98,8 @@
               <li>Block specs can be on their own line - and their corresponding opening element will be output on its own line</li>
               <li>Block specs can be on a line before other content - and their corresponding opening element will be output at the start of the line</li>
               <li>Block specs may be nested</li>
-              <li>Block specs may be explicitylly closed</li>
+              <li>Nested block spec open/closes must be on seperate lines</li>
+              <li>Block specs may be explicitly closed</li>
               <li>All currently open block specs are implicitly closed by an empty line (a line with no non-whitespace characters)</li>
             </ul>
         </div>
