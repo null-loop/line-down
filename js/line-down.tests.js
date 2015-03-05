@@ -94,7 +94,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i: '\'\'@explicit A simply classy explicit paragraph', o:'<p class=\'explicit\'>A simply classy explicit paragraph\r\n</p>', n:'Double single quote starts paragraph block over one line with open class spec'},
         { i: '\'\'?summary This simple paragraph summarises everything', o:'<p id=\'summary\'>This simple paragraph summarises everything\r\n</p>', n:'Double single quote starts paragraph block over one line with id class spec'},
         { i: '\'\'@explicit@?lead?This simple paragraph might be going somewhere', o:'<p id=\'lead\' class=\'explicit\'>This simple paragraph might be going somewhere\r\n</p>', n:'Double single quote starts paragraph block over one line with closed class and id spec with no space'},
-        { i: '\'\'@explicit@?lead?This longer paragraph is definitely going somwhere\r\nThis next line for example', o:'<p id=\'lead\' class=\'explicit\'>This longer paragraph is definitely going somwhere\r\nThis next line for example\r\n</p>', n:'Double single quote starts paragraph block over one line with closed class and id spec with no space'}
+        { i: '\'\'@explicit@?lead?This longer paragraph is definitely going somwhere\r\nThis next line for example', o:'<p id=\'lead\' class=\'explicit\'>This longer paragraph is definitely going somwhere\r\nThis next line for example\r\n</p>', n:'Double single quote starts paragraph block over one line with closed class and id spec with no space'},
+        { i: '#?lead This is the lead\r\n#?lead This is not the lead',o:'<h1 id=\'lead\'>This is the lead</h1>\r\n<h1>This is not the lead</h1>',n:'Two headings, two uses of same id spec, second is ignored'}
     ];
 
     function htmlEncode(value) {

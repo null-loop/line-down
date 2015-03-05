@@ -88,8 +88,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>Any block/in/line spec can be suffixed with an Id spec <code>?idSpec</code></li>
                 <li>Any block/in/line spec can specify both a CSS and an Id spec in any order <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
                 <li>When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec' class='classSpec'</code></li>
+
                 <li>By default any Id / CSS spec is valid, however whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignored and not output.</li>
-                <li>An Id / CSS spec is terminated either by a space or by the repeat of it's intial character <code>?idSpec?</code> <code>@classOne.classTwo@</code>
+                <li>Id specs can only be used once. A subsequent use of the same Id will be invalid and ignored.</li>
+                <li>An Id / CSS spec is terminated either by a space or by the repeat of it's intial character <code>?idSpec?</code> <code>@classOne.classTwo@</code></li>
+
                 <li>Multiple blank lines will count as one blank line</li>
                 <li>So far - there is <strong>nah</strong> line-break</li>
             </ul>
