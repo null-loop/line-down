@@ -28,3 +28,32 @@ code {
   background-color:#436280;
   border-radius: 0;
 }
+
+.trash{
+  font-weight:bold;
+  color:#bb4444;
+}
+
+.this{
+  font-weight:100;
+}
+
+.is{
+  text-decoration:underline;
+}
+
+.classy{
+  color:#44bb44;
+}
+
+#lead{
+  color:#bbbbbb;
+  font-size:6em;
+  font-weight:600;
+}
+
+#follow{
+  color:#cccccc;
+  font-size:4em;
+  font-weight:200;
+}
