@@ -89,9 +89,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>Any block/in/line spec can specify both a CSS and an Id spec in any order <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
                 <li>When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec' class='classSpec'</code></li>
                 <li>By default any Id / CSS spec is valid, however whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignored and not output.</li>
-                <li>An Id / CSS spec is terminated either by a space or by the repeat of it's intial character <code>?idSpec?</code> <code>@classOne.classTwo@</code>
-                <li>Multiple blank lines will count as one blank line</li>
+                <li>Id specs can only be used once. A subsequent use of the same Id will be invalid and ignored.</li>
+                <li>An Id / CSS spec is terminated either by a space or by the repeat of it's intial character <code>?idSpec?</code> <code>@classOne.classTwo@</code></li>
+                <li>Multiple blank lines will count as one blank line (with the exception of code blocks)</li>
                 <li>So far - there is <strong>nah</strong> line-break</li>
+                <li>HTML entity replacement will be conducted on appropriate characters not interpreted as specs</li>
             </ul>
             <h2>Line Specifications</h2>
             <ul>
@@ -145,6 +147,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
               <li>Block specs can be on a line before other content - and their corresponding opening element will be output at the start of the line</li>
               <li>Block specs may be nested</li>
               <li>Nested block spec open/closes must be on seperate lines</li>
+              <li>Explicit block spec closes must be the last non whitespace characters on a line</li>
               <li>Block specs may be explicitly closed</li>
               <li>All currently open block specs are implicitly closed by an empty line (a line with no non-whitespace characters)</li>
               <li>A line that contains no line or block spec, and is not currently in a non-blockquote block will open a new paragraph block spec on the line</li>

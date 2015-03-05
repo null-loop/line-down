@@ -95,7 +95,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
       return str.replace(new RegExp(find, 'g'), replace);
     }
 
-    function buildLine(lineIndex, lineContent, scope, cssWhitelist, idWhitelist) {
+    function buildLine(lineIndex, lineContent, scope, linebuilder) {
+
+        linebuilder.beginLine();
+
         var trimmedContent = lineContent.trim();
 
         var blockOpenElement;
@@ -113,6 +116,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         var hasBlockSpec;
 
         var noOutput;
+        var localScope = createScope();
 
         // detect block quotes
         var blockQuotes = startsWith('\"', trimmedContent);
@@ -122,9 +126,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             element:'blockquote',
             spec:'\"\"'
           });
-          blockOpenElement = 'blockquote';
-          blockOpenClasses = blockQuotes.classes;
-          blockOpenId = blockQuotes.id;
+          linebuilder.openTag('blockquote', blockQuotes.id, blockQuotes.classes)
           trimmedContent = blockQuotes.remaingLine;
           hasBlockSpec = true;
         }
@@ -137,9 +139,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
               element:'p',
               spec:'\'\''
             });
-            blockOpenElement = 'p';
-            blockOpenClasses = paragraph.classes;
-            blockOpenId = paragraph.id;
+            linebuilder.openTag('p', paragraph.id, paragraph.classes)
             trimmedContent = paragraph.remaingLine;
             hasBlockSpec = true;
           }
@@ -148,24 +148,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         // detect headings
         var headings = startsWith('#', trimmedContent);
         if (headings.startsWith) {
-            lineElement = 'h' + headings.symbolCount;
+            localScope.pushBlock({
+              element:'h' + headings.symbolCount
+            });
+            linebuilder.openTag('h' + headings.symbolCount, headings.id, headings.classes)
             trimmedContent = headings.remaingLine;
-            lineClasses = headings.classes;
-            lineId = headings.id;
             hasLineSpec = true;
         } else {
           // more line specs
 
         }
 
-        if (!hasLineSpec && (!scope.hasCurrentBlock() || scope.currentBlockElement() == 'blockquote') && trimmedContent.length > 0) {
-          // push an implicit p block
+        // check and see if we show open a paragraph block
+        if (!localScope.hasCurrentBlock() && (!scope.hasCurrentBlock() || scope.currentBlockElement() == 'blockquote') && trimmedContent.length > 0) {
           scope.pushBlock({
             element:'p',
             spec:'\'\'',
             implicit:true
           });
-          implicitBlockOpenElement='p';
+          linebuilder.openTag('p');
         }
         else if(!hasLineSpec && !hasBlockSpec){
           if (trimmedContent.length == 0)
@@ -173,184 +174,168 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             // close any open blocks
             if (scope.hasCurrentBlock()){
               manyBlockCloseElements = [];
-              while (scope.hasCurrentBlock()){
-                var block = scope.popBlock();
-                manyBlockCloseElements.push(block.element);
-              }
-              manyBlockCloseElements.reverse();
-            }
-            else{
-              noOutput = true;
+              linebuilder.endScope(scope);
             }
           }
         }
 
-        // look for closes for open block specs
-
-
-        var finalLineContent =  trimmedContent;
-
-        // apply white lists
-        if (cssWhitelist){
-          // empty list means no css classes
-          if (cssWhitelist.length==0){
-            lineClasses = undefined;
-            blockOpenClasses = undefined;
-          }
-          else
-          {
-
-          }
-          // todo: the rest
-        }
-
-        if (idWhitelist) {
-          if (idWhitelist.length==0){
-            lineId = undefined;
-            blockOpenId = undefined;
-          }
-          else
-          {
-
-          }
-          // todo: the rest
-        }
-
-        return {
-            noOutput: noOutput,
-            lineIndex: lineIndex,
-            lineContent: finalLineContent,
-            lineElement: lineElement,
-            lineId: lineId,
-            lineClasses: lineClasses,
-            implicitBlockOpenElement: implicitBlockOpenElement,
-            blockOpenElement: blockOpenElement,
-            blockOpenId:blockOpenId,
-            blockOpenClasses:blockOpenClasses,
-            blockCloseElement:blockCloseElement,
-            manyBlockCloseElements:manyBlockCloseElements,
-
-            result:function() {
-                var l = this.blockOpenElement ? this.open(this.blockOpenElement, this.blockOpenId, this.blockOpenClasses):'';
-                if (this.implicitBlockOpenElement) {
-                  l = l + this.open(this.implicitBlockOpenElement);
-                }
-                if (this.lineElement) {
-                  l = l + this.open(this.lineElement, this.lineId, this.lineClasses) + this.lineContent + this.close(this.lineElement);
-                }
-                else
-                {
-                  l = l + this.lineContent;
-                }
-                if (this.blockCloseElement){
-                  l = l + this.close(this.blockCloseElement);
-                }
-                var many;
-                while (this.manyBlockCloseElements && this.manyBlockCloseElements.length > 0){
-                  var e = this.manyBlockCloseElements.pop();
-                  if (many) l = l + '\r\n';
-                  l = l + this.close(e);
-                  many = true;
-                }
-                return l;
-            },
-            open: function (tag, id, classes) {
-
-                var o = '<' + tag;
-
-                if (id && id.length > 0) {
-                    o = o + ' id=\'' + id + '\'';
-                }
-                if (classes && classes.length > 0) {
-                    o = o + ' class=\'' + replaceAll('\\.',' ',classes) + '\'';
-                }
-
-                o = o + '>';
-
-                return o;
-            },
-            close:function(tag) {
-                return '</' + tag + '>';
-            }
-        }
+        linebuilder.append(he.encode(trimmedContent));
+        linebuilder.endScope(localScope);
     }
 
     function parse(linedownContent) {
       return parseWithOptions(linedownContent, {});
     }
 
-    function parseWithOptions(linedownContent, options) {
-        var cssWhitelist = options.cssWhitelist;
-        var idWhitelist = options.idWhitelist;
+    function contains(a, obj) {
+      for (var i = 0; i < a.length; i++) {
+          if (a[i] === obj) {
+              return true;
+          }
+      }
+      return false;
+    }
 
+    function createScope(){
+      return scope = {
+          _scopeStack: [],
+          _currentBlock:null,
+          _usedIds:[],
+          hasCurrentBlock:function(){
+            if (this._currentBlock!=null) return true;
+            else return false;
+          },
+          currentBlockElement:function(){
+            if (!this.hasCurrentBlock()) return null;
+            return this._currentBlock.element;
+          },
+          pushBlock:function(block){
+            this._scopeStack.push(block);
+            this._currentBlock = block;
+          },
+          popBlock:function(){
+            var current = this._scopeStack.pop();
+            if (this._scopeStack.length > 0)
+            {
+              this._currentBlock = this._scopeStack[this._scopeStack.length - 1];
+            }
+            else
+            {
+              this._currentBlock = null;
+            }
+            return current;
+          },
+          hasElementScope:function(element){
+            var has = false;
+            $.each(this._scopeStack,function(i,v){
+              if (v.element==element) has = true;
+            });
+            return has;
+          },
+          shouldTrim:function(){
+            return !this.hasElementScope("code");
+          },
+          usedId:function(id){
+            this._usedIds.push(id);
+          },
+          hasUsedId:function(id){
+            return contains(this._usedIds, id);
+          }
+      };
+    }
+
+    function parseWithOptions(linedownContent, options) {
         var re=/\r\n|\n\r|\n|\r/g;
 
         var lines=linedownContent.replace(re,"\n").split("\n");
         var lineIndex = 0;
-
-        var builder = {
+        var newScope = createScope();
+        var lineBuilder = {
             _outputLines: [],
-            addLine: function(line) {
-                this._outputLines.push(line);
+            currentLine:'',
+            cssWhitelist: options.cssWhitelist,
+            idWhitelist: options.idWhitelist,
+            scope: newScope,
+
+            beginLine:function(){
+              if (this.currentLine!='') {
+                this._outputLines.push(this.currentLine);
+              }
+              this.currentLine='';
+            },
+            complete:function(){
+              if (this.currentLine!='') {
+                this._outputLines.push(this.currentLine);
+              }
+            },
+            openTag: function (tag,id,classes){
+              //TODO:Check against white lists!
+              var t = '<' + tag;
+              if (id) {
+                if (!this.scope.hasUsedId(id))
+                {
+                  t = t + ' id=\'' + id + '\'';
+                  this.scope.usedId(id);
+                }
+              }
+              if (classes)
+              {
+                classes = classes.split('.');
+                // remove invalid classes
+                classes = classes.join(' ');
+                t = t + ' class=\'' + classes + '\'';
+              }
+              t = t + '>';
+              this.append(t);
+            },
+            append: function (text) {
+              this.currentLine=this.currentLine+text;
+            },
+            closeTag: function (tag) {
+              this.append('</' + tag + '>');
             },
             result: function () {
                 var s = '';
-                var sKey = 0;
                 $.each(this._outputLines, function (key, value) {
-                    if (!value.noOutput)
-                    {
-                      var r = value.result();
-                      if (sKey > 0) s = s + '\r\n';
-                      s = s + r;
-                      sKey = sKey + 1;
-                    }
+                    if (key > 0) s = s + '\r\n';
+                    s = s + value;
                 });
                 return s;
+            },
+            endScope:function(scope){
+              while (scope.hasCurrentBlock()){
+                var block = scope.popBlock();
+                this.closeTag(block.element);
+                this.beginLine();
+              }
+            },
+            endCurrentScope:function(scope){
+              if (scope.hasCurrentBlock()){
+                var block = scope.popBlock();
+                this.closeTag(block.element);
+                this.beginLine();
+              }
             }
+
         }
 
-        var scope = {
-            _scopeStack: [],
-            _currentBlock:null,
-            hasCurrentBlock:function(){
-              if (this._currentBlock!=null) return true;
-              else return false;
-            },
-            currentBlockElement:function(){
-              if (!this.hasCurrentBlock()) return null;
-              return this._currentBlock.element;
-            },
-            pushBlock:function(block){
-              this._scopeStack.push(block);
-              this._currentBlock = block;
-            },
-            popBlock:function(){
-              var current = this._scopeStack.pop();
-              if (this._scopeStack.length > 0)
-              {
-                this._currentBlock = this._scopeStack[this._scopeStack.length - 1];
-              }
-              else
-              {
-                this._currentBlock = null;
-              }
-              return current;
-            }
-        };
 
         while (lineIndex < lines.length) {
             var lineText = lines[lineIndex];
-            var line = buildLine(lineIndex, lineText, scope, cssWhitelist, idWhitelist);
-            builder.addLine(line);
+            buildLine(lineIndex, lineText, newScope, lineBuilder);
             lineIndex++;
         }
 
-        if (scope.hasCurrentBlock())
+        if (newScope.hasCurrentBlock())
         {
-          builder.addLine(buildLine(lineIndex,'',scope));
+          lineBuilder.beginLine();
+          lineBuilder.endScope(newScope);
         }
 
-        return builder.result();
+
+        lineBuilder.complete();
+
+        return lineBuilder.result();
     }
 
     ld.parse = parse;
