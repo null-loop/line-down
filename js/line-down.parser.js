@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
     var digits = '0123456789';
 
-    function startsWith(symbol, line) {
+    function startsWith(symbol, line, fixedCount) {
         var doesStartWith = false;
         var r = line;
         var count = 0;
@@ -81,13 +81,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         }
         r = r.trim();
 
+        if (fixedCount && count!=fixedCount)
+        {
+          // no match
+          return {
+            startsWith:false,
+            remainingLine:line
+          }
+        }
+
         return {
             id:id,
             classes:classes,
             startsWith: doesStartWith,
             symbol: symbol,
             symbolCount: count,
-            remaingLine: r
+            remainingLine: r
         };
     }
 
@@ -119,28 +128,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         var localScope = createScope();
 
         // detect block quotes
-        var blockQuotes = startsWith('\"', trimmedContent);
-        if (blockQuotes.startsWith && blockQuotes.symbolCount == 2) {
+        var blockQuotes = startsWith('\"', trimmedContent, 2);
+        if (blockQuotes.startsWith) {
           // TODO:check if there's a current block - if it matches our spec we need to close rather than open...
           scope.pushBlock({
             element:'blockquote',
             spec:'\"\"'
           });
           linebuilder.openTag('blockquote', blockQuotes.id, blockQuotes.classes)
-          trimmedContent = blockQuotes.remaingLine;
+          trimmedContent = blockQuotes.remainingLine;
           hasBlockSpec = true;
         }
         else
         {
           // more block specs
-          var paragraph = startsWith('\'', trimmedContent);
-          if (paragraph.startsWith && paragraph.symbolCount == 2) {
+          var paragraph = startsWith('\'', trimmedContent, 2);
+          if (paragraph.startsWith) {
             scope.pushBlock({
               element:'p',
               spec:'\'\''
             });
             linebuilder.openTag('p', paragraph.id, paragraph.classes)
-            trimmedContent = paragraph.remaingLine;
+            trimmedContent = paragraph.remainingLine;
             hasBlockSpec = true;
           }
         }
@@ -152,7 +161,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
               element:'h' + headings.symbolCount
             });
             linebuilder.openTag('h' + headings.symbolCount, headings.id, headings.classes)
-            trimmedContent = headings.remaingLine;
+            trimmedContent = headings.remainingLine;
             hasLineSpec = true;
         } else {
           // more line specs
@@ -172,9 +181,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
           if (trimmedContent.length == 0)
           {
             // close any open blocks
-            if (scope.hasCurrentBlock()){
-              manyBlockCloseElements = [];
-              linebuilder.endScope(scope);
+            while (scope.hasCurrentBlock() && scope.currentBlockElement()!='blockquote')
+            {
+              linebuilder.endCurrentScope(scope);
             }
           }
         }
