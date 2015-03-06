@@ -130,7 +130,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         // detect block quotes
         var blockQuotes = startsWith('\"', trimmedContent, 2);
         if (blockQuotes.startsWith) {
-          // TODO:check if there's a current block - if it matches our spec we need to close rather than open...
           scope.pushBlock({
             element:'blockquote',
             spec:'\"\"'

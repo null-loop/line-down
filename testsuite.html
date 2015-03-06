@@ -100,6 +100,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
               <pre><code data-bind="text:expectedHtmlOutput"></code></pre>
               <h5>Actual HTML</h5>
               <pre><code data-bind="text:actualHtmlOutput"></code></pre>
+              <h3>Diff</h3>
+              <pre><code data-bind="html:resultDiff"></code></pre>
+              <h5>Render</h5>
+              <div data-bind="html:actualHtmlOutput"></div>
               <hr/>
           </div>
           </div>
@@ -143,6 +147,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     <script src="js/bootstrap.min.js"></script>
     <script src="js/knockout.js"></script>
     <script src="js/he.js"></script>
+    <script src="js/diff.js"></script>
     <script src="js/line-down.parser.js"></script>
     <script src="js/line-down.tests.js"></script>
   </body>

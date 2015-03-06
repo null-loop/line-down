@@ -106,11 +106,39 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i: 'This paragraph\"\" has already started', o:'<p>This paragraph&#x22;&#x22; has already started\r\n</p>', n:'Block quote spec ignored in middle of line'},
         { i: 'There are \"entities\" in here & over here!', o:'<p>There are &#x22;entities&#x22; in here &#x26; over here!\r\n</p>',n:'Double quotes replaced with &#x22; and & replaced with &#x26;'},
         { i: '\"\"This block quote should be\r\n\r\nIntact, but with paragraphs', o:'<blockquote><p>This block quote should be\r\n</p>\r\n<p>Intact, but with paragraphs\r\n</p>\r\n</blockquote>',n:'Block quotes excluded from implicit close on blank line'},
-        { i: '\"\"This block quote should be\r\n\r\n\r\nIntact, but with paragraphs', o:'<blockquote><p>This block quote should be\r\n</p>\r\n<p>Intact, but with paragraphs\r\n</p>\r\n</blockquote>',n:'Block quotes excluded from implicit close on blank line, but respect multiple blank line roll up'}
+        { i: '\"\"This block quote should be\r\n\r\n\r\nIntact, but with paragraphs', o:'<blockquote><p>This block quote should be\r\n</p>\r\n<p>Intact, but with paragraphs\r\n</p>\r\n</blockquote>',n:'Block quotes excluded from implicit close on blank line, but respect multiple blank line roll up'},
+        { i: '\"\"#Blimey!', o:'<blockquote><h1>Blimey!</h1>\r\n</blockquote>', n:'H1 nested after block quote start on single line'}
+
     ];
 
     function htmlEncode(value) {
-        return $('<div/>').text(value).html();
+        return he.encode(value);
+    }
+
+    function diffResult(expected, actual) {
+      var diff = JsDiff['diffChars'](expected, actual);
+      var fragment = document.createDocumentFragment();
+      for (var i=0; i < diff.length; i++) {
+
+        if (diff[i].added && diff[i + 1] && diff[i + 1].removed) {
+          var swap = diff[i];
+          diff[i] = diff[i + 1];
+          diff[i + 1] = swap;
+        }
+
+        var node;
+        if (diff[i].removed) {
+          node = document.createElement('del');
+          node.appendChild(document.createTextNode(diff[i].value));
+        } else if (diff[i].added) {
+          node = document.createElement('ins');
+          node.appendChild(document.createTextNode(diff[i].value));
+        } else {
+          node = document.createTextNode(diff[i].value);
+        }
+        fragment.appendChild(node);
+      }
+      return fragment;
     }
 
     function runTests() {
@@ -135,12 +163,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             model.run(model.run() + 1);
             if (match) model.passed(model.passed() + 1);
             else {
+                var diffFragment = diffResult(expected, html);
+                var element = document.createElement('div');
+                element.appendChild(diffFragment);
+                var diff = $(element);
+                v.resultDiff(diff.html());
                 model.failed(model.failed() + 1);
                 model.failedTests.push(v);
             }
         });
 
     }
+
 
     $('#runTests').click(function() {
         runTests();
@@ -159,6 +193,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             linedownInput: v.i,
             expectedHtmlOutput: v.o,
             actualHtmlOutput :ko.observable('Not Run'),
+            resultDiff: ko.observable('Not Run'),
             run: ko.observable(false),
             passed: ko.observable(false),
             result: ko.observable('Not Run'),
