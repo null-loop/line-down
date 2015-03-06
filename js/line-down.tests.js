@@ -112,7 +112,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i: '\"\"?i # Heading',o:'<blockquote id=\'i\'><h1>Heading</h1>\r\n</blockquote>',n:'Heading respected as seperate from block quote Id spec'},
         { i: '\"\"?i?#Heading',o:'<blockquote id=\'i\'><h1>Heading</h1>\r\n</blockquote>',n:'Heading respected after closed Id spec on block quote'},
         { i: '\"\"?i?#?u?Heading',o:'<blockquote id=\'i\'><h1 id=\'u\'>Heading</h1>\r\n</blockquote>',n:'Heading (with Id closed spec) respected after closed Id spec on block quote'},
-
+        { i:'\"\"\r\n#Heading\r\nParagraph',o:'<blockquote>\r\n<h1>Heading</h1>\r\n<p>Paragraph\r\n</p>\r\n</blockquote>',n:'Implicit paragraph follows heading inside block quote'},
+        { i:'\'\'Paragraph\'\'',o:'<p>Paragraph</p>',n:'Explicit paragraph with explicit close on single line'}
     ];
 
     function htmlEncode(value) {
