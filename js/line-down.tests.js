@@ -107,7 +107,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i: 'There are \"entities\" in here & over here!', o:'<p>There are &#x22;entities&#x22; in here &#x26; over here!\r\n</p>',n:'Double quotes replaced with &#x22; and & replaced with &#x26;'},
         { i: '\"\"This block quote should be\r\n\r\nIntact, but with paragraphs', o:'<blockquote><p>This block quote should be\r\n</p>\r\n<p>Intact, but with paragraphs\r\n</p>\r\n</blockquote>',n:'Block quotes excluded from implicit close on blank line'},
         { i: '\"\"This block quote should be\r\n\r\n\r\nIntact, but with paragraphs', o:'<blockquote><p>This block quote should be\r\n</p>\r\n<p>Intact, but with paragraphs\r\n</p>\r\n</blockquote>',n:'Block quotes excluded from implicit close on blank line, but respect multiple blank line roll up'},
-        { i: '\"\"#Blimey!', o:'<blockquote><h1>Blimey!</h1>\r\n</blockquote>', n:'H1 nested after block quote start on single line'}
+        { i: '\"\"#Blimey!', o:'<blockquote><h1>Blimey!</h1>\r\n</blockquote>', n:'H1 nested after block quote start on single line'},
+        { i: '\"\"?i# Paragraph',o:'<blockquote id=\'i#\'><p>Paragraph\r\n</p>\r\n</blockquote>',n:'Heading ignored as part of block quote Id spec'},
+        { i: '\"\"?i # Heading',o:'<blockquote id=\'i\'><h1>Heading</h1>\r\n</blockquote>',n:'Heading respected as seperate from block quote Id spec'},
+        { i: '\"\"?i?#Heading',o:'<blockquote id=\'i\'><h1>Heading</h1>\r\n</blockquote>',n:'Heading respected after closed Id spec on block quote'},
+        { i: '\"\"?i?#?u?Heading',o:'<blockquote id=\'i\'><h1 id=\'u\'>Heading</h1>\r\n</blockquote>',n:'Heading (with Id closed spec) respected after closed Id spec on block quote'},
 
     ];
 
