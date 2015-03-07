@@ -17,66 +17,70 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
-  <head>
+<head>
     <meta charset="utf-8">
     <title>line-down :: The world's got thousands of problems. Let's add another one.</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <link rel="stylesheet" href="css/bootstrap.css" media="screen">
     <link rel="stylesheet" href="css/bootswatch.min.css">
     <link rel="stylesheet" href="css/line-down.css">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="../bower_components/html5shiv/dist/html5shiv.js"></script>
-      <script src="../bower_components/respond/dest/respond.min.js"></script>
+    <script src="../bower_components/html5shiv/dist/html5shiv.js"></script>
+    <script src="../bower_components/respond/dest/respond.min.js"></script>
     <![endif]-->
 
-  </head>
-  <body>
-    <div class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
+</head>
+<body>
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
         <div class="navbar-header">
-          <a href="index.html" class="navbar-brand">line-down</a>
-          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+            <a href="index.html" class="navbar-brand">line-down</a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
-          <ul class="nav navbar-nav">
-            <li>
-              <a href="testsuite.html">Test Suite</a>
-            </li>
-            <li>
-              <a href="tryit.html">Try It</a>
-            </li>
-          </ul>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="testsuite.html">Test Suite</a>
+                </li>
+                <li>
+                    <a href="tryit.html">Try It</a>
+                </li>
+            </ul>
 
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/null-loop/line-down"><strong>GitHub Project</strong></a></li>
-          </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://github.com/null-loop/line-down"><strong>GitHub Project</strong></a></li>
+            </ul>
         </div>
-      </div>
     </div>
-    <div class="container">
-      <div class="page-header">
+</div>
+<div class="container">
+    <div class="page-header">
         <div class="row">
-          <div class="col-lg-12 col-md-7 col-sm-6">
-            <h1>line-down</h1>
-            <p class="lead">The world's got thousands of problems. Let's add another one.</p>
-          </div>
+            <div class="col-lg-12 col-md-7 col-sm-6">
+                <h1>line-down</h1>
+
+                <p class="lead">The world's got thousands of problems. Let's add another one.</p>
+            </div>
         </div>
-      </div>
-      <div class="row">
+    </div>
+    <div class="row">
         <div class="col-lg-12">
-          <h2>Progress</h2>
-          <p>We've only just started, these rules are definitely going to change (and are completely incomplete right now), and the implementation's very beta.</p>
-          <p>Other than that - things are going great!</p>
-          <hr/>
+            <h2>Progress</h2>
+
+            <p>We've only just started, these rules are definitely going to change (and are completely incomplete right
+                now), and the implementation's very beta.</p>
+
+            <p>Other than that - things are going great!</p>
+            <hr/>
         </div>
-      </div>
-      <div class="row">
+    </div>
+    <div class="row">
         <div class="col-lg-12">
             <h2>General Rules</h2>
             <ul>
@@ -84,112 +88,148 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>The contents of a line cannot affect the output of any preceding line</li>
                 <li>Leading and trailing whitespace will be ignored (with the exception of code blocks)</li>
                 <li>Any block/in/line spec can be suffixed with a CSS class spec <code>@classSpec</code></li>
-                <li>Multiple CSS classes may be specified at once, seperated by the '.' character <code>@classSpecOne.classSpecTwo</code></li>
+                <li>Multiple CSS classes may be specified at once, seperated by the '.' character <code>@classSpecOne.classSpecTwo</code>
+                </li>
                 <li>Any block/in/line spec can be suffixed with an Id spec <code>?idSpec</code></li>
-                <li>Any block/in/line spec can specify both a CSS and an Id spec in any order <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
-                <li>When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec' class='classSpec'</code></li>
-                <li>By default any Id / CSS spec is valid, however whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignored and not output.</li>
+                <li>Any block/in/line spec can specify both a CSS and an Id spec in any order
+                    <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
+                <li>When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec'
+                    class='classSpec'</code></li>
+                <li>By default any Id / CSS spec is valid, however whitelists may provide exclusive lists of Id and CSS
+                    specs. Any invalid spec is ignored and not output.
+                </li>
                 <li>Id specs can only be used once. A subsequent use of the same Id will be invalid and ignored.</li>
-                <li>An Id / CSS spec is terminated either by a space or by the repeat of it's intial character <code>?idSpec?</code> <code>@classOne.classTwo@</code></li>
+                <li>An Id / CSS spec is terminated either by a space or by the repeat of it's intial character <code>?idSpec?</code>
+                    <code>@classOne.classTwo@</code></li>
                 <li>Multiple blank lines will count as one blank line (with the exception of code blocks)</li>
                 <li>So far - there is <strong>nah</strong> line-break</li>
                 <li>HTML entity replacement will be conducted on appropriate characters not interpreted as specs</li>
             </ul>
             <h2>Line Specifications</h2>
             <ul>
-              <li>Line specs format the whole line</li>
-              <li>Line specs may occur at the start of a line or immediately following a block spec</li>
+                <li>Line specs format the whole line</li>
+                <li>Line specs may occur at the start of a line or immediately following a block spec</li>
             </ul>
             <h3># - Headings</h3>
             <ul>
-              <li>The hash character (#) specifies the line will be formatted as a heading.</li>
-              <li>A single # will become a H1, ## becomes a H2, ### becomes a H3 and so on.</li>
-              <li>The level of the heading may be specified after a single # as a number <code>#100</code> equates to H100</li>
-              <li>There is no limit to the depth of heading that may be specified</li>
+                <li>The hash character (#) specifies the line will be formatted as a heading.</li>
+                <li>A single # will become a H1, ## becomes a H2, ### becomes a H3 and so on.</li>
+                <li>The level of the heading may be specified after a single # as a number <code>#100</code> equates to
+                    H100
+                </li>
+                <li>There is no limit to the depth of heading that may be specified</li>
+            </ul>
+            <h3>--- - Horizontal Rule</h3>
+            <ul>
+                <li>
+                <li>
             </ul>
             <h2>Inline Specifications</h2>
             <ul>
-              <li>Inline specs format a section of a line.</li>
-              <li>Inline specs do not flow between lines - they finish when the line does</li>
+                <li>Inline specs format a section of a line.</li>
+                <li>Inline specs do not flow between lines - they finish when the line does</li>
             </ul>
             <table class="table">
-              <thead>
+                <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Spec</th>
-                  <th>Outputs</th>
-                  <th>Rendered As</th>
-                  <th>Comments</th>
+                    <th>Name</th>
+                    <th>Spec</th>
+                    <th>Outputs</th>
+                    <th>Rendered As</th>
+                    <th>Comments</th>
                 </tr>
-              </thead>
-              <tbody>
+                </thead>
+                <tbody>
                 <tr>
-                  <td>Bold / strong</td>
-                  <td><code>*Something important*</code></td>
-                  <td><code>&lt;strong&gt;Something important&lt;/strong&gt;</code></td>
-                  <td><strong>Something important</strong></td>
-                  <td></td>
+                    <td>Bold / strong</td>
+                    <td><code>**Something important**</code></td>
+                    <td><code>&lt;strong&gt;Something important&lt;/strong&gt;</code></td>
+                    <td><strong>Something important</strong></td>
+                    <td></td>
                 </tr>
                 <tr>
-                  <td>Italics / emphasis</td>
-                  <td><code>/Something oblique/</code></td>
-                  <td><code>&lt;em&gt;Something oblique&lt;/em&gt;</code></td>
-                  <td><em>Something oblique</em></td>
-                  <td></td>
+                    <td>Italics / emphasis</td>
+                    <td><code>//Something oblique//</code></td>
+                    <td><code>&lt;em&gt;Something oblique&lt;/em&gt;</code></td>
+                    <td><em>Something oblique</em></td>
+                    <td></td>
                 </tr>
-              </tbody>
+                <tr>
+                    <td>Underline</td>
+                    <td><code>__Something reinforced__</code></td>
+                    <td><code>&lt;u&gt;Something reinforced&lt;/u&gt;</code></td>
+                    <td><u>Something reinforced</u></td>
+                    <td>Possibly an option to replace with CSS styled span?</td>
+                </tr>
+                </tbody>
             </table>
 
             <h2>Block Specifications</h2>
             <ul>
-              <li>Block specs are always the first non-whitespace characters</li>
-              <li>Block specs can be on their own line - and their corresponding opening element will be output on its own line</li>
-              <li>Block specs can be on a line before other content - and their corresponding opening element will be output at the start of the line</li>
-              <li>Block specs may be nested</li>
-              <li>Nested block spec open/closes must be on seperate lines</li>
-              <li>Explicit block spec closes must be the last non whitespace characters on a line</li>
-              <li>Block specs may be explicitly closed</li>
-              <li>All currently open block specs are implicitly closed by an empty line (a line with no non-whitespace characters)</li>
-              <li>A line that contains no line or block spec, and is not currently in a non-blockquote block will open a new paragraph block spec on the line</li>
+                <li>Block specs are always the first non-whitespace characters</li>
+                <li>Block specs can be on their own line - and their corresponding opening element will be output on its
+                    own line
+                </li>
+                <li>Block specs can be on a line before other content - and their corresponding opening element will be
+                    output at the start of the line
+                </li>
+                <li>Block specs may be nested</li>
+                <li>Nested block spec open/closes must be on separate lines</li>
+                <li>Explicit block spec closes must be the last non whitespace characters on a line</li>
+                <li>Explicit</li>
+                <li>Block specs may be explicitly closed</li>
+                <li>All currently open block specs are implicitly closed by an empty line (a line with no non-whitespace
+                    characters)
+                </li>
+                <li>A line that contains no line or block spec, and is not currently in a non-blockquote block will open
+                    a new paragraph block spec on the line
+                </li>
             </ul>
-            <h3><small>Two double quotes</small> - <code>&quot;&quot;</code> - Block Quotes</h3>
+            <h3>
+                <small>Two double quotes</small>
+                - <code>&quot;&quot;</code> - Block Quotes
+            </h3>
             <ul>
-              <li>Outputs as the <code>blockquote</code> element</li>
+                <li>Outputs as the <code>blockquote</code> element</li>
+                <li>Allows implicit paragraphs to be created within it</li>
+                <li>Implicit block spec closure stops at a block quote</li>
             </ul>
-            <h3><small>Two apostrophes</small> - <code>&apos;&apos;</code> - Paragraph</h3>
+            <h3>
+                <small>Two apostrophes</small>
+                - <code>&apos;&apos;</code> - Paragraph
+            </h3>
             <ul>
-              <li>Output as the <code>p</code> element</li>
-              <li>Use over the implicit paragraph block allows Id and CSS specs to be added</li>
+                <li>Output as the <code>p</code> element</li>
+                <li>Use over the implicit paragraph block allows Id and CSS specs to be added</li>
             </ul>
         </div>
-      </div>
-      <footer>
-        <div class="row">
-          <div class="col-lg-12">
-
-            <ul class="list-unstyled">
-              <li class="pull-right"><a href="#top">Back to top</a></li>
-              <li><a href="https://twitter.com/null_loop">Twitter</a></li>
-              <li><a href="https://github.com/null-loop/line-down/">GitHub</a></li>
-              <li><a href="http://www.gnu.org/licenses/gpl-2.0.html">GPL v2</a></li>
-            </ul>
-            <p>Another Grayholme Ltd abomination</p>
-          </div>
-        </div>
-
-      </footer>
     </div>
-    <script src="js/jquery-1.10.2.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
 
-      ga('create', 'UA-60396110-1', 'auto');
-      ga('send', 'pageview');
+                <ul class="list-unstyled">
+                    <li class="pull-right"><a href="#top">Back to top</a></li>
+                    <li><a href="https://twitter.com/null_loop">Twitter</a></li>
+                    <li><a href="https://github.com/null-loop/line-down/">GitHub</a></li>
+                    <li><a href="http://www.gnu.org/licenses/gpl-2.0.html">GPL v2</a></li>
+                </ul>
+                <p>Another Grayholme Ltd abomination</p>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    </script>    
-  </body>
+    ga('create', 'UA-60396110-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
 </html>

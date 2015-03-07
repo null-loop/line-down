@@ -106,11 +106,52 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i: 'This paragraph\"\" has already started', o:'<p>This paragraph&#x22;&#x22; has already started\r\n</p>', n:'Block quote spec ignored in middle of line'},
         { i: 'There are \"entities\" in here & over here!', o:'<p>There are &#x22;entities&#x22; in here &#x26; over here!\r\n</p>',n:'Double quotes replaced with &#x22; and & replaced with &#x26;'},
         { i: '\"\"This block quote should be\r\n\r\nIntact, but with paragraphs', o:'<blockquote><p>This block quote should be\r\n</p>\r\n<p>Intact, but with paragraphs\r\n</p>\r\n</blockquote>',n:'Block quotes excluded from implicit close on blank line'},
-        { i: '\"\"This block quote should be\r\n\r\n\r\nIntact, but with paragraphs', o:'<blockquote><p>This block quote should be\r\n</p>\r\n<p>Intact, but with paragraphs\r\n</p>\r\n</blockquote>',n:'Block quotes excluded from implicit close on blank line, but respect multiple blank line roll up'}
+        { i: '\"\"This block quote should be\r\n\r\n\r\nIntact, but with paragraphs', o:'<blockquote><p>This block quote should be\r\n</p>\r\n<p>Intact, but with paragraphs\r\n</p>\r\n</blockquote>',n:'Block quotes excluded from implicit close on blank line, but respect multiple blank line roll up'},
+        { i: '\"\"#Blimey!', o:'<blockquote><h1>Blimey!</h1>\r\n</blockquote>', n:'H1 nested after block quote start on single line'},
+        { i: '\"\"?i# Paragraph',o:'<blockquote id=\'i#\'><p>Paragraph\r\n</p>\r\n</blockquote>',n:'Heading ignored as part of block quote Id spec'},
+        { i: '\"\"?i # Heading',o:'<blockquote id=\'i\'><h1>Heading</h1>\r\n</blockquote>',n:'Heading respected as separate from block quote Id spec'},
+        { i: '\"\"?i?#Heading',o:'<blockquote id=\'i\'><h1>Heading</h1>\r\n</blockquote>',n:'Heading respected after closed Id spec on block quote'},
+        { i: '\"\"?i?#?u?Heading',o:'<blockquote id=\'i\'><h1 id=\'u\'>Heading</h1>\r\n</blockquote>',n:'Heading (with Id closed spec) respected after closed Id spec on block quote'},
+        { i:'\"\"\r\n#Heading\r\nParagraph',o:'<blockquote>\r\n<h1>Heading</h1>\r\n<p>Paragraph\r\n</p>\r\n</blockquote>',n:'Implicit paragraph follows heading inside block quote'},
+        { i:'\'\'Paragraph\'\'',o:'<p>Paragraph</p>',n:'Explicit paragraph with explicit close on single line'},
+        { i:'\"\"Blockquote\"\"',o:'<blockquote><p>Blockquote</p></blockquote>',n:'Blockquote with explicit close on single line'},
+        { i:'\"\"#Heading\"\"',o:'<blockquote><h1>Heading</h1></blockquote>',n:'Blockquote with heading and explicit close on single line'},
+        { i:'\"\"#?lead Heading\"\"',o:'<blockquote><h1 id=\'lead\'>Heading</h1></blockquote>',n:'Blockquote with heading with open id spec and explicit close on single line'},
+        { i:'\"\"#?lead?Heading\"\"',o:'<blockquote><h1 id=\'lead\'>Heading</h1></blockquote>',n:'Blockquote with heading with closed id spec and explicit close on single line'},
+        { i:'\"\"Multiple quotes\"\"\r\n\"\"And another\"\"',o:'<blockquote><p>Multiple quotes</p></blockquote>\r\n<blockquote><p>And another</p></blockquote>',n:'Two block quotes explicitly closed inline'},
+        { i:'\"\"Multiple quotes\"\"\r\n\r\n\r\n\"\"And another\"\"',o:'<blockquote><p>Multiple quotes</p></blockquote>\r\n<blockquote><p>And another</p></blockquote>',n:'Two block quotes explicitly closed inline with multiple blank lines separating'},
+        { i:'\"\"#Heading   \"\"',o:'<blockquote><h1>Heading</h1></blockquote>',n:'Blockquote with heading and explicit close on single line with spacing before close'},
+        { i:'\"\"   #Heading   \"\"',o:'<blockquote><h1>Heading</h1></blockquote>',n:'Blockquote with heading and explicit close on single line with spacing before close and before heading spec'},
     ];
 
     function htmlEncode(value) {
-        return $('<div/>').text(value).html();
+        return he.encode(value);
+    }
+
+    function diffResult(expected, actual) {
+      var diff = JsDiff['diffChars'](expected, actual);
+      var fragment = document.createDocumentFragment();
+      for (var i=0; i < diff.length; i++) {
+
+        if (diff[i].added && diff[i + 1] && diff[i + 1].removed) {
+          var swap = diff[i];
+          diff[i] = diff[i + 1];
+          diff[i + 1] = swap;
+        }
+
+        var node;
+        if (diff[i].removed) {
+          node = document.createElement('del');
+          node.appendChild(document.createTextNode(diff[i].value));
+        } else if (diff[i].added) {
+          node = document.createElement('ins');
+          node.appendChild(document.createTextNode(diff[i].value));
+        } else {
+          node = document.createTextNode(diff[i].value);
+        }
+        fragment.appendChild(node);
+      }
+      return fragment;
     }
 
     function runTests() {
@@ -135,12 +176,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             model.run(model.run() + 1);
             if (match) model.passed(model.passed() + 1);
             else {
+                var diffFragment = diffResult(expected, html);
+                var element = document.createElement('div');
+                element.appendChild(diffFragment);
+                var diff = $(element);
+                v.resultDiff(diff.html());
                 model.failed(model.failed() + 1);
                 model.failedTests.push(v);
             }
         });
 
     }
+
 
     $('#runTests').click(function() {
         runTests();
@@ -159,6 +206,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             linedownInput: v.i,
             expectedHtmlOutput: v.o,
             actualHtmlOutput :ko.observable('Not Run'),
+            resultDiff: ko.observable('Not Run'),
             run: ko.observable(false),
             passed: ko.observable(false),
             result: ko.observable('Not Run'),
