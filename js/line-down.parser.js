@@ -154,6 +154,36 @@
                         closeElement = 'u';
                         remainder = underline.remainingLine;
                     }
+                    else
+                    {
+                        var superscript = startsWith('^',cLine,2,true);
+                        if (superscript.startsWith && !scope.hasElementScope('sup')){
+                            startElement = 'sup';
+                            startSpec = '^^';
+                            startElementId = superscript.id;
+                            startElementClasses = superscript.classes;
+                            remainder = superscript.remainingLine;
+                        }
+                        else if(superscript.startsWith){
+                            closeElement = 'sup';
+                            remainder = superscript.remainingLine;
+                        }
+                        else
+                        {
+                            var small = startsWith('>',cLine,2,true);
+                            if (small.startsWith && !scope.hasElementScope('small')){
+                                startElement = 'small';
+                                startSpec = '>>';
+                                startElementId = small.id;
+                                startElementClasses = small.classes;
+                                remainder = small.remainingLine;
+                            }
+                            else if(small.startsWith){
+                                closeElement = 'small';
+                                remainder = small.remainingLine;
+                            }
+                        }
+                    }
                 }
             }
 
