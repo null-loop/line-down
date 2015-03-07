@@ -182,6 +182,21 @@
                                 closeElement = 'small';
                                 remainder = small.remainingLine;
                             }
+                            else
+                            {
+                                var strike = startsWith('~',cLine,2,true);
+                                if (strike.startsWith && !scope.hasElementScope('strike')){
+                                    startElement = 'strike';
+                                    startSpec = '~~';
+                                    startElementId = strike.id;
+                                    startElementClasses = strike.classes;
+                                    remainder = strike.remainingLine;
+                                }
+                                else if(strike.startsWith){
+                                    closeElement = 'strike';
+                                    remainder = strike.remainingLine;
+                                }
+                            }
                         }
                     }
                 }

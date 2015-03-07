@@ -183,6 +183,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'Something >>Small>>',o:'<p>Something <small>Small</small>\r\n</p>',n:'Simple small explicitly closed on one line after content with spacing'},
         { i:'Something >> Small >>',o:'<p>Something <small> Small </small>\r\n</p>',n:'Simple small explicitly closed on one line after content with spacing in strong before and after'},
         { i:'Something >> Small >> And more!',o:'<p>Something <small> Small </small> And more!\r\n</p>',n:'Simple small explicitly closed on one line before and after content with spacing in strong before and after'},
+
+        { i:'~~Striken',o:'<p><strike>Striken</strike>\r\n</p>',n:'Simple strike implicitly closed on one line at start of line'},
+        { i:'Something~~Striken',o:'<p>Something<strike>Striken</strike>\r\n</p>',n:'Simple strike implicitly closed on one line after content with no spacing'},
+        { i:'Something ~~Striken',o:'<p>Something <strike>Striken</strike>\r\n</p>',n:'Simple strike implicitly closed on one line after content with spacing'},
+        { i:'Something~~Striken~~',o:'<p>Something<strike>Striken</strike>\r\n</p>',n:'Simple strike explicitly closed on one line after content with no spacing'},
+        { i:'Something ~~Striken~~',o:'<p>Something <strike>Striken</strike>\r\n</p>',n:'Simple strike explicitly closed on one line after content with spacing'},
+        { i:'Something ~~ Striken ~~',o:'<p>Something <strike> Striken </strike>\r\n</p>',n:'Simple strike explicitly closed on one line after content with spacing in strong before and after'},
+        { i:'Something ~~ Striken ~~ And more!',o:'<p>Something <strike> Striken </strike> And more!\r\n</p>',n:'Simple strike explicitly closed on one line before and after content with spacing in strong before and after'},
     ];
 
 
