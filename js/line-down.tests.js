@@ -162,8 +162,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'Something ' + spec + '' + text + '',o:'<p>Something <' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line after content with spacing'},
         { i:'Something' + spec + '' + text + '' + spec,o:'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with no spacing'},
         { i:'Something ' + spec + '' + text + '' + spec,o:'<p>Something <' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with spacing'},
-        { i:'Something ' + spec + ' ' + text + ' ' + spec,o:'<p>Something <' + element + '> ' + text + ' </' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with spacing in strong before and after'},
-        { i:'Something ' + spec + ' ' + text + ' ' + spec + ' And more!',o:'<p>Something <' + element + '> ' + text + ' </' + element + '> And more!\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line before and after content with spacing in strong before and after'},
+        { i:'Something ' + spec + ' ' + text + ' ' + spec,o:'<p>Something <' + element + '> ' + text + ' </' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with spacing in ' + name + ' before and after'},
+        { i:'Something ' + spec + ' ' + text + ' ' + spec + ' And more!',o:'<p>Something <' + element + '> ' + text + ' </' + element + '> And more!\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line before and after content with spacing in ' + name + ' before and after'},
         { i:'' + spec + '' + text + '',o:'<p><' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line'}
         ];
     }
@@ -185,6 +185,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         ld.testCases.push(v);
     })
 
+    var moreCases = [
+        { i:'**//Nested inlines',o:'<p><strong><em>Nested inlines</em></strong>\r\n</p>',n:'Emphasis nested in strong, implicit close'},
+        { i:'**Strongly //Nested inlines',o:'<p><strong>Strongly <em>Nested inlines</em></strong>\r\n</p>',n:'Part emphasis nested in strong, implicit close'},
+        { i:'//Emphasised **Nested inlines',o:'<p><em>Emphasised <strong>Nested inlines</strong></em>\r\n</p>',n:'Part strong nested in emphasis, implicit close'},
+        { i:'//Emphasised **Nested inlines//',o:'<p><em>Emphasised <strong>Nested inlines</strong></em>\r\n</p>',n:'Part strong nested in emphasis, explicit emphasis close closes strong'},
+        { i:'//Emphasised **Nested ~~strikeout//',o:'<p><em>Emphasised <strong>Nested <strike>strikeout</strike></strong></em>\r\n</p>',n:'Part strong & strikethrough nested in emphasis, explicit emphasis close closes strong'},
+    ]
+
+    $.each(moreCases,function(k,v){
+        ld.testCases.push(v);
+    })
 
 
 })(window.linedown = window.linedown || {}, jQuery)
