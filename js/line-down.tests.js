@@ -142,56 +142,48 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'\'\' Explicit paragraph\r\n---\r\nWith a HR!\r\n\'\'',o:'<p>Explicit paragraph\r\n<hr/>\r\nWith a HR!\r\n</p>',n:'Horizontal rule nested in explicit paragraph closed on new line'},
         { i:'\"\" Explicit blockquote\r\n---\r\nWith a HR!\"\"',o:'<blockquote><p>Explicit blockquote\r\n<hr/>\r\nWith a HR!</p></blockquote>',n:'Horizontal rule nested in explicit blockquote'},
         { i:'\"\" Explicit blockquote\r\n---\r\nWith a HR!\r\n\"\"',o:'<blockquote><p>Explicit blockquote\r\n<hr/>\r\nWith a HR!\r\n</p></blockquote>',n:'Horizontal rule nested in explicit blockquote closed on new line'},
-
-        { i:'**Strong',o:'<p><strong>Strong</strong>\r\n</p>',n:'Simple strong implicitly closed on one line at start of line'},
-        { i:'Something**Strong',o:'<p>Something<strong>Strong</strong>\r\n</p>',n:'Simple strong implicitly closed on one line after content with no spacing'},
-        { i:'Something **Strong',o:'<p>Something <strong>Strong</strong>\r\n</p>',n:'Simple strong implicitly closed on one line after content with spacing'},
-        { i:'Something**Strong**',o:'<p>Something<strong>Strong</strong>\r\n</p>',n:'Simple strong explicitly closed on one line after content with no spacing'},
-        { i:'Something **Strong**',o:'<p>Something <strong>Strong</strong>\r\n</p>',n:'Simple strong explicitly closed on one line after content with spacing'},
-        { i:'Something ** Strong **',o:'<p>Something <strong> Strong </strong>\r\n</p>',n:'Simple strong explicitly closed on one line after content with spacing in strong before and after'},
-        { i:'Something ** Strong ** And more!',o:'<p>Something <strong> Strong </strong> And more!\r\n</p>',n:'Simple strong explicitly closed on one line before and after content with spacing in strong before and after'},
-        { i:'**Strong',o:'<p><strong>Strong</strong>\r\n</p>',n:'Simple strong implicitly closed on one line at start of line'},
-
-        { i:'//Emphasised',o:'<p><em>Emphasised</em>\r\n</p>',n:'Simple emphasis implicitly closed on one line at start of line'},
-        { i:'Something//Emphasised',o:'<p>Something<em>Emphasised</em>\r\n</p>',n:'Simple emphasis implicitly closed on one line after content with no spacing'},
-        { i:'Something //Emphasised',o:'<p>Something <em>Emphasised</em>\r\n</p>',n:'Simple emphasis implicitly closed on one line after content with spacing'},
-        { i:'Something//Emphasised//',o:'<p>Something<em>Emphasised</em>\r\n</p>',n:'Simple emphasis explicitly closed on one line after content with no spacing'},
-        { i:'Something //Emphasised//',o:'<p>Something <em>Emphasised</em>\r\n</p>',n:'Simple emphasis explicitly closed on one line after content with spacing'},
-        { i:'Something // Emphasised //',o:'<p>Something <em> Emphasised </em>\r\n</p>',n:'Simple emphasis explicitly closed on one line after content with spacing in strong before and after'},
-        { i:'Something // Emphasised // And more!',o:'<p>Something <em> Emphasised </em> And more!\r\n</p>',n:'Simple emphasis explicitly closed on one line before and after content with spacing in strong before and after'},
-
-        { i:'__Underlined',o:'<p><u>Underlined</u>\r\n</p>',n:'Simple underline implicitly closed on one line at start of line'},
-        { i:'Something__Underlined',o:'<p>Something<u>Underlined</u>\r\n</p>',n:'Simple underline implicitly closed on one line after content with no spacing'},
-        { i:'Something __Underlined',o:'<p>Something <u>Underlined</u>\r\n</p>',n:'Simple underline implicitly closed on one line after content with spacing'},
-        { i:'Something__Underlined__',o:'<p>Something<u>Underlined</u>\r\n</p>',n:'Simple underline explicitly closed on one line after content with no spacing'},
-        { i:'Something __Underlined__',o:'<p>Something <u>Underlined</u>\r\n</p>',n:'Simple underline explicitly closed on one line after content with spacing'},
-        { i:'Something __ Underlined __',o:'<p>Something <u> Underlined </u>\r\n</p>',n:'Simple underline explicitly closed on one line after content with spacing in strong before and after'},
-        { i:'Something __ Underlined __ And more!',o:'<p>Something <u> Underlined </u> And more!\r\n</p>',n:'Simple underline explicitly closed on one line before and after content with spacing in strong before and after'},
-
-        { i:'^^Super',o:'<p><sup>Super</sup>\r\n</p>',n:'Simple superscript implicitly closed on one line at start of line'},
-        { i:'Something^^Super',o:'<p>Something<sup>Super</sup>\r\n</p>',n:'Simple superscript implicitly closed on one line after content with no spacing'},
-        { i:'Something ^^Super',o:'<p>Something <sup>Super</sup>\r\n</p>',n:'Simple superscript implicitly closed on one line after content with spacing'},
-        { i:'Something^^Super^^',o:'<p>Something<sup>Super</sup>\r\n</p>',n:'Simple superscript explicitly closed on one line after content with no spacing'},
-        { i:'Something ^^Super^^',o:'<p>Something <sup>Super</sup>\r\n</p>',n:'Simple superscript explicitly closed on one line after content with spacing'},
-        { i:'Something ^^ Super ^^',o:'<p>Something <sup> Super </sup>\r\n</p>',n:'Simple superscript explicitly closed on one line after content with spacing in strong before and after'},
-        { i:'Something ^^ Super ^^ And more!',o:'<p>Something <sup> Super </sup> And more!\r\n</p>',n:'Simple superscript explicitly closed on one line before and after content with spacing in strong before and after'},
-
-        { i:'>>Small',o:'<p><small>Small</small>\r\n</p>',n:'Simple small implicitly closed on one line at start of line'},
-        { i:'Something>>Small',o:'<p>Something<small>Small</small>\r\n</p>',n:'Simple small implicitly closed on one line after content with no spacing'},
-        { i:'Something >>Small',o:'<p>Something <small>Small</small>\r\n</p>',n:'Simple small implicitly closed on one line after content with spacing'},
-        { i:'Something>>Small>>',o:'<p>Something<small>Small</small>\r\n</p>',n:'Simple small explicitly closed on one line after content with no spacing'},
-        { i:'Something >>Small>>',o:'<p>Something <small>Small</small>\r\n</p>',n:'Simple small explicitly closed on one line after content with spacing'},
-        { i:'Something >> Small >>',o:'<p>Something <small> Small </small>\r\n</p>',n:'Simple small explicitly closed on one line after content with spacing in strong before and after'},
-        { i:'Something >> Small >> And more!',o:'<p>Something <small> Small </small> And more!\r\n</p>',n:'Simple small explicitly closed on one line before and after content with spacing in strong before and after'},
-
-        { i:'~~Striken',o:'<p><strike>Striken</strike>\r\n</p>',n:'Simple strike implicitly closed on one line at start of line'},
-        { i:'Something~~Striken',o:'<p>Something<strike>Striken</strike>\r\n</p>',n:'Simple strike implicitly closed on one line after content with no spacing'},
-        { i:'Something ~~Striken',o:'<p>Something <strike>Striken</strike>\r\n</p>',n:'Simple strike implicitly closed on one line after content with spacing'},
-        { i:'Something~~Striken~~',o:'<p>Something<strike>Striken</strike>\r\n</p>',n:'Simple strike explicitly closed on one line after content with no spacing'},
-        { i:'Something ~~Striken~~',o:'<p>Something <strike>Striken</strike>\r\n</p>',n:'Simple strike explicitly closed on one line after content with spacing'},
-        { i:'Something ~~ Striken ~~',o:'<p>Something <strike> Striken </strike>\r\n</p>',n:'Simple strike explicitly closed on one line after content with spacing in strong before and after'},
-        { i:'Something ~~ Striken ~~ And more!',o:'<p>Something <strike> Striken </strike> And more!\r\n</p>',n:'Simple strike explicitly closed on one line before and after content with spacing in strong before and after'},
     ];
+
+    function buildInlineTestCases(spec,element,text,name)
+    {
+        return [
+        { i:'' + spec + '' + text + '',o:'<p><' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line'},
+        { i:'' + spec + '?me?' + text + '',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed id spec no space'},
+        { i:'' + spec + '?me? ' + text + '',o:'<p><' + element + ' id=\'me\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed id spec with space'},
+        { i:'' + spec + '?me ' + text + '',o:'<p><' + element + ' id=\'me\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with open id spec'},
+        { i:'' + spec + '@classy@' + text + '',o:'<p><' + element + ' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed class spec no space'},
+        { i:'' + spec + '@classy@ ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed class spec with space'},
+        { i:'' + spec + '@classy ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with open class spec'},
+        { i:'' + spec + '?me?@classy@' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed id and class spec no space'},
+        { i:'' + spec + '@classy@?me?' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed class and id spec no space'},
+        { i:'' + spec + '@classy@ ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed class spec with space'},
+        { i:'' + spec + '@classy ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with open class spec'},
+        { i:'Something' + spec + '' + text + '',o:'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line after content with no spacing'},
+        { i:'Something ' + spec + '' + text + '',o:'<p>Something <' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line after content with spacing'},
+        { i:'Something' + spec + '' + text + '' + spec,o:'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with no spacing'},
+        { i:'Something ' + spec + '' + text + '' + spec,o:'<p>Something <' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with spacing'},
+        { i:'Something ' + spec + ' ' + text + ' ' + spec,o:'<p>Something <' + element + '> ' + text + ' </' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with spacing in strong before and after'},
+        { i:'Something ' + spec + ' ' + text + ' ' + spec + ' And more!',o:'<p>Something <' + element + '> ' + text + ' </' + element + '> And more!\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line before and after content with spacing in strong before and after'},
+        { i:'' + spec + '' + text + '',o:'<p><' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line'}
+        ];
+    }
+
+    var generatedTests =
+    buildInlineTestCases('**', 'strong', 'Strong', 'strong').concat(
+        buildInlineTestCases('//', 'em', 'Emphasis', 'emphasis').concat(
+            buildInlineTestCases('__', 'u', 'Underlined', 'underline').concat(
+                buildInlineTestCases('^^', 'sup', 'Super', 'superscript').concat(
+                    buildInlineTestCases('>>', 'small', 'Small', 'small').concat(
+                        buildInlineTestCases('~~', 'strike', 'Striken', 'strikethrough')
+                    )
+                )
+            )
+        )
+    )
+
+    $.each(generatedTests,function(k,v){
+        ld.testCases.push(v);
+    })
 
 
 
