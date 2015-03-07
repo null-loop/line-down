@@ -172,15 +172,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
     function runTests() {
 
+        var warmUp = linedown.parse('#100 Warmup');
+        warmUp = linedown.parse('# Warmup');
+        warmUp = linedown.parse('\"\"#100 Warmup');
+        warmUp = linedown.parse('\'\'#100 Warmup');
+
         var model = linedown.testsModel;
 
+        model.totalParserExecutionTime(0);
         model.run(0);
         model.passed(0);
         model.failed(0);
         model.failedTests.removeAll();
 
         $.each(model.tests(), function (k, v) {
+            var startTime = window.performance.now();
             var html = linedown.parse(v.linedownInput);
+            var endTime = window.performance.now();
+            var t = (endTime - startTime);
+            var executionTime = Math.floor((endTime - startTime)*1000)/1000;
             var expected = v.expectedHtmlOutput;
             var match = (html == expected);
 
@@ -188,6 +198,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             v.run(true);
             v.passed(match);
             v.result(match ? 'Passed' : 'Failed');
+            v.executionTime(executionTime);
+
+            model.totalParserExecutionTime(Math.floor((model.totalParserExecutionTime() + executionTime)*1000)/1000);
 
             model.run(model.run() + 1);
             if (match) model.passed(model.passed() + 1);
@@ -214,6 +227,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         this.passed = ko.observable(0);
         this.failed = ko.observable(0);
         this.run = ko.observable(0);
+        this.totalParserExecutionTime = ko.observable(0);
     }
     ld.testsModel = new testsModel();
 
@@ -226,7 +240,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             run: ko.observable(false),
             passed: ko.observable(false),
             result: ko.observable('Not Run'),
-            description :v.n
+            description :v.n,
+            executionTime : ko.observable(0)
         });
     });
 

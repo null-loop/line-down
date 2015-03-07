@@ -69,8 +69,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <strong data-bind="text:tests().length"></strong> tests available,
                 <strong data-bind="text:run()"></strong> tests run,
                 <strong data-bind="text:passed"></strong> passed,
-                <strong data-bind="text:failed"></strong> failed
+                <strong data-bind="text:failed"></strong> failed,
             </h2>
+            <h3 data-bind="visible:run()>0">Parser executed for <span data-bind="text:totalParserExecutionTime"></span>ms</h3>
 
         </div>
     </div>
@@ -89,6 +90,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <div class="alert alert-success"
                      data-bind="css:{'alert-success': passed(), 'alert-danger': !passed() && result()!='Not Run', 'alert-info': result()=='Not Run'}">
                     <h4><span data-bind="text:description"></span> - <span data-bind="text:result()"></span></h4>
+                    <h5 data-bind="visible:run">Execution took <span data-bind="text:executionTime"></span>ms</h5>
                 </div>
                 <h5>Line-Down input</h5>
                 <pre><code data-bind="text:linedownInput"></code></pre>
@@ -99,7 +101,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <h3>Diff</h3>
                 <pre><code data-bind="html:resultDiff"></code></pre>
                 <h5>Render</h5>
-
                 <div data-bind="html:actualHtmlOutput"></div>
                 <hr/>
             </div>
@@ -112,6 +113,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <div class="alert alert-success"
                      data-bind="css:{'alert-success': passed(), 'alert-danger': !passed() && result()!='Not Run', 'alert-info': result()=='Not Run'}">
                     <h4><span data-bind="text:description"></span> - <span data-bind="text:result()"></span></h4>
+                    <h5 data-bind="visible:run">Execution took <span data-bind="text:executionTime"></span>ms</h5>
                 </div>
                 <h5>Line-Down input</h5>
                 <pre><code data-bind="text:linedownInput"></code></pre>
@@ -120,7 +122,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <h5>Actual HTML</h5>
                 <pre><code data-bind="text:actualHtmlOutput"></code></pre>
                 <h5>Render</h5>
-
                 <div data-bind="html:actualHtmlOutput"></div>
                 <hr/>
             </div>

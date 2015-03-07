@@ -137,24 +137,55 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <tbody>
                 <tr>
                     <td>Bold / strong</td>
-                    <td><code>**Something important**</code></td>
-                    <td><code>&lt;strong&gt;Something important&lt;/strong&gt;</code></td>
-                    <td><strong>Something important</strong></td>
+                    <td><code>Something **important**</code></td>
+                    <td><code>Something &lt;strong&gt;important&lt;/strong&gt;</code></td>
+                    <td>Something <strong>important</strong></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Italics / emphasis</td>
-                    <td><code>//Something oblique//</code></td>
-                    <td><code>&lt;em&gt;Something oblique&lt;/em&gt;</code></td>
-                    <td><em>Something oblique</em></td>
+                    <td><code>Something //oblique//</code></td>
+                    <td><code>Something &lt;em&gt;oblique&lt;/em&gt;</code></td>
+                    <td>Something <em>oblique</em></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Underline</td>
-                    <td><code>__Something reinforced__</code></td>
-                    <td><code>&lt;u&gt;Something reinforced&lt;/u&gt;</code></td>
-                    <td><u>Something reinforced</u></td>
-                    <td>Possibly an option to replace with CSS styled span?</td>
+                    <td><code>Something --reinforced--</code></td>
+                    <td><code>Something &lt;u&gt;reinforced&lt;/u&gt;</code></td>
+                    <td>Something <u>reinforced</u></td>
+                    <td>Option to replace with CSS styled span</td>
+                </tr>
+                <tr>
+                    <td>Superscript</td>
+                    <td><code>Something ^^raised up^^</code></td>
+                    <td><code>Something &lt;sup&gt;raised up&lt;/sup&gt;</code></td>
+                    <td>Something <sup>raised up</sup></td>
+                </tr>
+                <tr>
+                    <td>Subscript</td>
+                    <td><code>Something __pulled down__</code></td>
+                    <td><code>Something &lt;sub&gt;pulled down&lt;/sub&gt;</code></td>
+                    <td>Something <sub>pulled down</sub></td>
+                </tr>
+                <tr>
+                    <td>Small</td>
+                    <td><code>Something >>small>></code></td>
+                    <td><code>Something &lt;small&gt;small&lt;/small&gt;</code></td>
+                    <td>Something <small>small</small></td>
+                </tr>
+                <tr>
+                    <td>Strike through</td>
+                    <td><code>Something ~~that was relevant~~</code></td>
+                    <td><code>Something &lt;strike&gt;that was relevant&lt;/strike&gt;</code></td>
+                    <td>Something <strike>that was relevant</strike></td>
+                    <td>Option to replace with CSS styled span</td>
+                </tr>
+                <tr>
+                    <td>Code</td>
+                </tr>
+                <tr>
+                    <td>Hyperlinks</td>
                 </tr>
                 </tbody>
             </table>
@@ -207,7 +238,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             </h3>
             <ul>
                 <li>Self closing block</li>
-                <li>Must be the only element on the line</li>
+                <li>Must start and end the line</li>
             </ul>
 
         </div>
