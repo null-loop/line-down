@@ -110,7 +110,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>Line specs format the whole line</li>
                 <li>Line specs may occur at the start of a line or immediately following a block spec</li>
             </ul>
-            <h3># - Headings</h3>
+            <h3># - Headings <span class="label label-success">Done</span></h3>
             <ul>
                 <li>The hash character (#) specifies the line will be formatted as a heading.</li>
                 <li>A single # will become a H1, ## becomes a H2, ### becomes a H3 and so on.</li>
@@ -119,8 +119,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 </li>
                 <li>There is no limit to the depth of heading that may be specified</li>
             </ul>
-            <h3>--- - Horizontal Rule</h3>
-
             <h2>Inline Specifications</h2>
             <ul>
                 <li>Inline specs format a section of a line.</li>
@@ -186,6 +184,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             <h3>
                 <small>Two double quotes</small>
                 - <code>&quot;&quot;</code> - Block Quotes
+                <span class="label label-success">Done</span>
             </h3>
             <ul>
                 <li>Outputs as the <code>blockquote</code> element</li>
@@ -195,11 +194,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             <h3>
                 <small>Two apostrophes</small>
                 - <code>&apos;&apos;</code> - Paragraph
+                <span class="label label-success">Done</span>
             </h3>
             <ul>
                 <li>Output as the <code>p</code> element</li>
                 <li>Use over the implicit paragraph block allows Id and CSS specs to be added</li>
             </ul>
+            <h3>
+                <small>Three dashes</small>
+                - <code>---</code> Horizontal Rule
+                <span class="label label-success">Done</span>
+            </h3>
+            <ul>
+                <li>Self closing block</li>
+                <li>Must be the only element on the line</li>
+            </ul>
+
         </div>
     </div>
     <footer>

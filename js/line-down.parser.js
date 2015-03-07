@@ -116,13 +116,13 @@
                     element: 'blockquote',
                     spec: '\"\"'
                 });
-                linebuilder.openTag('blockquote', blockQuotes.id, blockQuotes.classes)
+                linebuilder.openTag('blockquote', blockQuotes.id, blockQuotes.classes);
                 trimmedContent = blockQuotes.remainingLine;
                 hasBlockSpec = true;
             }
         }
         else {
-            // more block specs
+            // explicit paragraph
             var paragraph = startsWith('\'', trimmedContent, 2);
             if (paragraph.startsWith) {
                 if (!(scope.hasElementScope('p') && paragraph.remainingLine.trim().length == 0)) {
@@ -130,10 +130,26 @@
                         element: 'p',
                         spec: '\'\''
                     });
-                    linebuilder.openTag('p', paragraph.id, paragraph.classes)
+                    linebuilder.openTag('p', paragraph.id, paragraph.classes);
                     trimmedContent = paragraph.remainingLine;
                     hasBlockSpec = true;
                 }
+            }
+            else
+            {
+                // horizontal rule
+                var hr = startsWith('-', trimmedContent, 3);
+                // starts AND ends
+                if (hr.startsWith && hr.remainingLine.trim().length == 0){
+                    linebuilder.selfClosingTag('hr', hr.id, hr.classes);
+                    trimmedContent = hr.remainingLine;
+                    hasBlockSpec = true;
+                }
+                else
+                {
+                    // pre formatted
+                }
+
             }
         }
 
@@ -143,7 +159,7 @@
             localScope.pushBlock({
                 element: 'h' + headings.symbolCount
             });
-            linebuilder.openTag('h' + headings.symbolCount, headings.id, headings.classes)
+            linebuilder.openTag('h' + headings.symbolCount, headings.id, headings.classes);
             trimmedContent = headings.remainingLine;
             hasLineSpec = true;
         } else {
@@ -151,16 +167,7 @@
 
         }
 
-        // check and see if we show open a paragraph block
-        if (!localScope.hasCurrentBlock() && (!scope.hasCurrentBlock() || scope.currentBlockElement() == 'blockquote') && trimmedContent.length > 0) {
-            scope.pushBlock({
-                element: 'p',
-                spec: '\'\'',
-                implicit: true
-            });
-            linebuilder.openTag('p');
-        }
-        else if (!hasLineSpec && !hasBlockSpec) {
+        if (!hasLineSpec && !hasBlockSpec) {
             if (trimmedContent.length == 0) {
                 // close any open blocks
                 while (scope.hasCurrentBlock() && scope.currentBlockElement() != 'blockquote') {
@@ -169,11 +176,12 @@
             }
         }
 
+        var closeUntil;
         var alreadyEnded = false;
 
+        // have we got an explicit block close? if so remove it from the end and remember we need to close up
         if (trimmedContent.length > 1) {
             var ltwo = trimmedContent.substring(trimmedContent.length - 2, trimmedContent.length);
-            var closeUntil;
             var closeLength;
 
             if (ltwo == '\'\'' && scope.hasElementScope('p')) {
@@ -185,16 +193,30 @@
                 closeLength = 2;
             }
 
-            if (closeUntil) {
-                alreadyEnded = true;
+            if (closeUntil){
                 trimmedContent = trimmedContent.substring(0, trimmedContent.length - closeLength).trim();
-                linebuilder.append(he.encode(trimmedContent));
-                linebuilder.endScopeWithoutLineBreak(localScope);
-                while (scope.hasCurrentBlock() && scope.currentBlockElement() != closeUntil) {
-                    linebuilder.endCurrentScopeWithoutLineBreak(scope);
-                }
+            }
+        }
+
+        // check and see if we should open a paragraph block
+        if (!localScope.hasCurrentBlock() && (!scope.hasCurrentBlock() || scope.currentBlockElement() == 'blockquote') && trimmedContent.length > 0) {
+            scope.pushBlock({
+                element: 'p',
+                spec: '\'\'',
+                implicit: true
+            });
+            linebuilder.openTag('p');
+        }
+
+        // close up blocks
+        if (closeUntil) {
+            alreadyEnded = true;
+            linebuilder.append(he.encode(trimmedContent));
+            linebuilder.endScopeWithoutLineBreak(localScope);
+            while (scope.hasCurrentBlock() && scope.currentBlockElement() != closeUntil) {
                 linebuilder.endCurrentScopeWithoutLineBreak(scope);
             }
+            linebuilder.endCurrentScopeWithoutLineBreak(scope);
         }
 
         if (!alreadyEnded) {
@@ -217,7 +239,7 @@
     }
 
     function createScope() {
-        var scope = {
+        return {
             _scopeStack: [],
             _currentBlock: null,
             _usedIds: [],
@@ -260,7 +282,6 @@
                 return contains(this._usedIds, id);
             }
         };
-        return scope;
     }
 
     function parseWithOptions(linedownContent, options) {
@@ -287,7 +308,7 @@
                     this._outputLines.push(this.currentLine);
                 }
             },
-            openTag: function (tag, id, classes) {
+            tagWithEnd: function (tag, id, classes, end) {
                 //TODO:Check against white lists!
                 var t = '<' + tag;
                 if (id) {
@@ -302,8 +323,14 @@
                     classes = classes.join(' ');
                     t = t + ' class=\'' + classes + '\'';
                 }
-                t = t + '>';
+                t = t + end;
                 this.append(t);
+            },
+            openTag: function (tag, id, classes) {
+                this.tagWithEnd(tag,id,classes, '>');
+            },
+            selfClosingTag:function(tag,id,classes){
+                this.tagWithEnd(tag,id,classes, '/>');
             },
             append: function (text) {
                 this.currentLine = this.currentLine + text;

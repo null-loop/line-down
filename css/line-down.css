@@ -46,6 +46,10 @@ code {
   color:#44bb44;
 }
 
+hr.classy{
+    border-top-color:#44bb44;
+}
+
 #lead{
   color:#bbbbbb;
   font-size:6em;
@@ -66,4 +70,8 @@ ins{
   background:rgb(92, 184, 92);
   color:white;
   padding:4px;
+}
+
+#rule{
+    border-top-width:5px;
 }
