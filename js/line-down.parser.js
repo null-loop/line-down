@@ -111,25 +111,29 @@
         // detect block quotes
         var blockQuotes = startsWith('\"', trimmedContent, 2);
         if (blockQuotes.startsWith) {
-            scope.pushBlock({
-                element: 'blockquote',
-                spec: '\"\"'
-            });
-            linebuilder.openTag('blockquote', blockQuotes.id, blockQuotes.classes)
-            trimmedContent = blockQuotes.remainingLine;
-            hasBlockSpec = true;
+            if (!(scope.hasElementScope('blockquote') && blockQuotes.remainingLine.trim().length == 0)) {
+                scope.pushBlock({
+                    element: 'blockquote',
+                    spec: '\"\"'
+                });
+                linebuilder.openTag('blockquote', blockQuotes.id, blockQuotes.classes)
+                trimmedContent = blockQuotes.remainingLine;
+                hasBlockSpec = true;
+            }
         }
         else {
             // more block specs
             var paragraph = startsWith('\'', trimmedContent, 2);
             if (paragraph.startsWith) {
-                scope.pushBlock({
-                    element: 'p',
-                    spec: '\'\''
-                });
-                linebuilder.openTag('p', paragraph.id, paragraph.classes)
-                trimmedContent = paragraph.remainingLine;
-                hasBlockSpec = true;
+                if (!(scope.hasElementScope('p') && paragraph.remainingLine.trim().length == 0)) {
+                    scope.pushBlock({
+                        element: 'p',
+                        spec: '\'\''
+                    });
+                    linebuilder.openTag('p', paragraph.id, paragraph.classes)
+                    trimmedContent = paragraph.remainingLine;
+                    hasBlockSpec = true;
+                }
             }
         }
 
