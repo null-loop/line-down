@@ -122,11 +122,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'\"\"Multiple quotes\"\"\r\n\r\n\r\n\"\"And another\"\"',o:'<blockquote><p>Multiple quotes</p></blockquote>\r\n<blockquote><p>And another</p></blockquote>',n:'Two block quotes explicitly closed inline with multiple blank lines separating'},
         { i:'\"\"#Heading   \"\"',o:'<blockquote><h1>Heading</h1></blockquote>',n:'Blockquote with heading and explicit close on single line with spacing before close'},
         { i:'\"\"   #Heading   \"\"',o:'<blockquote><h1>Heading</h1></blockquote>',n:'Blockquote with heading and explicit close on single line with spacing before close and before heading spec'},
+        { i:'\"\"   #    Heading   \"\"',o:'<blockquote><h1>Heading</h1></blockquote>',n:'Blockquote with heading and explicit close on single line with spacing before close and before heading spec and multiple spaces after header spec'},
+        { i:'\'\'\r\nParagraph\r\n\'\'', o:'<p>\r\nParagraph\r\n</p>',n:'Paragraph block close not detected as paragraph start'},
+        { i:'\"\"\r\nBlockquote\r\n\"\"', o:'<blockquote>\r\n<p>Blockquote\r\n</p></blockquote>',n:'Block quote block close not detected as block quote start'},
+        { i:'\"\"\r\n\'\'Paragraph\"\"',o:'<blockquote>\r\n<p>Paragraph</p></blockquote>',n:'Explicitly open block quote and paragraph closed by explicit block quote close'},
+        { i:'\"\"\r\n\'\'Paragraph\r\n\"\"',o:'<blockquote>\r\n<p>Paragraph\r\n</p></blockquote>',n:'Explicitly open block quote and paragraph closed by explicit block quote close on new line'},
+        { i:'\"\"\r\n\'\'Paragraph\'\'\r\n\"\"',o:'<blockquote>\r\n<p>Paragraph</p>\r\n</blockquote>',n:'Explicitly open block quote and paragraph closed by explicit paragraph close inline and block quote close on new line'},
+        { i:'---',o:'<hr/>',n:'Simple horizontal rule on own line'},
+        { i:'  ---',o:'<hr/>',n:'Simple horizontal rule on own line with spacing before'},
+        { i:'---  ',o:'<hr/>',n:'Simple horizontal rule on own line with spacing after'},
+        { i:'---?rule',o:'<hr id=\'rule\'/>',n:'Simple horizontal rule on own line with open id spec'},
+        { i:'---?rule?',o:'<hr id=\'rule\'/>',n:'Simple horizontal rule on own line with closed id spec'},
+        { i:'---?rule@classy',o:'<hr id=\'rule\' class=\'classy\'/>',n:'Simple horizontal rule on own line with open id and CSS spec'},
+        { i:'---?rule?@classy@',o:'<hr id=\'rule\' class=\'classy\'/>',n:'Simple horizontal rule on own line with closed id and CSS spec'},
+        { i:'Haha --- Ignored!',o:'<p>Haha --- Ignored!\r\n</p>',n:'Horizontal rule is ignored when not first and last'},
+        { i:'Haha ---',o:'<p>Haha ---\r\n</p>',n:'Horizontal rule is ignored when not first'},
+        { i:'--- Ignored!',o:'<p>--- Ignored!\r\n</p>',n:'Horizontal rule is ignored when not last'},
+        { i:'\'\' Explicit paragraph\r\n---\r\nWith a HR!\'\'',o:'<p>Explicit paragraph\r\n<hr/>\r\nWith a HR!</p>',n:'Horizontal rule nested in explicit paragraph'},
+        { i:'\'\' Explicit paragraph\r\n---\r\nWith a HR!\r\n\'\'',o:'<p>Explicit paragraph\r\n<hr/>\r\nWith a HR!\r\n</p>',n:'Horizontal rule nested in explicit paragraph closed on new line'},
+        { i:'\"\" Explicit blockquote\r\n---\r\nWith a HR!\"\"',o:'<blockquote><p>Explicit blockquote\r\n<hr/>\r\nWith a HR!</p></blockquote>',n:'Horizontal rule nested in explicit blockquote'},
+        { i:'\"\" Explicit blockquote\r\n---\r\nWith a HR!\r\n\"\"',o:'<blockquote><p>Explicit blockquote\r\n<hr/>\r\nWith a HR!\r\n</p></blockquote>',n:'Horizontal rule nested in explicit blockquote closed on new line'}
     ];
-
-    function htmlEncode(value) {
-        return he.encode(value);
-    }
 
     function diffResult(expected, actual) {
       var diff = JsDiff['diffChars'](expected, actual);

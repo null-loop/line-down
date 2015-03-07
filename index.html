@@ -110,7 +110,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>Line specs format the whole line</li>
                 <li>Line specs may occur at the start of a line or immediately following a block spec</li>
             </ul>
-            <h3># - Headings</h3>
+            <h3># - Headings <span class="label label-success">Done</span></h3>
             <ul>
                 <li>The hash character (#) specifies the line will be formatted as a heading.</li>
                 <li>A single # will become a H1, ## becomes a H2, ### becomes a H3 and so on.</li>
@@ -119,8 +119,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 </li>
                 <li>There is no limit to the depth of heading that may be specified</li>
             </ul>
-            <h3>--- - Horizontal Rule</h3>
-
             <h2>Inline Specifications</h2>
             <ul>
                 <li>Inline specs format a section of a line.</li>
@@ -172,9 +170,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 </li>
                 <li>Block specs may be nested</li>
                 <li>Nested block spec open/closes must be on separate lines</li>
-                <li>Explicit block spec closes must be the last non whitespace characters on a line</li>
-                <li>Explicit</li>
                 <li>Block specs may be explicitly closed</li>
+                <li>Explicit block spec closes must be the last non whitespace characters on a line</li>
+                <li>A block spec that appears at both the start and end of a line when there is any open block will be treated as a close</li>
+                <li>Explicit block closes may be out of sequence - you can explicitly open a block quote and a paragraph and then only explicitly close the block quote (the paragraph will be implicitly closed).</li>
                 <li>All currently open block specs are implicitly closed by an empty line (a line with no non-whitespace
                     characters)
                 </li>
@@ -185,6 +184,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             <h3>
                 <small>Two double quotes</small>
                 - <code>&quot;&quot;</code> - Block Quotes
+                <span class="label label-success">Done</span>
             </h3>
             <ul>
                 <li>Outputs as the <code>blockquote</code> element</li>
@@ -194,11 +194,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             <h3>
                 <small>Two apostrophes</small>
                 - <code>&apos;&apos;</code> - Paragraph
+                <span class="label label-success">Done</span>
             </h3>
             <ul>
                 <li>Output as the <code>p</code> element</li>
                 <li>Use over the implicit paragraph block allows Id and CSS specs to be added</li>
             </ul>
+            <h3>
+                <small>Three dashes</small>
+                - <code>---</code> Horizontal Rule
+                <span class="label label-success">Done</span>
+            </h3>
+            <ul>
+                <li>Self closing block</li>
+                <li>Must be the only element on the line</li>
+            </ul>
+
         </div>
     </div>
     <footer>
