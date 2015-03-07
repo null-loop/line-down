@@ -20,7 +20,7 @@
 
     var digits = '0123456789';
 
-    function startsWith(symbol, line, fixedCount) {
+    function startsWith(symbol, line, fixedCount, preserveWhitespace) {
         var doesStartWith = false;
         var r = line;
         var count = 0;
@@ -79,7 +79,9 @@
         if (numberCount.length > 0) {
             count = parseInt(numberCount);
         }
-        r = r.trim();
+        if (!preserveWhitespace) {
+            r = r.trim();
+        }
 
         if (fixedCount && count != fixedCount) {
             // no match
@@ -97,6 +99,99 @@
             symbolCount: count,
             remainingLine: r
         };
+    }
+
+    function replaceInline(content, linebuilder){
+        var cLine = content;
+        var oLine = '';
+        var scope = createScope();
+        while (cLine.length > 0){
+
+            var startElement = '';
+            var startSpec = '';
+            var startElementId;
+            var startElementClasses;
+            var closeElement = '';
+            var remainder;
+
+            var strong = startsWith('*',cLine,2,true);
+            if (strong.startsWith && !scope.hasElementScope('strong')){
+                startElement = 'strong';
+                startSpec = '**';
+                startElementId = strong.id;
+                startElementClasses = strong.classes;
+                remainder = strong.remainingLine;
+            }
+            else if(strong.startsWith){
+                closeElement = 'strong';
+                remainder = strong.remainingLine;
+            }
+            else
+            {
+                var emphasis = startsWith('/',cLine,2,true);
+                if (emphasis.startsWith && !scope.hasElementScope('em')){
+                    startElement = 'em';
+                    startSpec = '//';
+                    startElementId = emphasis.id;
+                    startElementClasses = emphasis.classes;
+                    remainder = emphasis.remainingLine;
+                }
+                else if(emphasis.startsWith){
+                    closeElement = 'em';
+                    remainder = emphasis.remainingLine;
+                }
+                else
+                {
+                    var underline = startsWith('_',cLine,2,true);
+                    if (underline.startsWith && !scope.hasElementScope('u')){
+                        startElement = 'u';
+                        startSpec = '__';
+                        startElementId = underline.id;
+                        startElementClasses = underline.classes;
+                        remainder = underline.remainingLine;
+                    }
+                    else if(underline.startsWith){
+                        closeElement = 'u';
+                        remainder = underline.remainingLine;
+                    }
+                }
+            }
+
+            if (startElement.length > 0)
+            {
+                scope.pushBlock({
+                    element:startElement,
+                    spec:startSpec
+                })
+                linebuilder.append(he.encode(oLine));
+                oLine = '';
+                linebuilder.openTag(startElement, startElementId, startElementClasses);
+                cLine = remainder;
+            }
+            else if (closeElement.length > 0)
+            {
+                linebuilder.append(he.encode(oLine));
+                oLine = '';
+                while (scope.hasCurrentBlock() && scope.currentBlockElement() != closeElement) {
+                    linebuilder.endCurrentScopeWithoutLineBreak(scope);
+                }
+                linebuilder.endCurrentScopeWithoutLineBreak(scope);
+                cLine = remainder;
+            }
+            else
+            {
+                oLine = oLine + cLine[0];
+                cLine = cLine.substring(1);
+           }
+
+        }
+        if (oLine.length > 0)
+        {
+            linebuilder.append(he.encode(oLine));
+        }
+        if (scope.hasCurrentBlock()){
+            linebuilder.endScopeWithoutLineBreak(scope);
+        }
     }
 
     function buildLine(lineContent, scope, linebuilder) {
@@ -208,10 +303,12 @@
             linebuilder.openTag('p');
         }
 
+        // do the inline!
+
         // close up blocks
         if (closeUntil) {
             alreadyEnded = true;
-            linebuilder.append(he.encode(trimmedContent));
+            linebuilder.addInline(trimmedContent);
             linebuilder.endScopeWithoutLineBreak(localScope);
             while (scope.hasCurrentBlock() && scope.currentBlockElement() != closeUntil) {
                 linebuilder.endCurrentScopeWithoutLineBreak(scope);
@@ -220,7 +317,7 @@
         }
 
         if (!alreadyEnded) {
-            linebuilder.append(he.encode(trimmedContent));
+            linebuilder.addInline(trimmedContent);
             linebuilder.endScope(localScope);
         }
     }
@@ -371,6 +468,9 @@
                     var block = scope.popBlock();
                     this.closeTag(block.element);
                 }
+            },
+            addInline:function(content){
+                replaceInline(content, this);
             }
 
         }

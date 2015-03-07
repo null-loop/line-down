@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
     // define the most evil test cases we can, i: 'input line-down', o: 'expected html out', n: 'Test name/description'
 
-    var testCases = [
+    ld.testCases = [
         { i: '#Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, no spacing' },
         { i: '\r\n#Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, newline before' },
         { i: '\r\n#Heading one\r\n', o: '<h1>Heading one</h1>', n: 'Single hash, newline before and after' },
@@ -141,115 +141,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'\'\' Explicit paragraph\r\n---\r\nWith a HR!\'\'',o:'<p>Explicit paragraph\r\n<hr/>\r\nWith a HR!</p>',n:'Horizontal rule nested in explicit paragraph'},
         { i:'\'\' Explicit paragraph\r\n---\r\nWith a HR!\r\n\'\'',o:'<p>Explicit paragraph\r\n<hr/>\r\nWith a HR!\r\n</p>',n:'Horizontal rule nested in explicit paragraph closed on new line'},
         { i:'\"\" Explicit blockquote\r\n---\r\nWith a HR!\"\"',o:'<blockquote><p>Explicit blockquote\r\n<hr/>\r\nWith a HR!</p></blockquote>',n:'Horizontal rule nested in explicit blockquote'},
-        { i:'\"\" Explicit blockquote\r\n---\r\nWith a HR!\r\n\"\"',o:'<blockquote><p>Explicit blockquote\r\n<hr/>\r\nWith a HR!\r\n</p></blockquote>',n:'Horizontal rule nested in explicit blockquote closed on new line'}
+        { i:'\"\" Explicit blockquote\r\n---\r\nWith a HR!\r\n\"\"',o:'<blockquote><p>Explicit blockquote\r\n<hr/>\r\nWith a HR!\r\n</p></blockquote>',n:'Horizontal rule nested in explicit blockquote closed on new line'},
+        { i:'**Strong',o:'<p><strong>Strong</strong>\r\n</p>',n:'Simple strong implicitly closed on one line at start of line'},
+        { i:'Something**Strong',o:'<p>Something<strong>Strong</strong>\r\n</p>',n:'Simple strong implicitly closed on one line after content with no spacing'},
+        { i:'Something **Strong',o:'<p>Something <strong>Strong</strong>\r\n</p>',n:'Simple strong implicitly closed on one line after content with spacing'},
+        { i:'Something**Strong**',o:'<p>Something<strong>Strong</strong>\r\n</p>',n:'Simple strong explicitly closed on one line after content with no spacing'},
+        { i:'Something **Strong**',o:'<p>Something <strong>Strong</strong>\r\n</p>',n:'Simple strong explicitly closed on one line after content with spacing'},
+        { i:'Something ** Strong **',o:'<p>Something <strong> Strong </strong>\r\n</p>',n:'Simple strong explicitly closed on one line after content with spacing in strong before and after'},
+        { i:'Something ** Strong ** And more!',o:'<p>Something <strong> Strong </strong> And more!\r\n</p>',n:'Simple strong explicitly closed on one line before and after content with spacing in strong before and after'},
+        { i:'**Strong',o:'<p><strong>Strong</strong>\r\n</p>',n:'Simple strong implicitly closed on one line at start of line'},
+        { i:'Something//Emphasised',o:'<p>Something<em>Emphasised</em>\r\n</p>',n:'Simple emphasis implicitly closed on one line after content with no spacing'},
+        { i:'Something //Emphasised',o:'<p>Something <em>Emphasised</em>\r\n</p>',n:'Simple emphasis implicitly closed on one line after content with spacing'},
+        { i:'Something//Emphasised//',o:'<p>Something<em>Emphasised</em>\r\n</p>',n:'Simple emphasis explicitly closed on one line after content with no spacing'},
+        { i:'Something //Emphasised//',o:'<p>Something <em>Emphasised</em>\r\n</p>',n:'Simple emphasis explicitly closed on one line after content with spacing'},
+        { i:'Something // Emphasised //',o:'<p>Something <em> Emphasised </em>\r\n</p>',n:'Simple emphasis explicitly closed on one line after content with spacing in strong before and after'},
+        { i:'Something // Emphasised // And more!',o:'<p>Something <em> Emphasised </em> And more!\r\n</p>',n:'Simple emphasis explicitly closed on one line before and after content with spacing in strong before and after'},
+        { i:'Something__Underlined',o:'<p>Something<u>Underlined</u>\r\n</p>',n:'Simple underline implicitly closed on one line after content with no spacing'},
+        { i:'Something __Underlined',o:'<p>Something <u>Underlined</u>\r\n</p>',n:'Simple underline implicitly closed on one line after content with spacing'},
+        { i:'Something__Underlined__',o:'<p>Something<u>Underlined</u>\r\n</p>',n:'Simple underline explicitly closed on one line after content with no spacing'},
+        { i:'Something __Underlined__',o:'<p>Something <u>Underlined</u>\r\n</p>',n:'Simple underline explicitly closed on one line after content with spacing'},
+        { i:'Something __ Underlined __',o:'<p>Something <u> Underlined </u>\r\n</p>',n:'Simple underline explicitly closed on one line after content with spacing in strong before and after'},
+        { i:'Something __ Underlined __ And more!',o:'<p>Something <u> Underlined </u> And more!\r\n</p>',n:'Simple underline explicitly closed on one line before and after content with spacing in strong before and after'},
     ];
 
-    function diffResult(expected, actual) {
-      var diff = JsDiff['diffChars'](expected, actual);
-      var fragment = document.createDocumentFragment();
-      for (var i=0; i < diff.length; i++) {
 
-        if (diff[i].added && diff[i + 1] && diff[i + 1].removed) {
-          var swap = diff[i];
-          diff[i] = diff[i + 1];
-          diff[i + 1] = swap;
-        }
-
-        var node;
-        if (diff[i].removed) {
-          node = document.createElement('del');
-          node.appendChild(document.createTextNode(diff[i].value));
-        } else if (diff[i].added) {
-          node = document.createElement('ins');
-          node.appendChild(document.createTextNode(diff[i].value));
-        } else {
-          node = document.createTextNode(diff[i].value);
-        }
-        fragment.appendChild(node);
-      }
-      return fragment;
-    }
-
-    function runTests() {
-
-        var warmUp = linedown.parse('#100 Warmup');
-        warmUp = linedown.parse('# Warmup');
-        warmUp = linedown.parse('\"\"#100 Warmup');
-        warmUp = linedown.parse('\'\'#100 Warmup');
-
-        var model = linedown.testsModel;
-
-        model.totalParserExecutionTime(0);
-        model.run(0);
-        model.passed(0);
-        model.failed(0);
-        model.failedTests.removeAll();
-
-        $.each(model.tests(), function (k, v) {
-            var startTime = window.performance.now();
-            var html = linedown.parse(v.linedownInput);
-            var endTime = window.performance.now();
-            var t = (endTime - startTime);
-            var executionTime = Math.floor((endTime - startTime)*1000)/1000;
-            var expected = v.expectedHtmlOutput;
-            var match = (html == expected);
-
-            v.actualHtmlOutput(html);
-            v.run(true);
-            v.passed(match);
-            v.result(match ? 'Passed' : 'Failed');
-            v.executionTime(executionTime);
-
-            model.totalParserExecutionTime(Math.floor((model.totalParserExecutionTime() + executionTime)*1000)/1000);
-
-            model.run(model.run() + 1);
-            if (match) model.passed(model.passed() + 1);
-            else {
-                var diffFragment = diffResult(expected, html);
-                var element = document.createElement('div');
-                element.appendChild(diffFragment);
-                var diff = $(element);
-                v.resultDiff(diff.html());
-                model.failed(model.failed() + 1);
-                model.failedTests.push(v);
-            }
-        });
-
-    }
-
-
-    $('#runTests').click(function() {
-        runTests();
-    });
-    var testsModel = function() {
-        this.tests = ko.observableArray([]);
-        this.failedTests = ko.observableArray([]);
-        this.passed = ko.observable(0);
-        this.failed = ko.observable(0);
-        this.run = ko.observable(0);
-        this.totalParserExecutionTime = ko.observable(0);
-    }
-    ld.testsModel = new testsModel();
-
-    $.each(testCases.reverse(), function(k, v) {
-        ld.testsModel.tests.push({
-            linedownInput: v.i,
-            expectedHtmlOutput: v.o,
-            actualHtmlOutput :ko.observable('Not Run'),
-            resultDiff: ko.observable('Not Run'),
-            run: ko.observable(false),
-            passed: ko.observable(false),
-            result: ko.observable('Not Run'),
-            description :v.n,
-            executionTime : ko.observable(0)
-        });
-    });
-
-    ld.testsModel.passed(0);
-    ld.testsModel.failed(0);
-    ld.testsModel.run(0);
-
-    ko.applyBindings(linedown.testsModel, $('#testRunOutput')[0]);
-    ko.applyBindings(linedown.testsModel, $('#testRunStats')[0]);
 
 })(window.linedown = window.linedown || {}, jQuery)
