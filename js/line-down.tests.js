@@ -197,19 +197,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'\'\'//Emphasised**Nested~~strikeout//Following on from that',o:'<p><em>Emphasised<strong>Nested<strike>strikeout</strike></strong></em>Following on from that\r\n</p>',n:'Part strong & strikethrough nested in explicit paragraph (implicit close) and nested emphasis, explicit emphasis closes strong & strikethrough in order with following text on same line with no spacing at all'},
         { i:'\'\'//Emphasised**Nested~~strikeout//Following on from that\'\'',o:'<p><em>Emphasised<strong>Nested<strike>strikeout</strike></strong></em>Following on from that</p>',n:'Part strong & strikethrough nested in explicit paragraph (explicit inline close) and nested emphasis, explicit emphasis closes strong & strikethrough in order with following text on same line with no spacing at all'},
         { i:'**Strong\r\n//Emphasised\r\n__Underlined\r\n^^Superscript\r\n>>Small\r\n~~Strike through',o:'<p><strong>Strong</strong>\r\n<em>Emphasised</em>\r\n<u>Underlined</u>\r\n<sup>Superscript</sup>\r\n<small>Small</small>\r\n<strike>Strike through</strike>\r\n</p>',n:'All inline specs on new lines, no spacing'}
-    ];
+    ]
 
     $.each(moreCases,function(k,v){
         ld.testCases.push(v);
-    });
-
-    var casesWithOptions =[
-
-    ];
-
-    $.each(casesWithOptions,function(k,v){
-        ld.testCases.push(v);
-    });
+    })
 
 
 })(window.linedown = window.linedown || {}, jQuery)

@@ -61,7 +61,7 @@
 
         $.each(model.tests(), function (k, v) {
             var startTime = window.performance.now();
-            var html = linedown.parseNoOptions(v.linedownInput);
+            var html = linedown.parse(v.linedownInput);
             var endTime = window.performance.now();
             var t = (endTime - startTime);
             var executionTime = Math.floor((endTime - startTime)*1000)/1000;
