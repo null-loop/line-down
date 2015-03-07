@@ -25,12 +25,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     <link rel="stylesheet" href="css/bootstrap.css" media="screen">
     <link rel="stylesheet" href="css/bootswatch.min.css">
     <link rel="stylesheet" href="css/line-down.css">
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="../bower_components/html5shiv/dist/html5shiv.js"></script>
-    <script src="../bower_components/respond/dest/respond.min.js"></script>
-    <![endif]-->
-
 </head>
 <body>
 <div class="navbar navbar-default navbar-fixed-top">
@@ -119,10 +113,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 </li>
                 <li>There is no limit to the depth of heading that may be specified</li>
             </ul>
+            <h3>+ - Unordered list items</h3>
+            <h3>+1 - Ordered list items</h3>
             <h2>Inline Specifications</h2>
             <ul>
                 <li>Inline specs format a section of a line.</li>
                 <li>Inline specs do not flow between lines - they finish when the line does</li>
+                <li>When handling inline specifications, whitespace is preserved. So <code>** I'm strong **</code> is <code>&lt;strong&gt; I'm strong &lt;/strong&gt;</code></li>
+                <li>As a consequence implicitly closed id/class specs will leave a whitespace in their output, considering explicitly closing them if this is
+                    not desired, i.e. <code>**?lead?A strong lead**</code> to produce <code>&lt;strong id='lead'&gt;A strong lead&lt;/strong&gt;</code> or
+                    <code>**?lead?@classy@A strong lead**</code> to produce <code>&lt;strong id='lead' class='classy'&gt;A strong lead&lt;/strong&gt;</code>
+                </li>
             </ul>
             <table class="table">
                 <thead>
@@ -140,27 +141,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                     <td><code>Something **important**</code></td>
                     <td><code>Something &lt;strong&gt;important&lt;/strong&gt;</code></td>
                     <td>Something <strong>important</strong></td>
-                    <td></td>
+                    <td><span class="label label-success">Done</span></td>
                 </tr>
                 <tr>
                     <td>Italics / emphasis</td>
                     <td><code>Something //oblique//</code></td>
                     <td><code>Something &lt;em&gt;oblique&lt;/em&gt;</code></td>
                     <td>Something <em>oblique</em></td>
-                    <td></td>
+                    <td><span class="label label-success">Done</span></td>
                 </tr>
                 <tr>
                     <td>Underline</td>
                     <td><code>Something __reinforced__</code></td>
                     <td><code>Something &lt;u&gt;reinforced&lt;/u&gt;</code></td>
                     <td>Something <u>reinforced</u></td>
-                    <td>Option to replace with CSS styled span</td>
+                    <td><span class="label label-success">Done</span></td>
                 </tr>
                 <tr>
                     <td>Superscript</td>
                     <td><code>Something ^^raised up^^</code></td>
                     <td><code>Something &lt;sup&gt;raised up&lt;/sup&gt;</code></td>
                     <td>Something <sup>raised up</sup></td>
+                    <td><span class="label label-success">Done</span></td>
                 </tr>
                 <tr>
                     <td>Subscript</td>
@@ -173,13 +175,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                     <td><code>Something >>small>></code></td>
                     <td><code>Something &lt;small&gt;small&lt;/small&gt;</code></td>
                     <td>Something <small>small</small></td>
+                    <td><span class="label label-success">Done</span></td>
                 </tr>
                 <tr>
                     <td>Strike through</td>
                     <td><code>Something ~~that was relevant~~</code></td>
                     <td><code>Something &lt;strike&gt;that was relevant&lt;/strike&gt;</code></td>
                     <td>Something <strike>that was relevant</strike></td>
-                    <td>Option to replace with CSS styled span</td>
+                    <td><span class="label label-success">Done</span></td>
                 </tr>
                 <tr>
                     <td>Code</td>
@@ -240,7 +243,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>Self closing block</li>
                 <li>Must start and end the line</li>
             </ul>
+            <h3>
+                <small>Two pluses </small>
+                - <code>++</code> Unordered list
 
+            </h3>
+            <h3>
+                <small>Three pluses </small>
+                - <code>+++</code> Ordered list
+
+            </h3>
         </div>
     </div>
     <footer>

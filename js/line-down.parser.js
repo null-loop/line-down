@@ -348,11 +348,12 @@
             linebuilder.openTag('p');
         }
 
-        // do the inline!
+
 
         // close up blocks
         if (closeUntil) {
             alreadyEnded = true;
+            // do the inline!
             linebuilder.addInline(trimmedContent);
             linebuilder.endScopeWithoutLineBreak(localScope);
             while (scope.hasCurrentBlock() && scope.currentBlockElement() != closeUntil) {
@@ -362,13 +363,29 @@
         }
 
         if (!alreadyEnded) {
+            // do the inline!
             linebuilder.addInline(trimmedContent);
             linebuilder.endScope(localScope);
         }
     }
 
-    function parse(linedownContent) {
+    function noOptionsParse(linedownContent)
+    {
         return parseWithOptions(linedownContent, {});
+    }
+
+    function defaultOptionsParse(linedownContent) {
+        return parseWithOptions(linedownContent, {
+            idWhitelist:undefined,
+            cssWhitelist:undefined,
+            idBlacklist:undefined,
+            cssBlacklist:undefined,
+            deprecatedTags:[
+                {tag:"u",class:"underline"},
+                {tag:"strike",class:"strikethrough"}
+            ]
+        });
+        //TODO:Support deprecatedTags, idWhitelist & cssWhitelist, idBlacklist & cssBlacklist
     }
 
     function contains(a, obj) {
@@ -538,6 +555,7 @@
         return lineBuilder.result();
     }
 
-    ld.parse = parse;
+    ld.parseNoOptions = noOptionsParse;
+    ld.parse = defaultOptionsParse;
 
 })(window.linedown = window.linedown || {}, jQuery)
