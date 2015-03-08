@@ -38,7 +38,7 @@
                 doesStartWith = true;
                 r = r.substring(1);
             }
-            else if ($.inArray(c, digits) != -1 && !inClasses) {
+            else if ($.inArray(c, digits) != -1 && !inClasses && !inId && count == 1) {
                 numberCount = numberCount + c;
                 r = r.substring(1);
             }
@@ -209,6 +209,35 @@
                                     else if(subscript.startsWith){
                                         closeElement = 'sub';
                                         remainder = subscript.remainingLine;
+                                    }
+                                    else
+                                    {
+                                        var code = startsWith(':',cLine,2,true);
+                                        if (code.startsWith && !scope.hasElementScope('code')){
+                                            startElement = 'code';
+                                            startSpec = '::';
+                                            startElementId = code.id;
+                                            startElementClasses = code.classes;
+                                            remainder = code.remainingLine;
+                                        }
+                                        else if(code.startsWith){
+                                            closeElement = 'code';
+                                            remainder = code.remainingLine;
+                                        }
+                                        else{
+                                            var span = startsWith('`',cLine,2,true);
+                                            if (span.startsWith && !scope.hasElementScope('span')){
+                                                startElement = 'span';
+                                                startSpec = '``';
+                                                startElementId = span.id;
+                                                startElementClasses = span.classes;
+                                                remainder = span.remainingLine;
+                                            }
+                                            else if(span.startsWith){
+                                                closeElement = 'span';
+                                                remainder = span.remainingLine;
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -447,7 +476,7 @@
                 return has;
             },
             shouldTrim: function () {
-                return !this.hasElementScope("code");
+                return !this.hasElementScope("pre");
             },
             usedId: function (id) {
                 this._usedIds.push(id);

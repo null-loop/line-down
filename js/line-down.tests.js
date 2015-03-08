@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i: '\r\n#Heading one\r\n', o: '<h1>Heading one</h1>', n: 'Single hash, newline before and after' },
         { i: '\r\n\r\n#Heading one\r\n', o: '<h1>Heading one</h1>', n: 'Single hash, two newlines before and one after' },
         { i: '\r\n\r\n#Heading one\r\n\r\n', o: '<h1>Heading one</h1>', n: 'Single hash, two newlines before and two after' },
-        { i: '# Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, spacing after',s:["G_IGNORE_LEADING_TRAILING_WHITESPACE"] },
+        { i: '# Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, spacing after',s:["GR_IGNORE_LEADING_TRAILING_WHITESPACE"] },
         { i: ' #Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, spacing before' },
         { i: '  #Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, double spacing before' },
         { i: '    #Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, triple spacing before' },
@@ -144,9 +144,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'\"\" Explicit blockquote\r\n---\r\nWith a HR!\r\n\"\"',o:'<blockquote><p>Explicit blockquote\r\n<hr/>\r\nWith a HR!\r\n</p></blockquote>',n:'Horizontal rule nested in explicit blockquote closed on new line'},
     ];
 
-    function buildInlineTestCases(spec,element,text,name)
+    function buildInlineTestCases(spec,element,text,name,commonSpec)
     {
-        return [
+        var a = [
         { i:'' + spec + '' + text + '',o:'<p><' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line'},
         { i:'' + spec + '?me?' + text + '',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed id spec no space'},
         { i:'' + spec + '?me? ' + text + '',o:'<p><' + element + ' id=\'me\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed id spec with space'},
@@ -158,24 +158,35 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'' + spec + '@classy@?me?' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed class and id spec no space'},
         { i:'' + spec + '@classy@ ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed class spec with space'},
         { i:'' + spec + '@classy ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with open class spec'},
-        { i:'Something' + spec + '' + text + '',o:'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line after content with no spacing'},
-        { i:'Something ' + spec + '' + text + '',o:'<p>Something <' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line after content with spacing'},
-        { i:'Something' + spec + '' + text + '' + spec,o:'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with no spacing'},
-        { i:'Something ' + spec + '' + text + '' + spec,o:'<p>Something <' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with spacing'},
-        { i:'Something ' + spec + ' ' + text + ' ' + spec,o:'<p>Something <' + element + '> ' + text + ' </' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with spacing in ' + name + ' before and after'},
-        { i:'Something ' + spec + ' ' + text + ' ' + spec + ' And more!',o:'<p>Something <' + element + '> ' + text + ' </' + element + '> And more!\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line before and after content with spacing in ' + name + ' before and after'},
-        { i:'' + spec + '' + text + '',o:'<p><' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line'}
+        { i:'Something' + spec + '' + text + '',o:'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line after content with no spacing',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'Something ' + spec + '' + text + '',o:'<p>Something <' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line after content with spacing',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'Something' + spec + '' + text + '' + spec,o:'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with no spacing',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'Something ' + spec + '' + text + '' + spec,o:'<p>Something <' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with spacing',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'Something ' + spec + ' ' + text + ' ' + spec,o:'<p>Something <' + element + '> ' + text + ' </' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with spacing in ' + name + ' before and after',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'Something ' + spec + ' ' + text + ' ' + spec + ' And more!',o:'<p>Something <' + element + '> ' + text + ' </' + element + '> And more!\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line before and after content with spacing in ' + name + ' before and after',s:["IS_FORMAT_SECTION_OF_LINE"]},
         ];
+        $.each(a,function(k,v){
+           if (!v.s)
+           {
+               v.s =[];
+           }
+            v.s.push(commonSpec);
+        });
+        return a;
     }
 
     var generatedTests =
-    buildInlineTestCases('**', 'strong', 'Strong', 'strong').concat(
-        buildInlineTestCases('//', 'em', 'Emphasis', 'emphasis').concat(
-            buildInlineTestCases('__', 'u', 'Underlined', 'underline').concat(
-                buildInlineTestCases('^^', 'sup', 'Super', 'superscript').concat(
-                    buildInlineTestCases('>>', 'small', 'Small', 'small').concat(
-                        buildInlineTestCases('~~', 'strike', 'Striken', 'strikethrough').concat(
-                            buildInlineTestCases('!!', 'sub', 'Beneath', 'subscript')
+    buildInlineTestCases('**', 'strong', 'Strong', 'strong','LS_STRONG').concat(
+        buildInlineTestCases('//', 'em', 'Emphasis', 'emphasis','LS_EMPHASIS').concat(
+            buildInlineTestCases('__', 'u', 'Underlined', 'underline','LS_UNDERLINE').concat(
+                buildInlineTestCases('^^', 'sup', 'Super', 'superscript','LS_SUPERSCRIPT').concat(
+                    buildInlineTestCases('>>', 'small', 'Small', 'small','LS_SMALL').concat(
+                        buildInlineTestCases('~~', 'strike', 'Striken', 'strikethrough','LS_STRIKE').concat(
+                            buildInlineTestCases('!!', 'sub', 'Beneath', 'subscript','LS_SUBSCRIPT').concat(
+                                buildInlineTestCases('::', 'code', 'Codified', 'code','LS_CODE').concat(
+                                    buildInlineTestCases('``', 'span', 'Spanned', 'span','LS_SPAN')
+                                )
+                            )
                         )
                     )
                 )
@@ -198,7 +209,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'//Emphasised**Nested~~strikeout//Following on from that',o:'<p><em>Emphasised<strong>Nested<strike>strikeout</strike></strong></em>Following on from that\r\n</p>',n:'Part strong & strikethrough nested in emphasis, explicit emphasis closes strong & strikethrough in order with following text on same line with no spacing at all'},
         { i:'\'\'//Emphasised**Nested~~strikeout//Following on from that',o:'<p><em>Emphasised<strong>Nested<strike>strikeout</strike></strong></em>Following on from that\r\n</p>',n:'Part strong & strikethrough nested in explicit paragraph (implicit close) and nested emphasis, explicit emphasis closes strong & strikethrough in order with following text on same line with no spacing at all'},
         { i:'\'\'//Emphasised**Nested~~strikeout//Following on from that\'\'',o:'<p><em>Emphasised<strong>Nested<strike>strikeout</strike></strong></em>Following on from that</p>',n:'Part strong & strikethrough nested in explicit paragraph (explicit inline close) and nested emphasis, explicit emphasis closes strong & strikethrough in order with following text on same line with no spacing at all'},
-        { i:'**Strong\r\n//Emphasised\r\n__Underlined\r\n^^Superscript\r\n>>Small\r\n~~Strike through',o:'<p><strong>Strong</strong>\r\n<em>Emphasised</em>\r\n<u>Underlined</u>\r\n<sup>Superscript</sup>\r\n<small>Small</small>\r\n<strike>Strike through</strike>\r\n</p>',n:'All inline specs on new lines, no spacing'}
+        { i:'**Strong\r\n//Emphasised\r\n__Underlined\r\n^^Superscript\r\n>>Small\r\n~~Strike through\r\n::Code\r\n!!Subscript\r\n``Spanned',o:'<p><strong>Strong</strong>\r\n<em>Emphasised</em>\r\n<u>Underlined</u>\r\n<sup>Superscript</sup>\r\n<small>Small</small>\r\n<strike>Strike through</strike>\r\n<code>Code</code>\r\n<sub>Subscript</sub>\r\n<span>Spanned</span>\r\n</p>',n:'All inline specs on new lines, no spacing'},
+        { i:'::h2::',o:'<p><code>h2</code>\r\n</p>',n:'h2 in code inline spec bug'},
+        { i:'::h3::',o:'<p><code>h3</code>\r\n</p>',n:'h2 in code inline spec bug - h3'},
+        { i:'**h2**',o:'<p><strong>h2</strong>\r\n</p>',n:'h2 in strong inline spec'}
     ];
 
     $.each(moreCases,function(k,v){

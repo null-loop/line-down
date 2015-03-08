@@ -17,7 +17,7 @@
  */
 
 (function (ld, $, undefined) {
-    $('#regenerateLinedown').click(function () {
+    function updateFromLinedown(){
         var linedownContent = $('#linedownInput')[0].value;
         var html = ld.parse(linedownContent);
         $('#linedownOutput')[0].value = html;
@@ -25,6 +25,12 @@
         var dom = $(html);
         $('#linedownHtml').empty();
         $('#linedownHtml').append(dom);
+    }
+
+    $('#linedownInput').bind('input propertychange', function() {
+        updateFromLinedown();
     });
+
+    updateFromLinedown();
 
 })(window.linedown = window.linedown || {}, jQuery)

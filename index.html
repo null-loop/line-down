@@ -77,39 +77,54 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <!--
+<!--
             <div class="btn-group btn-group-justified">
                 <a id="showTestConnectionsButton" class="btn btn-default">Show Test Connections</a>
                 <a id="hideTestConnectionsButton" class="btn btn-default disabled">Hide Tests Connections</a>
-            </div>-->
-            <h2>General Rules</h2>
+            </div>
+-->
+            <h1>Top Level Concepts</h1>
             <ul>
-                <li>Processing is conducted on a line-by-line basis</li>
-                <li>The contents of a line cannot affect the output of any preceding line</li>
-                <li data-spec="G_IGNORE_LEADING_TRAILING_WHITESPACE">Leading and trailing whitespace will be ignored (with the exception of code blocks)</li>
-                <li data-spec="G_SPECS_ALLOWED_CSS_SPECS">Any block/in/line spec can be suffixed with a CSS class spec <code>@classSpec</code></li>
-                <li data-spec="G_SPECS_ALLOWED_MULTIPLE_CSS_SPECS">Multiple CSS classes may be specified at once, seperated by the '.' character <code>@classSpecOne.classSpecTwo</code>
-                </li>
-                <li data-spec="G_SPECS_ALLOWED_ID_SPECS">Any block/in/line spec can be suffixed with an Id spec <code>?idSpec</code></li>
-                <li data-spec="G_SPECS_ALLOWED_ID_AND_CSS_SPECS">Any block/in/line spec can specify both a CSS and an Id spec in any order
+                <li>Processing should be conducted on a line-by-line basis</li>
+                <li>The contents of a line <strong>cannot</strong> affect the output of any preceding line</li>
+            </ul>
+            <h2 data-spec-section="GR">General Rules</h2>
+            <ul>
+
+                <li data-spec="GR_IGNORE_LEADING_TRAILING_WHITESPACE">Leading and trailing whitespace will be ignored (with the exception of code blocks)</li>
+                <li data-spec="GR_MULTIPLE_BLANK_LANES_ROLLUP">Multiple blank lines will count as one blank line (with the exception of code blocks)</li>
+                <li data-spec="GR_HTML_ENTITY_REPLACEMENT">HTML entity replacement will be conducted on appropriate characters not interpreted as specs</li>
+
+            </ul>
+            <h3>Finally - the most important rule of them all...</h3>
+            <ul>
+                <li>There is <strong>nah</strong> line-break</li>
+            </ul>
+            <hr/>
+            <h2 data-spec-section="ICS">ID and CSS specifications</h2>
+            <ul>
+                <li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS">Any block/in/line spec can be suffixed with a CSS class spec <code>@classSpec</code></li>
+                <li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS_WITH_MULTIPLE_CLASSES">Multiple CSS classes may be specified at once, separated by the '.' character <code>@classSpecOne.classSpecTwo</code>
+                <li data-spec="ICS_SPECS_ALLOWED_ID_SPECS">Any block/in/line spec can be suffixed with an Id spec <code>?idSpec</code></li>
+                <li data-spec="ICS_SPECS_ALLOWED_ID_AND_CSS_SPECS_IN_ANY_ORDER">Any block/in/line spec can specify both a CSS and an Id spec in any order
                     <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
-                <li data-spec="G_ID_SPEC_OUTPUT_FIRST">When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec'
+                <li data-spec="ICS_ID_SPEC_OUTPUT_FIRST">When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec'
                     class='classSpec'</code></li>
-                <li data-spec="G_ID_AND_CSS_SPECS_DEFAULTS_TO_ALLOW_ALL">By default any Id / CSS spec is valid</li>
-                <li data-spec="G_ID_AND_CSS_SPECS_ALLOW_WHITELISTS">However whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignored and not output.</li>
-                <li data-spec="G_ID_SPEC_ALLOWED_ONCE_ONLY">Id specs can only be used once. A subsequent use of the same Id will be invalid and ignored.</li>
-                <li>An Id / CSS spec is terminated either by a space or by the repeat of it's initial character <code>?idSpec?</code>
-                    <code>@classOne.classTwo@</code></li>
-                <li>Multiple blank lines will count as one blank line (with the exception of code blocks)</li>
-                <li>So far - there is <strong>nah</strong> line-break</li>
-                <li>HTML entity replacement will be conducted on appropriate characters not interpreted as specs</li>
+                <li data-spec="ICS_ID_AND_CSS_SPECS_DEFAULTS_TO_ALLOW_ALL">By default any Id / CSS spec is valid</li>
+                <li data-spec="ICS_ID_AND_CSS_SPECS_ALLOW_WHITELISTS">However whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignored and not output.</li>
+                <li data-spec="ICS_ID_SPEC_ALLOWED_ONCE_ONLY">Id specs can only be used once. A subsequent use of the same Id will be invalid and ignored.</li>
+                <li data-spec="ICS_ID_AND_CSS_SPECS_CLOSE_EXPLICITLY">An Id / CSS spec is closed explicitly by a repeat of it's initial character <code>?idSpec?</code> or <code>@classOne.classTwo@</code></li>
+                <li data-spec="ICS_ID_AND_CSS_SPECS_CLOSE_IMPLICITLY">An Id / CSS spec is closed implicitly by a space <code>?idSpec Some content</code> or <code>@classOne.classTwo Some content</code></li>
             </ul>
-            <h2>Line Specifications</h2>
+            <hr/>
+            <h2 data-spec-setion="LS">Line Specifications</h2>
             <ul>
-                <li>Line specs format the whole line</li>
-                <li>Line specs may occur at the start of a line or immediately following a block spec</li>
+                <li data-spec="LS_FORMAT_WHOLE_LINE">Line specs format the whole line following them</li>
+                <li data-spec="LS_FORMAT_WHOLE_LINE_EXCLUDING_BLOCK_CLOSE">Excluding any block spec closures</li>
+                <li data-spec="LS_OCCUR_AT_START_OF_LINE">Line specs may occur at the start of a line</li>
+                <li data-spec="LS_OCCUR_AFTER_BLOCK_OPEN">Line specs may occur immediately following a block spec open</li>
             </ul>
-            <h3># - Headings <span class="label label-success">Done</span></h3>
+            <h3 data-spec-section="LS_H"># - Headings <span class="label label-success">Done</span></h3>
             <ul>
                 <li>The hash character (#) specifies the line will be formatted as a heading.</li>
                 <li>A single # will become a H1, ## becomes a H2, ### becomes a H3 and so on.</li>
@@ -118,11 +133,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 </li>
                 <li>There is no limit to the depth of heading that may be specified</li>
             </ul>
-            <h3>+ - Unordered list items</h3>
-            <h3>+1 - Ordered list items</h3>
-            <h2>Inline Specifications</h2>
+            <h3 data-spec-section="LS_UL">& - Unordered list items</h3>
             <ul>
-                <li>Inline specs format a section of a line.</li>
+                <li>The depth of the item may be specified after a single & as a number <code>&10</code> nests a list item ten levels deep</li>
+            </ul>
+            <h3 data-spec-section="LS_OL">+ - Ordered list items</h3>
+            <ul>
+                <li>The depth of the item may be specified after a single + as a number <code>+10</code> nests a list item ten levels deep</li>
+            </ul>
+            <hr/>
+            <h2 data-spec-section="IS">Inline Specifications</h2>
+            <ul>
+                <li data-spec-section="IS_FORMAT_SECTION_OF_LINE">Inline specs format a section of a line.</li>
+
+                <!--TODO:CONTINUE IN THIS VEIN DAN with spec attributes ! -->
+                <!--TODO:Setup s data on tests cases -->
+                <!--TODO:Format test cases source file better -->
+
                 <li>Inline specs do not flow between lines - they finish when the line does</li>
                 <li>When handling inline specifications, whitespace is preserved. So <code>** I'm strong **</code> is <code>&lt;strong&gt; I'm strong &lt;/strong&gt;</code></li>
                 <li>As a consequence implicitly closed id/class specs will leave a whitespace in their output, considering explicitly closing them if this is
@@ -141,64 +168,75 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr data-spec="LS_STRONG">
                     <td>Bold / strong</td>
                     <td><code>Something **important**</code></td>
                     <td><code>Something &lt;strong&gt;important&lt;/strong&gt;</code></td>
                     <td>Something <strong>important</strong></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr>
+                <tr data-spec="LS_EMPHASIS">
                     <td>Italics / emphasis</td>
                     <td><code>Something //oblique//</code></td>
                     <td><code>Something &lt;em&gt;oblique&lt;/em&gt;</code></td>
                     <td>Something <em>oblique</em></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr>
+                <tr data-spec="LS_UNDERLINE">
                     <td>Underline</td>
                     <td><code>Something __reinforced__</code></td>
                     <td><code>Something &lt;u&gt;reinforced&lt;/u&gt;</code></td>
                     <td>Something <u>reinforced</u></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr>
+                <tr data-spec="LS_SUPERSCRIPT">
                     <td>Superscript</td>
                     <td><code>Something ^^raised up^^</code></td>
                     <td><code>Something &lt;sup&gt;raised up&lt;/sup&gt;</code></td>
                     <td>Something <sup>raised up</sup></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr>
+                <tr data-spec="LS_SUBSCRIPT">
                     <td>Subscript</td>
                     <td><code>Something !!pulled down!!</code></td>
                     <td><code>Something &lt;sub&gt;pulled down&lt;/sub&gt;</code></td>
                     <td>Something <sub>pulled down</sub></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr>
+                <tr data-spec="LS_SMALL">
                     <td>Small</td>
                     <td><code>Something >>small>></code></td>
                     <td><code>Something &lt;small&gt;small&lt;/small&gt;</code></td>
                     <td>Something <small>small</small></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr>
+                <tr data-spec="LS_STRIKE">
                     <td>Strike through</td>
                     <td><code>Something ~~that was relevant~~</code></td>
                     <td><code>Something &lt;strike&gt;that was relevant&lt;/strike&gt;</code></td>
                     <td>Something <strike>that was relevant</strike></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr>
+                <tr data-spec="LS_CODE">
                     <td>Code</td>
+                    <td><code>Something ::Codified::</code></td>
+                    <td><code>Something &lt;code&gt;Codified&lt;/code&gt;</code></td>
+                    <td>Something <code>Codified</code></td>
+                    <td><span class="label label-success">Done</span></td>
+                </tr>
+                <tr data-spec="LS_SPAN">
+                    <td>Span</td>
+                    <td><code>Something ``Spanned``</code></td>
+                    <td><code>Something &lt;span&gt;Spanned&lt;/span&gt;</code></td>
+                    <td>Something <span>Codified</span></td>
+                    <td><span class="label label-success">Done</span></td>
                 </tr>
                 <tr>
                     <td>Hyperlinks</td>
                 </tr>
                 </tbody>
             </table>
-
+            <hr/>
             <h2>Block Specifications</h2>
             <ul>
                 <li>Block specs are always the first non-whitespace characters</li>
@@ -250,13 +288,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>Must start and end the line</li>
             </ul>
             <h3>
-                <small>Two pluses </small>
-                - <code>++</code> Unordered list
+                <small>Two ampersands </small>
+                - <code>&&</code> Unordered list
 
             </h3>
             <h3>
-                <small>Three pluses </small>
-                - <code>+++</code> Ordered list
+                <small>Two plus signs </small>
+                - <code>++</code> Ordered list
 
             </h3>
         </div>

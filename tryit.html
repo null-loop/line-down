@@ -64,55 +64,37 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12">
-            <button id="regenerateLinedown" class="btn btn-lg btn-primary">Regenerate</button>
-            <hr/>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-lg-6">
             <h4>line-down</h4>
-          <textarea id="linedownInput" rows="20"># A H1 Heading
-#1 Specifically a H1 heading
-## A H2 heading
-#2 Specifically a H2 heading
-#100 Really? H100? Oh yes! Why? We don't question
-#@this.is.classy A H1 with a little more class
-#2@trash@A trashy H2
-#?lead A H1 that knows who it is
-#20?lead? A H20 that doesn't knows who it is
-And what's this all on it's own?
-Was that an implied paragraph block spec?
-Why **yes**, //yes// it was.
-Notice we've not started a new block ourselves.
-That's because we're now __inside__ a block.
-
-Notice that //empty line// above us?
-It closed all open blocks.
-
-""You can even quote me on that. No really you can, otherwise what's the point?
-""#1__The first rule of ~~not~~ being quoted is as follows""
+          <textarea id="linedownInput" rows="20">#1 This is the first of many headings
 ---
-That ruled!""
+#2 This the second of many headings - a ``h2``
+This is **bold**, this is __underlined__
 ---
-So did //that//
-#1Up H1, ^^fly my pretty
-#2"You, minion" >>"Yes sir?"
-#2"You, underling" !!"Yes master?"</textarea>
-        </div>
-        <div class="col-lg-6">
+''That ruled!''
+This is //emphasised//, this is ~~@classy@struck out~~
+""This is worth quoting
+
+""And so //was// this!""
+See what I mean""
+**@trash@Amazing //guys// - thanks!
+</textarea>
             <h4>HTML</h4>
             <textarea id="linedownOutput" rows="20" disabled="disabled"></textarea>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <h4>Rendered</h4>
 
             <div id="linedownHtml">
             </div>
             <hr/>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+
+        </div>
+
         <footer>
             <div class="row">
                 <div class="col-lg-12">

@@ -23,6 +23,7 @@
 
     ld.showTestsForSpecs = function(){
         var specItems = $('[data-spec]');
+        var specSections = $('[data-spec-section]');
         var warn = 10;
         var ok = 20;
         var good = 50;
@@ -45,15 +46,53 @@
             else if (l >= ok && l < good) cssClass='info';
             else if (l >= good) cssClass = 'success';
             var html = '<span class=\'label label-' + cssClass + ' test\'>' + l + ' test' + s + '</span>';
-            $(specItem).prepend($(html));
+            //TODO:attach specs!?
+            if ($(specItem).prop("tagName")=="TR")
+            {
+                $(specItem).find("td").last().prepend($(html));
+            }
+            else
+            {
+                $(specItem).prepend($(html));
+            }
         });
+
+        $.each(specSections,function(k,specSection){
+            var id = $(specSection).data('spec-section');
+            var specSectionTests = [];
+            $.each(linedown.testCases,function(tk,testCase){
+                var hasCase=false;
+                if (testCase.s){
+                    $.each(testCase.s, function(sk,spec){
+                        if (spec.length >= id.length)
+                        {
+                            var s = spec.substring(0, id.length);
+                            if (s==id) hasCase = true;
+                        }
+                    });
+                }
+                if (hasCase){
+                    specSectionTests.push(testCase);
+                }
+            });
+            var l = specSectionTests.length;
+            var s = l == 1 ? '' : 's';
+            var cssClass = 'danger';
+            var html = '<span class=\'label label-' + cssClass + ' testSection\'>' + l + ' test' + s + '</span>';
+
+            $(specSection).prepend($(html));
+
+
+        });
+
+        //TODO:Wire in spec-section as sum
     };
 
+
     ld.hideTestsForSpecs = function(){
-        var specItems = $('[data-spec]');
-        $.each(specItems,function(k,specItem){
-            $(specItem).find('.test').remove();
-        });
+        $('.test').remove();
+        $('.testSection').remove();
+
     };
 
     var showTestConnectionsButton = $('#showTestConnectionsButton');
