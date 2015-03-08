@@ -196,6 +196,21 @@
                                     closeElement = 'strike';
                                     remainder = strike.remainingLine;
                                 }
+                                else
+                                {
+                                    var subscript = startsWith('!',cLine,2,true);
+                                    if (subscript.startsWith && !scope.hasElementScope('sub')){
+                                        startElement = 'sub';
+                                        startSpec = '!!';
+                                        startElementId = subscript.id;
+                                        startElementClasses = subscript.classes;
+                                        remainder = subscript.remainingLine;
+                                    }
+                                    else if(subscript.startsWith){
+                                        closeElement = 'sub';
+                                        remainder = subscript.remainingLine;
+                                    }
+                                }
                             }
                         }
                     }
@@ -557,5 +572,6 @@
 
     ld.parseNoOptions = noOptionsParse;
     ld.parse = defaultOptionsParse;
+    ld.contains = contains;
 
 })(window.linedown = window.linedown || {}, jQuery)

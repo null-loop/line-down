@@ -77,24 +77,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     </div>
     <div class="row">
         <div class="col-lg-12">
+            <div class="btn-group btn-group-justified">
+                <a id="showTestConnectionsButton" class="btn btn-default">Show Test Connections</a>
+                <a id="hideTestConnectionsButton" class="btn btn-default disabled">Hide Tests Connections</a>
+            </div>
             <h2>General Rules</h2>
             <ul>
                 <li>Processing is conducted on a line-by-line basis</li>
                 <li>The contents of a line cannot affect the output of any preceding line</li>
-                <li>Leading and trailing whitespace will be ignored (with the exception of code blocks)</li>
-                <li>Any block/in/line spec can be suffixed with a CSS class spec <code>@classSpec</code></li>
-                <li>Multiple CSS classes may be specified at once, seperated by the '.' character <code>@classSpecOne.classSpecTwo</code>
+                <li data-spec="G_IGNORE_LEADING_TRAILING_WHITESPACE">Leading and trailing whitespace will be ignored (with the exception of code blocks)</li>
+                <li data-spec="G_SPECS_ALLOWED_CSS_SPECS">Any block/in/line spec can be suffixed with a CSS class spec <code>@classSpec</code></li>
+                <li data-spec="G_SPECS_ALLOWED_MULTIPLE_CSS_SPECS">Multiple CSS classes may be specified at once, seperated by the '.' character <code>@classSpecOne.classSpecTwo</code>
                 </li>
-                <li>Any block/in/line spec can be suffixed with an Id spec <code>?idSpec</code></li>
-                <li>Any block/in/line spec can specify both a CSS and an Id spec in any order
+                <li data-spec="G_SPECS_ALLOWED_ID_SPECS">Any block/in/line spec can be suffixed with an Id spec <code>?idSpec</code></li>
+                <li data-spec="G_SPECS_ALLOWED_ID_AND_CSS_SPECS">Any block/in/line spec can specify both a CSS and an Id spec in any order
                     <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
-                <li>When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec'
+                <li data-spec="G_ID_SPEC_OUTPUT_FIRST">When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec'
                     class='classSpec'</code></li>
-                <li>By default any Id / CSS spec is valid, however whitelists may provide exclusive lists of Id and CSS
-                    specs. Any invalid spec is ignored and not output.
-                </li>
-                <li>Id specs can only be used once. A subsequent use of the same Id will be invalid and ignored.</li>
-                <li>An Id / CSS spec is terminated either by a space or by the repeat of it's intial character <code>?idSpec?</code>
+                <li data-spec="G_ID_AND_CSS_SPECS_DEFAULTS_TO_ALLOW_ALL">By default any Id / CSS spec is valid</li>
+                <li data-spec="G_ID_AND_CSS_SPECS_ALLOW_WHITELISTS">However whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignored and not output.</li>
+                <li data-spec="G_ID_SPEC_ALLOWED_ONCE_ONLY">Id specs can only be used once. A subsequent use of the same Id will be invalid and ignored.</li>
+                <li>An Id / CSS spec is terminated either by a space or by the repeat of it's initial character <code>?idSpec?</code>
                     <code>@classOne.classTwo@</code></li>
                 <li>Multiple blank lines will count as one blank line (with the exception of code blocks)</li>
                 <li>So far - there is <strong>nah</strong> line-break</li>
@@ -167,9 +170,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 </tr>
                 <tr>
                     <td>Subscript</td>
-                    <td><code></code></td>
+                    <td><code>Something !!pulled down!!</code></td>
                     <td><code>Something &lt;sub&gt;pulled down&lt;/sub&gt;</code></td>
                     <td>Something <sub>pulled down</sub></td>
+                    <td><span class="label label-success">Done</span></td>
                 </tr>
                 <tr>
                     <td>Small</td>
@@ -273,6 +277,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 </div>
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/knockout.js"></script>
+<script src="js/he.js"></script>
+<script src="js/diff.js"></script>
+<script src="js/line-down.parser.js"></script>
+<script src="js/line-down.tests.js"></script>
+<script src="js/line-down.index.js"></script>
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i: '\r\n#Heading one\r\n', o: '<h1>Heading one</h1>', n: 'Single hash, newline before and after' },
         { i: '\r\n\r\n#Heading one\r\n', o: '<h1>Heading one</h1>', n: 'Single hash, two newlines before and one after' },
         { i: '\r\n\r\n#Heading one\r\n\r\n', o: '<h1>Heading one</h1>', n: 'Single hash, two newlines before and two after' },
-        { i: '# Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, spacing after' },
+        { i: '# Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, spacing after',s:["G_IGNORE_LEADING_TRAILING_WHITESPACE"] },
         { i: ' #Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, spacing before' },
         { i: '  #Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, double spacing before' },
         { i: '    #Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, triple spacing before' },
@@ -174,7 +174,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             buildInlineTestCases('__', 'u', 'Underlined', 'underline').concat(
                 buildInlineTestCases('^^', 'sup', 'Super', 'superscript').concat(
                     buildInlineTestCases('>>', 'small', 'Small', 'small').concat(
-                        buildInlineTestCases('~~', 'strike', 'Striken', 'strikethrough')
+                        buildInlineTestCases('~~', 'strike', 'Striken', 'strikethrough').concat(
+                            buildInlineTestCases('!!', 'sub', 'Beneath', 'subscript')
+                        )
                     )
                 )
             )
