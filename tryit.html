@@ -65,28 +65,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     </div>
     <div class="row">
         <div class="col-lg-6">
-            <h4>line-down</h4>
+            <h3>line-down</h3>
           <textarea id="linedownInput" rows="20">#1 This is the first of many headings
----
-#2 This the second of many headings - a ``h2``
+#2 This the second of many headings - a ::h2::
 This is **bold**, this is __underlined__
 ---
 ''That ruled!''
 This is //emphasised//, this is ~~@classy@struck out~~
 ""This is worth quoting
 
-""And so //was// this!""
+""And so //was// this! E=MC^^2^^""
 See what I mean""
 **@trash@Amazing //guys// - thanks!
 </textarea>
-            <h4>HTML</h4>
+            <h3>HTML</h3>
             <textarea id="linedownOutput" rows="20" disabled="disabled"></textarea>
         </div>
         <div class="col-lg-6">
-            <h4>Rendered</h4>
-
-            <div id="linedownHtml">
-            </div>
+            <h3><span id="htmlGenerationTime"></span></h3>
+            <hr/>
+            <div id="linedownHtml"></div>
             <hr/>
         </div>
     </div>

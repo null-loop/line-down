@@ -19,12 +19,18 @@
 (function (ld, $, undefined) {
     function updateFromLinedown(){
         var linedownContent = $('#linedownInput')[0].value;
+        var startTime = window.performance.now();
         var html = ld.parse(linedownContent);
+        var endTime = window.performance.now();
+        var executionTime = Math.floor((endTime - startTime)*1000)/1000;
+
         $('#linedownOutput')[0].value = html;
 
         var dom = $(html);
         $('#linedownHtml').empty();
         $('#linedownHtml').append(dom);
+
+        $('#htmlGenerationTime').text('HTML generation took ' + executionTime + "ms");
     }
 
     $('#linedownInput').bind('input propertychange', function() {

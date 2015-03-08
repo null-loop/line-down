@@ -63,7 +63,6 @@
             var startTime = window.performance.now();
             var html = linedown.parseNoOptions(v.linedownInput);
             var endTime = window.performance.now();
-            var t = (endTime - startTime);
             var executionTime = Math.floor((endTime - startTime)*1000)/1000;
             var expected = v.expectedHtmlOutput;
             var match = (html == expected);
