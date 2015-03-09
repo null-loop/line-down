@@ -119,8 +119,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             <hr/>
             <h2 data-spec-setion="LS">Line Specifications</h2>
             <ul>
-                <li data-spec="LS_FORMAT_WHOLE_LINE">Line specs format the whole line following them</li>
-                <li data-spec="LS_FORMAT_WHOLE_LINE_EXCLUDING_BLOCK_CLOSE">Excluding any block spec closures</li>
+                <li data-spec="LS_FORMAT_WHOLE_LINE_EXCLUDING_BLOCK_CLOSE">Line specs format the whole line following them - excluding any block spec closures</li>
                 <li data-spec="LS_OCCUR_AT_START_OF_LINE">Line specs may occur at the start of a line</li>
                 <li data-spec="LS_OCCUR_AFTER_BLOCK_OPEN">Line specs may occur immediately following a block spec open</li>
             </ul>
@@ -228,7 +227,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                     <td>Span</td>
                     <td><code>Something ``Spanned``</code></td>
                     <td><code>Something &lt;span&gt;Spanned&lt;/span&gt;</code></td>
-                    <td>Something <span>Codified</span></td>
+                    <td>Something <span>Spanned</span></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
                 <tr>
@@ -255,9 +254,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>All currently open block specs are implicitly closed by an empty line (a line with no non-whitespace
                     characters)
                 </li>
-                <li>A line that contains no line or block spec, and is not currently in a non-blockquote block will open
-                    a new paragraph block spec on the line
-                </li>
+                <li>A line that contains no line or block spec, and is not currently in a non-blockquote block will open a new paragraph block spec on the line</li>
+                <li>An implicitly opened paragraph will be closed by the explicit opening of any block spec</li>
             </ul>
             <h3>
                 <small>Two double quotes</small>

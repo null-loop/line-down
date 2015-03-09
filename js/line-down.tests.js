@@ -18,7 +18,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 (function (ld, $, undefined) {
 
-    // define the most evil test cases we can, i: 'input line-down', o: 'expected html out', n: 'Test name/description'
+    // define the most evil test cases we can
+    // i: 'input line-down', o: 'expected html out', n: 'Test name/description', s: Array of ID specs the test exercises
 
     ld.testCases = [
         { i: '#Heading one', o: '<h1>Heading one</h1>', n: 'Single hash, no spacing' },
@@ -140,8 +141,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'--- Ignored!',o:'<p>--- Ignored!\r\n</p>',n:'Horizontal rule is ignored when not last'},
         { i:'\'\' Explicit paragraph\r\n---\r\nWith a HR!\'\'',o:'<p>Explicit paragraph\r\n<hr/>\r\nWith a HR!</p>',n:'Horizontal rule nested in explicit paragraph'},
         { i:'\'\' Explicit paragraph\r\n---\r\nWith a HR!\r\n\'\'',o:'<p>Explicit paragraph\r\n<hr/>\r\nWith a HR!\r\n</p>',n:'Horizontal rule nested in explicit paragraph closed on new line'},
-        { i:'\"\" Explicit blockquote\r\n---\r\nWith a HR!\"\"',o:'<blockquote><p>Explicit blockquote\r\n<hr/>\r\nWith a HR!</p></blockquote>',n:'Horizontal rule nested in explicit blockquote'},
-        { i:'\"\" Explicit blockquote\r\n---\r\nWith a HR!\r\n\"\"',o:'<blockquote><p>Explicit blockquote\r\n<hr/>\r\nWith a HR!\r\n</p></blockquote>',n:'Horizontal rule nested in explicit blockquote closed on new line'},
+        { i:'\"\" Explicit blockquote\r\n---\r\nWith a HR!\"\"',o:'<blockquote><p>Explicit blockquote\r\n</p><hr/>\r\n<p>With a HR!</p></blockquote>',n:'Horizontal rule nested in explicit blockquote'},
+        { i:'\"\" Explicit blockquote\r\n---\r\nWith a HR!\r\n\"\"',o:'<blockquote><p>Explicit blockquote\r\n</p><hr/>\r\n<p>With a HR!\r\n</p></blockquote>',n:'Horizontal rule nested in explicit blockquote closed on new line'},
     ];
 
     function buildInlineTestCases(spec,element,text,name,commonSpec)
@@ -194,9 +195,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         )
     )
 
-    $.each(generatedTests,function(k,v){
-        ld.testCases.push(v);
-    })
+    function pushCase(groupName){
+        return function(k,v){
+            v.groupName = groupName;
+            ld.testCases.push(v);
+        }
+    }
+
+    $.each(generatedTests,pushCase("Inline generated tests"));
+
 
     var moreCases = [
         { i:'**//Nested inlines',o:'<p><strong><em>Nested inlines</em></strong>\r\n</p>',n:'Emphasis nested in strong, implicit close'},
@@ -212,20 +219,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'**Strong\r\n//Emphasised\r\n__Underlined\r\n^^Superscript\r\n>>Small\r\n~~Strike through\r\n::Code\r\n!!Subscript\r\n``Spanned',o:'<p><strong>Strong</strong>\r\n<em>Emphasised</em>\r\n<u>Underlined</u>\r\n<sup>Superscript</sup>\r\n<small>Small</small>\r\n<strike>Strike through</strike>\r\n<code>Code</code>\r\n<sub>Subscript</sub>\r\n<span>Spanned</span>\r\n</p>',n:'All inline specs on new lines, no spacing'},
         { i:'::h2::',o:'<p><code>h2</code>\r\n</p>',n:'h2 in code inline spec bug'},
         { i:'::h3::',o:'<p><code>h3</code>\r\n</p>',n:'h2 in code inline spec bug - h3'},
-        { i:'**h2**',o:'<p><strong>h2</strong>\r\n</p>',n:'h2 in strong inline spec'}
+        { i:'**h2**',o:'<p><strong>h2</strong>\r\n</p>',n:'h2 in strong inline spec'},
+        { i:'This paragraph\r\n\'\'Just got closed',o:'<p>This paragraph\r\n</p><p>Just got closed\r\n</p>',n:'Implicit paragraph closed by explicit paragraph'},
+        { i:'This paragraph\r\n\"\"Just got closed',o:'<p>This paragraph\r\n</p><blockquote><p>Just got closed\r\n</p>\r\n</blockquote>',n:'Implicit paragraph closed by explicit block quote'},
+        { i:'This paragraph\r\n---\r\nJust got closed',o:'<p>This paragraph\r\n</p><hr/>\r\n<p>Just got closed\r\n</p>',n:'Implicit paragraph closed by horizontal rule'}
     ];
 
-    $.each(moreCases,function(k,v){
-        ld.testCases.push(v);
-    });
+    $.each(moreCases,pushCase("More tests cases"));
 
     var casesWithOptions =[
 
     ];
 
-    $.each(casesWithOptions,function(k,v){
-        ld.testCases.push(v);
-    });
+    $.each(casesWithOptions,pushCase("Tests with options"));
 
 
 })(window.linedown = window.linedown || {}, jQuery)

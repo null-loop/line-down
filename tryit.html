@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     <link rel="stylesheet" href="css/bootstrap.css" media="screen">
     <link rel="stylesheet" href="css/bootswatch.min.css">
     <link rel="stylesheet" href="css/line-down.css">
+    <link rel="stylesheet" href="css/line-down.editor.css">
 </head>
 <body>
 <div class="navbar navbar-default navbar-fixed-top">
@@ -66,7 +67,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     <div class="row">
         <div class="col-lg-6">
             <h3>line-down</h3>
-          <textarea id="linedownInput" rows="20">#1 This is the first of many headings
+          <textarea id="linedownInput" rows="20" wrap="off">#1 This is the first of many headings
 #2 This the second of many headings - a ::h2::
 This is **bold**, this is __underlined__
 ---
@@ -81,7 +82,7 @@ See what I mean? H!!2!!0""
 Arbitrary ``@label.label-danger@CSS classes`` thanks to spans
 </textarea>
             <h3>HTML</h3>
-            <textarea id="linedownOutput" rows="20" disabled="disabled"></textarea>
+            <textarea id="linedownOutput" rows="20" disabled="disabled" wrap="off"></textarea>
         </div>
         <div class="col-lg-6">
             <h3><span id="htmlGenerationTime"></span></h3>
@@ -116,6 +117,7 @@ Arbitrary ``@label.label-danger@CSS classes`` thanks to spans
 <script src="js/bootstrap.min.js"></script>
 <script src="js/he.js"></script>
 <script src="js/line-down.parser.js"></script>
+<script src="js/line-down.editor.js"></script>
 <script src="js/line-down.parser.tryit.js"></script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

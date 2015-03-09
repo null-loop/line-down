@@ -296,6 +296,9 @@
         var blockQuotes = startsWith('\"', trimmedContent, 2);
         if (blockQuotes.startsWith) {
             if (!(scope.hasElementScope('blockquote') && blockQuotes.remainingLine.trim().length == 0)) {
+                if (scope.isImplicitParagraphScope()){
+                    linebuilder.endCurrentScopeWithoutLineBreak(scope);
+                }
                 scope.pushBlock({
                     element: 'blockquote',
                     spec: '\"\"'
@@ -310,6 +313,9 @@
             var paragraph = startsWith('\'', trimmedContent, 2);
             if (paragraph.startsWith) {
                 if (!(scope.hasElementScope('p') && paragraph.remainingLine.trim().length == 0)) {
+                    if (scope.isImplicitParagraphScope()){
+                        linebuilder.endCurrentScopeWithoutLineBreak(scope);
+                    }
                     scope.pushBlock({
                         element: 'p',
                         spec: '\'\''
@@ -325,6 +331,9 @@
                 var hr = startsWith('-', trimmedContent, 3);
                 // starts AND ends
                 if (hr.startsWith && hr.remainingLine.trim().length == 0){
+                    if (scope.isImplicitParagraphScope()){
+                        linebuilder.endCurrentScopeWithoutLineBreak(scope);
+                    }
                     linebuilder.selfClosingTag('hr', hr.id, hr.classes);
                     trimmedContent = hr.remainingLine;
                     hasBlockSpec = true;
@@ -483,6 +492,11 @@
             },
             hasUsedId: function (id) {
                 return contains(this._usedIds, id);
+            },
+            isImplicitParagraphScope:function(){
+                if (this._currentBlock==null) return false;
+                if (this._currentBlock.element=='p' && this._currentBlock.implicit) return true;
+                return false
             }
         };
     }
