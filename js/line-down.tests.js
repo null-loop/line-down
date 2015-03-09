@@ -148,23 +148,33 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     function buildInlineTestCases(spec,element,text,name,commonSpec)
     {
         var a = [
-        { i:'' + spec + '' + text + '',o:'<p><' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line'},
-        { i:'' + spec + '?me?' + text + '',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed id spec no space'},
-        { i:'' + spec + '?me? ' + text + '',o:'<p><' + element + ' id=\'me\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed id spec with space'},
-        { i:'' + spec + '?me ' + text + '',o:'<p><' + element + ' id=\'me\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with open id spec'},
-        { i:'' + spec + '@classy@' + text + '',o:'<p><' + element + ' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed class spec no space'},
-        { i:'' + spec + '@classy@ ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed class spec with space'},
-        { i:'' + spec + '@classy ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with open class spec'},
-        { i:'' + spec + '?me?@classy@' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed id and class spec no space'},
-        { i:'' + spec + '@classy@?me?' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed class and id spec no space'},
-        { i:'' + spec + '@classy@ ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with closed class spec with space'},
-        { i:'' + spec + '@classy ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line at start of line with open class spec'},
-        { i:'Something' + spec + '' + text + '',o:'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line after content with no spacing',s:["IS_FORMAT_SECTION_OF_LINE"]},
-        { i:'Something ' + spec + '' + text + '',o:'<p>Something <' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' implicitly closed on one line after content with spacing',s:["IS_FORMAT_SECTION_OF_LINE"]},
-        { i:'Something' + spec + '' + text + '' + spec,o:'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with no spacing',s:["IS_FORMAT_SECTION_OF_LINE"]},
-        { i:'Something ' + spec + '' + text + '' + spec,o:'<p>Something <' + element + '>' + text + '</' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with spacing',s:["IS_FORMAT_SECTION_OF_LINE"]},
-        { i:'Something ' + spec + ' ' + text + ' ' + spec,o:'<p>Something <' + element + '> ' + text + ' </' + element + '>\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line after content with spacing in ' + name + ' before and after',s:["IS_FORMAT_SECTION_OF_LINE"]},
-        { i:'Something ' + spec + ' ' + text + ' ' + spec + ' And more!',o:'<p>Something <' + element + '> ' + text + ' </' + element + '> And more!\r\n</p>',n:'Simple ' + name + ' explicitly closed on one line before and after content with spacing in ' + name + ' before and after',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'' + spec + '' + text + '',o:'<p><' + element + '>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line'},
+        { i:'\'\'' + spec + '' + text + '',o:'<p><' + element + '>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line after explicit paragraph open'},
+        { i:'\'\'' + spec + '' + text + '\'\'',o:'<p><' + element + '>' + text + '</' + element + '></p>',n:name + ' implicitly closed on one line at start of line after explicit paragraph open and explicit inline close'},
+        { i:'#' + spec + '' + text + '',o:'<h1><' + element + '>' + text + '</' + element + '></h1>',n:name + ' implicitly closed on one line at start of line after h1 open'},
+        { i:'#2' + spec + '' + text + '',o:'<h2><' + element + '>' + text + '</' + element + '></h2>',n:name + ' implicitly closed on one line at start of line after h2 (by depth) open'},
+        { i:'\'\'#' + spec + '' + text + '',o:'<p><h1><' + element + '>' + text + '</' + element + '></h1>\r\n</p>',n:name + ' implicitly closed on one line at start of line after h1 open after explicit paragraph open'},
+        { i:'\'\'#2' + spec + '' + text + '',o:'<p><h2><' + element + '>' + text + '</' + element + '></h2>\r\n</p>',n:name + ' implicitly closed on one line at start of line after h2 (by depth) open after explicit paragraph open'},
+        { i:'\'\'#' + spec + '' + text + '\'\'',o:'<p><h1><' + element + '>' + text + '</' + element + '></h1></p>',n:name + ' implicitly closed on one line at start of line after h1 open after explicit paragraph open with explicit inline close'},
+        { i:'\'\'#2' + spec + '' + text + '\'\'',o:'<p><h2><' + element + '>' + text + '</' + element + '></h2></p>',n:name + ' implicitly closed on one line at start of line after h2 (by depth) open after explicit paragraph open with explicit inline close'},
+        { i:'' + spec + '?me?' + text + '',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id spec no space'},
+        { i:'\'\'' + spec + '?me?' + text + '',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id spec no space after explicit paragraph open'},
+        { i:'\'\'' + spec + '?me?' + text + '\'\'',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '></p>',n:name + ' implicitly closed on one line at start of line with closed id spec no space after explicit paragraph open and explicit inline close'},
+        { i:'' + spec + '?me? ' + text + '',o:'<p><' + element + ' id=\'me\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id spec with space'},
+        { i:'' + spec + '?me ' + text + '',o:'<p><' + element + ' id=\'me\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with open id spec'},
+        { i:'' + spec + '@classy@' + text + '',o:'<p><' + element + ' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class spec no space'},
+        { i:'' + spec + '@classy@ ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class spec with space'},
+        { i:'' + spec + '@classy ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with open class spec'},
+        { i:'' + spec + '?me?@classy@' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id and class spec no space'},
+        { i:'' + spec + '@classy@?me?' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class and id spec no space'},
+        { i:'' + spec + '@classy@ ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class spec with space'},
+        { i:'' + spec + '@classy ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with open class spec'},
+        { i:'Something' + spec + '' + text + '',o:'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line after content with no spacing',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'Something ' + spec + '' + text + '',o:'<p>Something <' + element + '>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line after content with spacing',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'Something' + spec + '' + text + '' + spec,o:'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',n:name + ' explicitly closed on one line after content with no spacing',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'Something ' + spec + '' + text + '' + spec,o:'<p>Something <' + element + '>' + text + '</' + element + '>\r\n</p>',n:name + ' explicitly closed on one line after content with spacing',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'Something ' + spec + ' ' + text + ' ' + spec,o:'<p>Something <' + element + '> ' + text + ' </' + element + '>\r\n</p>',n:name + ' explicitly closed on one line after content with spacing in ' + name + ' before and after',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'Something ' + spec + ' ' + text + ' ' + spec + ' And more!',o:'<p>Something <' + element + '> ' + text + ' </' + element + '> And more!\r\n</p>',n:name + ' explicitly closed on one line before and after content with spacing in ' + name + ' before and after',s:["IS_FORMAT_SECTION_OF_LINE"]},
         ];
         $.each(a,function(k,v){
            if (!v.s)
@@ -177,15 +187,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     }
 
     var generatedTests =
-    buildInlineTestCases('**', 'strong', 'Strong', 'strong','LS_STRONG').concat(
-        buildInlineTestCases('//', 'em', 'Emphasis', 'emphasis','LS_EMPHASIS').concat(
-            buildInlineTestCases('__', 'u', 'Underlined', 'underline','LS_UNDERLINE').concat(
-                buildInlineTestCases('^^', 'sup', 'Super', 'superscript','LS_SUPERSCRIPT').concat(
-                    buildInlineTestCases('>>', 'small', 'Small', 'small','LS_SMALL').concat(
-                        buildInlineTestCases('~~', 'strike', 'Striken', 'strikethrough','LS_STRIKE').concat(
-                            buildInlineTestCases('!!', 'sub', 'Beneath', 'subscript','LS_SUBSCRIPT').concat(
-                                buildInlineTestCases('::', 'code', 'Codified', 'code','LS_CODE').concat(
-                                    buildInlineTestCases('``', 'span', 'Spanned', 'span','LS_SPAN')
+    buildInlineTestCases('**', 'strong', 'Strong', 'Strong','IS_STRONG').concat(
+        buildInlineTestCases('//', 'em', 'Emphasis', 'Emphasis','IS_EMPHASIS').concat(
+            buildInlineTestCases('__', 'u', 'Underlined', 'Underlined','IS_UNDERLINE').concat(
+                buildInlineTestCases('^^', 'sup', 'Super', 'Superscript','IS_SUPERSCRIPT').concat(
+                    buildInlineTestCases('>>', 'small', 'Small', 'Small','IS_SMALL').concat(
+                        buildInlineTestCases('~~', 'strike', 'Striken', 'Strikethrough','IS_STRIKE').concat(
+                            buildInlineTestCases('!!', 'sub', 'Beneath', 'Subscript','IS_SUBSCRIPT').concat(
+                                buildInlineTestCases('::', 'code', 'Codified', 'Inline Code','IS_CODE').concat(
+                                    buildInlineTestCases('``', 'span', 'Spanned', 'span','IS_SPAN')
                                 )
                             )
                         )

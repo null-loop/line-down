@@ -427,20 +427,6 @@
         return parseWithOptions(linedownContent, {});
     }
 
-    function defaultOptionsParse(linedownContent) {
-        return parseWithOptions(linedownContent, {
-            idWhitelist:undefined,
-            cssWhitelist:undefined,
-            idBlacklist:undefined,
-            cssBlacklist:undefined,
-            deprecatedTags:[
-                {tag:"u",class:"underline"},
-                {tag:"strike",class:"strikethrough"}
-            ]
-        });
-        //TODO:Support deprecatedTags, idWhitelist & cssWhitelist, idBlacklist & cssBlacklist
-    }
-
     function contains(a, obj) {
         for (var i = 0; i < a.length; i++) {
             if (a[i] === obj) {
@@ -611,6 +597,20 @@
         lineBuilder.complete();
 
         return lineBuilder.result();
+    }
+
+    function defaultOptionsParse(linedownContent) {
+        return parseWithOptions(linedownContent, {
+            idWhitelist:undefined,
+            cssWhitelist:undefined,
+            idBlacklist:undefined,
+            cssBlacklist:undefined,
+            deprecatedTags:[
+                {tag:"u",class:"underline"},
+                {tag:"strike",class:"strikethrough"}
+            ]
+        });
+        //TODO:Support deprecatedTags, idWhitelist & cssWhitelist, idBlacklist & cssBlacklist
     }
 
     ld.parseNoOptions = noOptionsParse;
