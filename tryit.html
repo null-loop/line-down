@@ -67,19 +67,39 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     <div class="row">
         <div class="col-lg-6">
             <h3>line-down</h3>
-          <textarea id="linedownInput" rows="20" wrap="off">#1 This is the first of many headings
-#2 This the second of many headings - a ::h2::
-This is **bold**, this is __underlined__
----
-''That ruled!''
-This is //emphasised//, this is ~~@classy@struck out~~
-""This is worth quoting
+          <textarea id="linedownInput" rows="20" wrap="off">#?lead I LEAD!
+#2@trash?lead Me not so much
 
-""And so //was// this! E=MC^^2^^""
-See what I mean? H!!2!!0""
-**@trash@Amazing //guys// - thanks!
+So what if I just start typing? Ooh a paragraph. That one was
+implicitly opened, it's a block spec so it's covering multiple
+lines of input. We can close it with a blank line:
 
-Arbitrary ``@label.label-danger@CSS classes`` thanks to spans
+And a new paragraph will be started. Implicit paragraphs are
+also closed by starting another block spec, like the following
+block quote:
+""**That's great**, we're inside an implicit paragraph
+too, one that's inside the block quote. We can do the same
+thing again and open another block quote:
+""//Deep.// Block quotes won't close implicitly, we've got
+to tell them when we're done.""
+""Which isn't yet...
+""There was just one more thing...
+""//"Did anyone actually like Inception?"// - This is like
+Block Quote Inception.""
+""
+""
+That. Was. Deep""
+''@classy And we're back in the real world of ::paragraphs::
+& stuff. Like the entirely explicit one we're in right now.
+Explicit paragraphs let you specify a css/id spec. Like this
+classy paragraph right here!''
+``@label.label-danger@UH-OH We're in trouble now
+''We're out of it now though
+
+
+
+
+All that extra whitespace had **//zero//** effect!
 </textarea>
             <h3>HTML</h3>
             <textarea id="linedownOutput" rows="20" disabled="disabled" wrap="off"></textarea>

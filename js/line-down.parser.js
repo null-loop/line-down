@@ -42,7 +42,7 @@
                 numberCount = numberCount + c;
                 r = r.substring(1);
             }
-            else if (c == '@' && !inClasses) {
+            else if (c == '@' && !inClasses && count > 0) {
                 inClasses = true;
                 inId = false;
                 r = r.substring(1);
@@ -51,7 +51,7 @@
                 inClasses = false;
                 r = r.substring(1);
             }
-            else if (c == '?' && !inId) {
+            else if (c == '?' && !inId && count > 0) {
                 inId = true;
                 inClasses = false;
                 r = r.substring(1);

@@ -149,14 +149,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     {
         var a = [
         { i:'' + spec + '' + text + '',o:'<p><' + element + '>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line'},
-        { i:'\'\'' + spec + '' + text + '',o:'<p><' + element + '>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line after explicit paragraph open'},
-        { i:'\'\'' + spec + '' + text + '\'\'',o:'<p><' + element + '>' + text + '</' + element + '></p>',n:name + ' implicitly closed on one line at start of line after explicit paragraph open and explicit inline close'},
-        { i:'#' + spec + '' + text + '',o:'<h1><' + element + '>' + text + '</' + element + '></h1>',n:name + ' implicitly closed on one line at start of line after h1 open'},
-        { i:'#2' + spec + '' + text + '',o:'<h2><' + element + '>' + text + '</' + element + '></h2>',n:name + ' implicitly closed on one line at start of line after h2 (by depth) open'},
-        { i:'\'\'#' + spec + '' + text + '',o:'<p><h1><' + element + '>' + text + '</' + element + '></h1>\r\n</p>',n:name + ' implicitly closed on one line at start of line after h1 open after explicit paragraph open'},
-        { i:'\'\'#2' + spec + '' + text + '',o:'<p><h2><' + element + '>' + text + '</' + element + '></h2>\r\n</p>',n:name + ' implicitly closed on one line at start of line after h2 (by depth) open after explicit paragraph open'},
-        { i:'\'\'#' + spec + '' + text + '\'\'',o:'<p><h1><' + element + '>' + text + '</' + element + '></h1></p>',n:name + ' implicitly closed on one line at start of line after h1 open after explicit paragraph open with explicit inline close'},
-        { i:'\'\'#2' + spec + '' + text + '\'\'',o:'<p><h2><' + element + '>' + text + '</' + element + '></h2></p>',n:name + ' implicitly closed on one line at start of line after h2 (by depth) open after explicit paragraph open with explicit inline close'},
+        { i:'\'\'' + spec + '' + text + '',o:'<p><' + element + '>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line after explicit paragraph open',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'\'\'' + spec + '' + text + '\'\'',o:'<p><' + element + '>' + text + '</' + element + '></p>',n:name + ' implicitly closed on one line at start of line after explicit paragraph open and explicit inline close',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'#' + spec + '' + text + '',o:'<h1><' + element + '>' + text + '</' + element + '></h1>',n:name + ' implicitly closed on one line at start of line after h1 open',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'#2' + spec + '' + text + '',o:'<h2><' + element + '>' + text + '</' + element + '></h2>',n:name + ' implicitly closed on one line at start of line after h2 (by depth) open',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'\'\'#' + spec + '' + text + '',o:'<p><h1><' + element + '>' + text + '</' + element + '></h1>\r\n</p>',n:name + ' implicitly closed on one line at start of line after h1 open after explicit paragraph open',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'\'\'#2' + spec + '' + text + '',o:'<p><h2><' + element + '>' + text + '</' + element + '></h2>\r\n</p>',n:name + ' implicitly closed on one line at start of line after h2 (by depth) open after explicit paragraph open',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'\'\'#' + spec + '' + text + '\'\'',o:'<p><h1><' + element + '>' + text + '</' + element + '></h1></p>',n:name + ' implicitly closed on one line at start of line after h1 open after explicit paragraph open with explicit inline close',s:["IS_FORMAT_SECTION_OF_LINE"]},
+        { i:'\'\'#2' + spec + '' + text + '\'\'',o:'<p><h2><' + element + '>' + text + '</' + element + '></h2></p>',n:name + ' implicitly closed on one line at start of line after h2 (by depth) open after explicit paragraph open with explicit inline close',s:["IS_FORMAT_SECTION_OF_LINE"]},
         { i:'' + spec + '?me?' + text + '',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id spec no space'},
         { i:'\'\'' + spec + '?me?' + text + '',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id spec no space after explicit paragraph open'},
         { i:'\'\'' + spec + '?me?' + text + '\'\'',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '></p>',n:name + ' implicitly closed on one line at start of line with closed id spec no space after explicit paragraph open and explicit inline close'},
@@ -227,15 +227,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'\'\'//Emphasised**Nested~~strikeout//Following on from that',o:'<p><em>Emphasised<strong>Nested<strike>strikeout</strike></strong></em>Following on from that\r\n</p>',n:'Part strong & strikethrough nested in explicit paragraph (implicit close) and nested emphasis, explicit emphasis closes strong & strikethrough in order with following text on same line with no spacing at all'},
         { i:'\'\'//Emphasised**Nested~~strikeout//Following on from that\'\'',o:'<p><em>Emphasised<strong>Nested<strike>strikeout</strike></strong></em>Following on from that</p>',n:'Part strong & strikethrough nested in explicit paragraph (explicit inline close) and nested emphasis, explicit emphasis closes strong & strikethrough in order with following text on same line with no spacing at all'},
         { i:'**Strong\r\n//Emphasised\r\n__Underlined\r\n^^Superscript\r\n>>Small\r\n~~Strike through\r\n::Code\r\n!!Subscript\r\n``Spanned',o:'<p><strong>Strong</strong>\r\n<em>Emphasised</em>\r\n<u>Underlined</u>\r\n<sup>Superscript</sup>\r\n<small>Small</small>\r\n<strike>Strike through</strike>\r\n<code>Code</code>\r\n<sub>Subscript</sub>\r\n<span>Spanned</span>\r\n</p>',n:'All inline specs on new lines, no spacing'},
-        { i:'::h2::',o:'<p><code>h2</code>\r\n</p>',n:'h2 in code inline spec bug'},
-        { i:'::h3::',o:'<p><code>h3</code>\r\n</p>',n:'h2 in code inline spec bug - h3'},
-        { i:'**h2**',o:'<p><strong>h2</strong>\r\n</p>',n:'h2 in strong inline spec'},
         { i:'This paragraph\r\n\'\'Just got closed',o:'<p>This paragraph\r\n</p><p>Just got closed\r\n</p>',n:'Implicit paragraph closed by explicit paragraph'},
         { i:'This paragraph\r\n\"\"Just got closed',o:'<p>This paragraph\r\n</p><blockquote><p>Just got closed\r\n</p>\r\n</blockquote>',n:'Implicit paragraph closed by explicit block quote'},
-        { i:'This paragraph\r\n---\r\nJust got closed',o:'<p>This paragraph\r\n</p><hr/>\r\n<p>Just got closed\r\n</p>',n:'Implicit paragraph closed by horizontal rule'}
+        { i:'This paragraph\r\n---\r\nJust got closed',o:'<p>This paragraph\r\n</p><hr/>\r\n<p>Just got closed\r\n</p>',n:'Implicit paragraph closed by horizontal rule'},
+
     ];
 
     $.each(moreCases,pushCase("More tests cases"));
+
+    var bugs = [
+        { i:'::h2::',o:'<p><code>h2</code>\r\n</p>',n:'h2 in code inline spec bug'},
+        { i:'::h3::',o:'<p><code>h3</code>\r\n</p>',n:'h2 in code inline spec bug - h3'},
+        { i:'**h2**',o:'<p><strong>h2</strong>\r\n</p>',n:'h2 in strong inline spec'},
+        { i:'\"\"//\"Emphasised?\"// - Missing quote',o:'<blockquote><p><em>&#x22;Emphasised?&#x22;</em> - Missing quote\r\n</p>\r\n</blockquote>',n:'Emphasised question mark & quote missing from block quote'}
+    ];
+
+    $.each(bugs,pushCase("Bug tests"));
 
     var casesWithOptions =[
 
