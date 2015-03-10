@@ -42,7 +42,7 @@
                 numberCount = numberCount + c;
                 r = r.substring(1);
             }
-            else if (c == '@' && !inClasses) {
+            else if (c == '@' && !inClasses && count > 0) {
                 inClasses = true;
                 inId = false;
                 r = r.substring(1);
@@ -51,7 +51,7 @@
                 inClasses = false;
                 r = r.substring(1);
             }
-            else if (c == '?' && !inId) {
+            else if (c == '?' && !inId && count > 0) {
                 inId = true;
                 inClasses = false;
                 r = r.substring(1);
@@ -296,6 +296,9 @@
         var blockQuotes = startsWith('\"', trimmedContent, 2);
         if (blockQuotes.startsWith) {
             if (!(scope.hasElementScope('blockquote') && blockQuotes.remainingLine.trim().length == 0)) {
+                if (scope.isImplicitParagraphScope()){
+                    linebuilder.endCurrentScopeWithoutLineBreak(scope);
+                }
                 scope.pushBlock({
                     element: 'blockquote',
                     spec: '\"\"'
@@ -310,6 +313,9 @@
             var paragraph = startsWith('\'', trimmedContent, 2);
             if (paragraph.startsWith) {
                 if (!(scope.hasElementScope('p') && paragraph.remainingLine.trim().length == 0)) {
+                    if (scope.isImplicitParagraphScope()){
+                        linebuilder.endCurrentScopeWithoutLineBreak(scope);
+                    }
                     scope.pushBlock({
                         element: 'p',
                         spec: '\'\''
@@ -325,6 +331,9 @@
                 var hr = startsWith('-', trimmedContent, 3);
                 // starts AND ends
                 if (hr.startsWith && hr.remainingLine.trim().length == 0){
+                    if (scope.isImplicitParagraphScope()){
+                        linebuilder.endCurrentScopeWithoutLineBreak(scope);
+                    }
                     linebuilder.selfClosingTag('hr', hr.id, hr.classes);
                     trimmedContent = hr.remainingLine;
                     hasBlockSpec = true;
@@ -418,20 +427,6 @@
         return parseWithOptions(linedownContent, {});
     }
 
-    function defaultOptionsParse(linedownContent) {
-        return parseWithOptions(linedownContent, {
-            idWhitelist:undefined,
-            cssWhitelist:undefined,
-            idBlacklist:undefined,
-            cssBlacklist:undefined,
-            deprecatedTags:[
-                {tag:"u",class:"underline"},
-                {tag:"strike",class:"strikethrough"}
-            ]
-        });
-        //TODO:Support deprecatedTags, idWhitelist & cssWhitelist, idBlacklist & cssBlacklist
-    }
-
     function contains(a, obj) {
         for (var i = 0; i < a.length; i++) {
             if (a[i] === obj) {
@@ -483,6 +478,11 @@
             },
             hasUsedId: function (id) {
                 return contains(this._usedIds, id);
+            },
+            isImplicitParagraphScope:function(){
+                if (this._currentBlock==null) return false;
+                if (this._currentBlock.element=='p' && this._currentBlock.implicit) return true;
+                return false
             }
         };
     }
@@ -597,6 +597,20 @@
         lineBuilder.complete();
 
         return lineBuilder.result();
+    }
+
+    function defaultOptionsParse(linedownContent) {
+        return parseWithOptions(linedownContent, {
+            idWhitelist:undefined,
+            cssWhitelist:undefined,
+            idBlacklist:undefined,
+            cssBlacklist:undefined,
+            deprecatedTags:[
+                {tag:"u",class:"underline"},
+                {tag:"strike",class:"strikethrough"}
+            ]
+        });
+        //TODO:Support deprecatedTags, idWhitelist & cssWhitelist, idBlacklist & cssBlacklist
     }
 
     ld.parseNoOptions = noOptionsParse;

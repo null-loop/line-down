@@ -119,8 +119,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             <hr/>
             <h2 data-spec-setion="LS">Line Specifications</h2>
             <ul>
-                <li data-spec="LS_FORMAT_WHOLE_LINE">Line specs format the whole line following them</li>
-                <li data-spec="LS_FORMAT_WHOLE_LINE_EXCLUDING_BLOCK_CLOSE">Excluding any block spec closures</li>
+                <li data-spec="LS_FORMAT_WHOLE_LINE_EXCLUDING_BLOCK_CLOSE">Line specs format the whole line following them - excluding any block spec closures</li>
                 <li data-spec="LS_OCCUR_AT_START_OF_LINE">Line specs may occur at the start of a line</li>
                 <li data-spec="LS_OCCUR_AFTER_BLOCK_OPEN">Line specs may occur immediately following a block spec open</li>
             </ul>
@@ -144,7 +143,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             <hr/>
             <h2 data-spec-section="IS">Inline Specifications</h2>
             <ul>
-                <li data-spec-section="IS_FORMAT_SECTION_OF_LINE">Inline specs format a section of a line.</li>
+                <li data-spec="IS_FORMAT_SECTION_OF_LINE">Inline specs format a section of a line.</li>
 
                 <!--TODO:CONTINUE IN THIS VEIN DAN with spec attributes ! -->
                 <!--TODO:Setup s data on tests cases -->
@@ -168,67 +167,67 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 </tr>
                 </thead>
                 <tbody>
-                <tr data-spec="LS_STRONG">
+                <tr data-spec="IS_STRONG">
                     <td>Bold / strong</td>
                     <td><code>Something **important**</code></td>
                     <td><code>Something &lt;strong&gt;important&lt;/strong&gt;</code></td>
                     <td>Something <strong>important</strong></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr data-spec="LS_EMPHASIS">
+                <tr data-spec="IS_EMPHASIS">
                     <td>Italics / emphasis</td>
                     <td><code>Something //oblique//</code></td>
                     <td><code>Something &lt;em&gt;oblique&lt;/em&gt;</code></td>
                     <td>Something <em>oblique</em></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr data-spec="LS_UNDERLINE">
+                <tr data-spec="IS_UNDERLINE">
                     <td>Underline</td>
                     <td><code>Something __reinforced__</code></td>
                     <td><code>Something &lt;u&gt;reinforced&lt;/u&gt;</code></td>
                     <td>Something <u>reinforced</u></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr data-spec="LS_SUPERSCRIPT">
+                <tr data-spec="IS_SUPERSCRIPT">
                     <td>Superscript</td>
                     <td><code>Something ^^raised up^^</code></td>
                     <td><code>Something &lt;sup&gt;raised up&lt;/sup&gt;</code></td>
                     <td>Something <sup>raised up</sup></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr data-spec="LS_SUBSCRIPT">
+                <tr data-spec="IS_SUBSCRIPT">
                     <td>Subscript</td>
                     <td><code>Something !!pulled down!!</code></td>
                     <td><code>Something &lt;sub&gt;pulled down&lt;/sub&gt;</code></td>
                     <td>Something <sub>pulled down</sub></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr data-spec="LS_SMALL">
+                <tr data-spec="IS_SMALL">
                     <td>Small</td>
                     <td><code>Something >>small>></code></td>
                     <td><code>Something &lt;small&gt;small&lt;/small&gt;</code></td>
                     <td>Something <small>small</small></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr data-spec="LS_STRIKE">
+                <tr data-spec="IS_STRIKE">
                     <td>Strike through</td>
                     <td><code>Something ~~that was relevant~~</code></td>
                     <td><code>Something &lt;strike&gt;that was relevant&lt;/strike&gt;</code></td>
                     <td>Something <strike>that was relevant</strike></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr data-spec="LS_CODE">
+                <tr data-spec="IS_CODE">
                     <td>Code</td>
                     <td><code>Something ::Codified::</code></td>
                     <td><code>Something &lt;code&gt;Codified&lt;/code&gt;</code></td>
                     <td>Something <code>Codified</code></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
-                <tr data-spec="LS_SPAN">
+                <tr data-spec="IS_SPAN">
                     <td>Span</td>
                     <td><code>Something ``Spanned``</code></td>
                     <td><code>Something &lt;span&gt;Spanned&lt;/span&gt;</code></td>
-                    <td>Something <span>Codified</span></td>
+                    <td>Something <span>Spanned</span></td>
                     <td><span class="label label-success">Done</span></td>
                 </tr>
                 <tr>
@@ -237,7 +236,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 </tbody>
             </table>
             <hr/>
-            <h2>Block Specifications</h2>
+            <h2 data-spec-section="BS">Block Specifications</h2>
             <ul>
                 <li>Block specs are always the first non-whitespace characters</li>
                 <li>Block specs can be on their own line - and their corresponding opening element will be output on its
@@ -255,9 +254,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>All currently open block specs are implicitly closed by an empty line (a line with no non-whitespace
                     characters)
                 </li>
-                <li>A line that contains no line or block spec, and is not currently in a non-blockquote block will open
-                    a new paragraph block spec on the line
-                </li>
+                <li>A line that contains no line or block spec, and is not currently in a non-blockquote block will open a new paragraph block spec on the line</li>
+                <li>An implicitly opened paragraph will be closed by the explicit opening of any block spec</li>
             </ul>
             <h3>
                 <small>Two double quotes</small>
@@ -297,6 +295,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 - <code>++</code> Ordered list
 
             </h3>
+            <h2 data-spec-section="OP">Options <span class="label label-info">Planned</span></h2>
+            <ul>
+                <li><code>idWhitelist</code></li>
+                <li><code>cssWhitelist</code></li>
+                <li><code>idBlacklist</code></li>
+                <li><code>cssBlacklist</code></li>
+                <li><code>deprecatedTags</code></li>
+                <li><code>generateHeadingIds</code></li>
+                <li><code>autodetectHyperlinks</code></li>
+            </ul>
         </div>
     </div>
     <footer>
