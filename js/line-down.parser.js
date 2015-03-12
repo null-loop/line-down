@@ -20,7 +20,7 @@
 
     var digits = '0123456789';
 
-    function startsWith(symbol, line, fixedCount, preserveWhitespace) {
+    function startsWith(symbol, line, fixedCount, preserveWhitespace, allowFloatingNumber) {
         var doesStartWith = false;
         var r = line;
         var count = 0;
@@ -38,7 +38,7 @@
                 doesStartWith = true;
                 r = r.substring(1);
             }
-            else if ($.inArray(c, digits) != -1 && !inClasses && !inId && count == 1) {
+            else if ($.inArray(c, digits) != -1 && !inClasses && !inId && ((count == 1) || (count > 1 && allowFloatingNumber))) {
                 numberCount = numberCount + c;
                 r = r.substring(1);
             }
@@ -76,7 +76,7 @@
             }
         }
 
-        if (numberCount.length > 0) {
+        if (numberCount.length > 0 && !allowFloatingNumber) {
             count = parseInt(numberCount);
         }
         if (!preserveWhitespace) {
@@ -97,7 +97,8 @@
             startsWith: doesStartWith,
             symbol: symbol,
             symbolCount: count,
-            remainingLine: r
+            remainingLine: r,
+            numberCapture:numberCount
         };
     }
 
@@ -340,7 +341,50 @@
                 }
                 else
                 {
-                    // pre formatted
+                    // unordered list
+                    var ul = startsWith('&', trimmedContent, 2);
+                    if (ul.startsWith){
+                        if (!(scope.hasElementScope('ul') && ul.remainingLine.trim().length == 0)) {
+                            if (scope.isImplicitParagraphScope()){
+                                linebuilder.endCurrentScopeWithoutLineBreak(scope);
+                            }
+                            scope.pushBlock({
+                                element: 'ul',
+                                spec: '&&'
+                            });
+                            linebuilder.openTag('ul', ul.id, ul.classes);
+                            trimmedContent = ul.remainingLine;
+                            hasBlockSpec = true;
+                        }
+                    }
+                    else
+                    {
+                        // ordered list
+                        var ol = startsWith('+', trimmedContent, 2, false, true);
+                        if (ol.startsWith){
+                            if (!(scope.hasElementScope('ol') && ol.remainingLine.trim().length == 0)) {
+                                if (scope.isImplicitParagraphScope()){
+                                    linebuilder.endCurrentScopeWithoutLineBreak(scope);
+                                }
+                                scope.pushBlock({
+                                    element: 'ol',
+                                    spec: '++'
+                                });
+                                if (ol.numberCapture){
+                                    linebuilder.openTag('ol', ol.id, ol.classes, 'start=\'' + ol.numberCapture + '\'');
+                                }
+                                else
+                                {
+                                    linebuilder.openTag('ol', ol.id, ol.classes);
+                                }
+
+                                trimmedContent = ol.remainingLine;
+                                hasBlockSpec = true;
+                            }
+                        }
+                    }
+
+                    // ordered list
                 }
 
             }
@@ -358,6 +402,48 @@
         } else {
             // more line specs
 
+            var li = startsWith('+', trimmedContent);
+            //TODO:Implicit OL
+            if (li.startsWith && li.remainingLine.trim().length != 0) {
+                if (!scope.hasElementScope('ol')){
+                    scope.pushBlock({
+                        element: 'ol',
+                        spec: '++',
+                        implicit: true
+                    });
+                    linebuilder.openTag('ol');
+                }
+                localScope.pushBlock({
+                    element: 'li'
+                });
+                linebuilder.openTag('li', li.id, li.classes);
+                trimmedContent = li.remainingLine;
+                hasLineSpec = true;
+            } else {
+
+              //TODO:implicit UL
+                li = startsWith('&', trimmedContent);
+                if (li.startsWith && li.remainingLine.trim().length != 0) {
+                    if (!scope.hasElementScope('ul')){
+                        scope.pushBlock({
+                            element: 'ul',
+                            spec: '&&',
+                            implicit: true
+                        });
+                        linebuilder.openTag('ul');
+                    }
+                    localScope.pushBlock({
+                        element: 'li'
+                    });
+                    linebuilder.openTag('li', li.id, li.classes);
+                    trimmedContent = li.remainingLine;
+                    hasLineSpec = true;
+                }
+                else
+                {
+                    // more line specs
+                }
+            }
         }
 
         if (!hasLineSpec && !hasBlockSpec) {
@@ -383,6 +469,14 @@
             }
             else if (ltwo == '\"\"' && scope.hasElementScope('blockquote')) {
                 closeUntil = 'blockquote';
+                closeLength = 2;
+            }
+            else if (ltwo == '&&' && scope.hasElementScope('ul')) {
+                closeUntil = 'ul';
+                closeLength = 2;
+            }
+            else if (ltwo == '++' && scope.hasElementScope('ol')) {
+                closeUntil = 'ol';
                 closeLength = 2;
             }
 
@@ -511,7 +605,7 @@
                     this._outputLines.push(this.currentLine);
                 }
             },
-            tagWithEnd: function (tag, id, classes, end) {
+            tagWithEnd: function (tag, id, classes, extraAttributes, end) {
                 //TODO:Check against white lists!
                 var t = '<' + tag;
                 if (id) {
@@ -526,14 +620,20 @@
                     classes = classes.join(' ');
                     t = t + ' class=\'' + classes + '\'';
                 }
+
+                if (extraAttributes)
+                {
+                    t = t + ' ' + extraAttributes;
+                }
+
                 t = t + end;
                 this.append(t);
             },
-            openTag: function (tag, id, classes) {
-                this.tagWithEnd(tag,id,classes, '>');
+            openTag: function (tag, id, classes, extraAttributes) {
+                this.tagWithEnd(tag,id,classes,extraAttributes, '>');
             },
             selfClosingTag:function(tag,id,classes){
-                this.tagWithEnd(tag,id,classes, '/>');
+                this.tagWithEnd(tag,id,classes,undefined, '/>');
             },
             append: function (text) {
                 this.currentLine = this.currentLine + text;

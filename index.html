@@ -68,9 +68,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         <div class="col-lg-12">
             <h2>Progress</h2>
 
-            <p>We've only just started, these rules are definitely going to change (and are completely incomplete right
-                now), and the implementation's very beta.</p>
-
+            <p>We've only just started, these rules are likely going to change (and are completely incomplete right
+                now), and the implementation's built for correctness rather than elegance or speed.</p>
             <p>Other than that - things are going great!</p>
             <hr/>
         </div>
@@ -135,10 +134,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             <h3 data-spec-section="LS_UL">& - Unordered list items</h3>
             <ul>
                 <li>The depth of the item may be specified after a single & as a number <code>&10</code> nests a list item ten levels deep</li>
+                <li>The depth of the item may be specified by the number of &'s so <code>&&&</code> nests a list item 3 levels deep</li>
+                <li>If an unordered list item line spec occurs outside of an ordered list - a new implicit unordered list is started</li>
             </ul>
             <h3 data-spec-section="LS_OL">+ - Ordered list items</h3>
             <ul>
                 <li>The depth of the item may be specified after a single + as a number <code>+10</code> nests a list item ten levels deep</li>
+                <li>The depth of the item may be specified by the number of +'s so <code>+++</code> nests a list item 3 levels deep</li>
+                <li>If an ordered list item line spec occurs outside of an ordered list - a new implicit ordered list is started</li>
             </ul>
             <hr/>
             <h2 data-spec-section="IS">Inline Specifications</h2>
@@ -290,10 +293,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 - <code>&&</code> Unordered list
 
             </h3>
+
             <h3>
                 <small>Two plus signs </small>
                 - <code>++</code> Ordered list
-
+            </h3>
+            <ul>
+                <li>Allows trailing number to specify start number - <code>++50</code> outputs as <code>&ltol start='50'&gt;</code></li>
+                <li>Any start attribute is output after any id and css specs - <code>&ltol id='lead' class='trash' start='50'&gt;</code></li>
+            </ul>
+            <h3>
+                <small>Three colons</small>
+                - <code>:::</code> Preformatted Code
+            </h3>
+            <h3>
+                <small>Four colons</small>
+                - <code>::::</code> Data Block
             </h3>
             <h2 data-spec-section="OP">Options <span class="label label-info">Planned</span></h2>
             <ul>
@@ -304,6 +319,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li><code>deprecatedTags</code></li>
                 <li><code>generateHeadingIds</code></li>
                 <li><code>autodetectHyperlinks</code></li>
+                <li><code>implicitDatablockCapture</code></li>
             </ul>
         </div>
     </div>

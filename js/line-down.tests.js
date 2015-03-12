@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2015 Daniel Gray, Grayholme Ltd
+Copyright (C) 2015 DanieidealistGrayholme Ltd
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -230,7 +230,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'This paragraph\r\n\'\'Just got closed',o:'<p>This paragraph\r\n</p><p>Just got closed\r\n</p>',n:'Implicit paragraph closed by explicit paragraph'},
         { i:'This paragraph\r\n\"\"Just got closed',o:'<p>This paragraph\r\n</p><blockquote><p>Just got closed\r\n</p>\r\n</blockquote>',n:'Implicit paragraph closed by explicit block quote'},
         { i:'This paragraph\r\n---\r\nJust got closed',o:'<p>This paragraph\r\n</p><hr/>\r\n<p>Just got closed\r\n</p>',n:'Implicit paragraph closed by horizontal rule'},
-
+        { i:'!"£$%^&*()_+-=[]{}:@~#\';?><,./\\|`¬',o:'<p>!&#x22;&#xA3;$%^&#x26;*()_+-=[]{}:@~#&#x27;;?&#x3E;&#x3C;,./\\|&#x60;&#xAC;\r\n</p>',n:'All simple special characters'}
     ];
 
     $.each(moreCases,pushCase("More tests cases"));
@@ -249,6 +249,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     ];
 
     $.each(casesWithOptions,pushCase("Tests with options"));
+
+    var listCases = [
+        {i:'&&\r\n&&',o:'<ul>\r\n</ul>',n:'Empty unordered list'},
+        {i:'&&\r\n& An item\r\n&&',o:'<ul>\r\n<li>An item</li>\r\n</ul>',n:'Single item explicit unordered list'},
+        {i:'++\r\n++',o:'<ol>\r\n</ol>',n:'Empty ordered list'},
+        {i:'++\r\n+ An item\r\n++',o:'<ol>\r\n<li>An item</li>\r\n</ol>',n:'Single item explicit ordered list'},
+        {i:'++50\r\n++',o:'<ol start=\'50\'>\r\n</ol>',n:'Empty ordered list with start'},
+        {i:'++50\r\n+Testing testing\r\n++',o:'<ol start=\'50\'>\r\n<li>Testing testing</li>\r\n</ol>',n:'Single ordered list with start'},
+        {i:'++50\r\n+First\r\n+Second\r\n++',o:'<ol start=\'50\'>\r\n<li>First</li>\r\n<li>Second</li>\r\n</ol>',n:'Two item ordered list with start'},
+        {i:'++50?lead\r\n++',o:'<ol id=\'lead\' start=\'50\'>\r\n</ol>',n:'Empty ordered list with start and id spec'},
+        {i:'++50?lead@trash\r\n++',o:'<ol id=\'lead\' class=\'trash\' start=\'50\'>\r\n</ol>',n:'Empty ordered list with start, id spec and css spec'},
+        {i:'&Implicit unordered item list',o:'<ul><li>Implicit unordered item list</li>\r\n</ul>',n:'Implicit unordered list from single line item'},
+        {i:'+Implicit ordered item list',o:'<ol><li>Implicit ordered item list</li>\r\n</ol>',n:'Implicit ordered list from single line item'}
+    ];
+
+    $.each(listCases,pushCase("Tests about lists"));
 
 
 })(window.linedown = window.linedown || {}, jQuery)
