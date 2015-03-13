@@ -104,6 +104,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             <ul>
                 <li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS">Any block/in/line spec can be suffixed with a CSS class spec <code>@classSpec</code></li>
                 <li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS_WITH_MULTIPLE_CLASSES">Multiple CSS classes may be specified at once, separated by the '.' character <code>@classSpecOne.classSpecTwo</code>
+                <li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS_WITH_IMPLICIT_BASE_CLASSES">When specified with a double @ as it's opening spec, any CSS classes are split by dashes and any left part taken as base CSS class,
+                    all distinct classes are added <code>@@btn-large</code> becomes <code>class='btn btn-large'</code> and <code>@@btn-large.btn-danger</code> becomes <code>class='btn btn-large btn-danger'</code></li>
                 <li data-spec="ICS_SPECS_ALLOWED_ID_SPECS">Any block/in/line spec can be suffixed with an Id spec <code>?idSpec</code></li>
                 <li data-spec="ICS_SPECS_ALLOWED_ID_AND_CSS_SPECS_IN_ANY_ORDER">Any block/in/line spec can specify both a CSS and an Id spec in any order
                     <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
@@ -319,7 +321,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li><code>deprecatedTags</code></li>
                 <li><code>generateHeadingIds</code></li>
                 <li><code>autodetectHyperlinks</code></li>
-                <li><code>implicitDatablockCapture</code></li>
+                <li><code>implicitDataBlockCapture</code></li>
+                <li><code>explicitBaseCssClasses</code></li>
             </ul>
         </div>
     </div>
