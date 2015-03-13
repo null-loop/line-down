@@ -30,6 +30,7 @@
         var inId = false;
         var classes = '';
         var id = '';
+        var inferBaseCss = false;
 
         while (r.length > 0 && !f) {
             var c = r[0];
@@ -45,6 +46,10 @@
             else if (c == '@' && !inClasses && count > 0) {
                 inClasses = true;
                 inId = false;
+                r = r.substring(1);
+            }
+            else if (c == '@' && inClasses && classes.length==0 && !inferBaseCss){
+                inferBaseCss = true;
                 r = r.substring(1);
             }
             else if (c == '@' && inClasses) {
@@ -88,6 +93,27 @@
             return {
                 startsWith: false,
                 remainingLine: line
+            }
+        }
+
+        if (classes && inferBaseCss) {
+            var sc = classes.split('.');
+            var extras = [];
+            $.each(sc,function(k,v){
+               if (v.indexOf('-')!=-1){
+                   var cs = v.split('-');
+                   var ex = cs[0];
+                   if (!contains(extras,ex) && !contains(sc,ex)) extras.push(ex);
+               }
+            });
+            var extraClasses='';
+            var eci = 0;
+            $.each(extras,function(k,v){
+                extraClasses=extraClasses+(eci>0?'.':'')+v;
+                eci++;
+            });
+            if (extraClasses.length>0){
+                classes = extraClasses + '.' + classes;
             }
         }
 

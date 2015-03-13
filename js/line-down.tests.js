@@ -266,5 +266,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
     $.each(listCases,pushCase("Tests about lists"));
 
+    var cssSpecCases = [
+        {i:'``@@label-danger@Danger danger``',o:'<p><span class=\'label label-danger\'>Danger danger</span>\r\n</p>',n:'Inferred CSS base classes'},
+        {i:'``@@label.label-danger@Danger danger``',o:'<p><span class=\'label label-danger\'>Danger danger</span>\r\n</p>',n:'Inferred CSS base class ignores already defined base class'},
+        {i:'``@@label.label-danger.btn.btn-danger.btn-large@Danger danger``',o:'<p><span class=\'label label-danger btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred CSS base class ignores multiple already defined base classes'},
+        {i:'``@@label-danger.btn-danger@Danger danger``',o:'<p><span class=\'label btn label-danger btn-danger\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes'},
+        {i:'``@@btn-danger.btn-large@Danger danger``',o:'<p><span class=\'btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes - single base only used once'},
+        {i:'``@@btn-danger.btn-large@?lead?Danger danger``',o:'<p><span id=\'lead\' class=\'btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes with closed id spec after - single base only used once'},
+        {i:'``?lead?@@btn-danger.btn-large@Danger danger``',o:'<p><span id=\'lead\' class=\'btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes with closed id spec before - single base only used once'},
+        {i:'``?lead@@btn-danger.btn-large@Danger danger``',o:'<p><span id=\'lead\' class=\'btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes with open id spec before - single base only used once'}
+    ];
+
+    $.each(cssSpecCases,pushCase("Tests about base css specs"));
+
 
 })(window.linedown = window.linedown || {}, jQuery)
