@@ -31,12 +31,25 @@
         var classes = '';
         var id = '';
         var inferBaseCss = false;
+        var allSymbol = symbol;
+        if (allSymbol.length && allSymbol.length > 1)
+        {
+            symbol = allSymbol[0];
+        }
 
         while (r.length > 0 && !f) {
             var c = r[0];
             if (c == symbol) {
                 count++;
-                doesStartWith = true;
+                if (allSymbol.length && allSymbol.length > 1 && count <= allSymbol.length)
+                {
+                    symbol = allSymbol[count];
+                    doesStartWith = true;
+                }
+                else
+                {
+                    doesStartWith = true;
+                }
                 r = r.substring(1);
             }
             else if ($.inArray(c, digits) != -1 && !inClasses && !inId && ((count == 1) || (count > 1 && allowFloatingNumber))) {
@@ -97,7 +110,7 @@
         }
 
         if (classes && inferBaseCss) {
-            var sc = classes.split('.');
+            var sc = classes.split('&');
             var extras = [];
             $.each(sc,function(k,v){
                if (v.indexOf('-')!=-1){
@@ -109,11 +122,11 @@
             var extraClasses='';
             var eci = 0;
             $.each(extras,function(k,v){
-                extraClasses=extraClasses+(eci>0?'.':'')+v;
+                extraClasses=extraClasses+(eci>0?'&':'')+v;
                 eci++;
             });
             if (extraClasses.length>0){
-                classes = extraClasses + '.' + classes;
+                classes = extraClasses + '&' + classes;
             }
         }
 
@@ -368,7 +381,7 @@
                 else
                 {
                     // unordered list
-                    var ul = startsWith('&', trimmedContent, 2);
+                    var ul = startsWith('%&', trimmedContent, 2);
                     if (ul.startsWith){
                         if (!(scope.hasElementScope('ul') && ul.remainingLine.trim().length == 0)) {
                             if (scope.isImplicitParagraphScope()){
@@ -376,7 +389,7 @@
                             }
                             scope.pushBlock({
                                 element: 'ul',
-                                spec: '&&'
+                                spec: '%&'
                             });
                             linebuilder.openTag('ul', ul.id, ul.classes);
                             trimmedContent = ul.remainingLine;
@@ -386,7 +399,7 @@
                     else
                     {
                         // ordered list
-                        var ol = startsWith('+', trimmedContent, 2, false, true);
+                        var ol = startsWith('%+', trimmedContent, 2, false, true);
                         if (ol.startsWith){
                             if (!(scope.hasElementScope('ol') && ol.remainingLine.trim().length == 0)) {
                                 if (scope.isImplicitParagraphScope()){
@@ -394,7 +407,7 @@
                                 }
                                 scope.pushBlock({
                                     element: 'ol',
-                                    spec: '++'
+                                    spec: '%+'
                                 });
                                 if (ol.numberCapture){
                                     linebuilder.openTag('ol', ol.id, ol.classes, 'start=\'' + ol.numberCapture + '\'');
@@ -497,11 +510,11 @@
                 closeUntil = 'blockquote';
                 closeLength = 2;
             }
-            else if (ltwo == '&&' && scope.hasElementScope('ul')) {
+            else if (ltwo == '%&' && scope.hasElementScope('ul')) {
                 closeUntil = 'ul';
                 closeLength = 2;
             }
-            else if (ltwo == '++' && scope.hasElementScope('ol')) {
+            else if (ltwo == '%+' && scope.hasElementScope('ol')) {
                 closeUntil = 'ol';
                 closeLength = 2;
             }
@@ -641,7 +654,7 @@
                     }
                 }
                 if (classes) {
-                    classes = classes.split('.');
+                    classes = classes.split('&');
                     // remove invalid classes
                     classes = classes.join(' ');
                     t = t + ' class=\'' + classes + '\'';

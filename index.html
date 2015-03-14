@@ -100,10 +100,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>There is <strong>nah</strong> line-break</li>
             </ul>
             <hr/>
-            <h2 data-spec-section="ICS">ID and CSS specifications</h2>
+            <h2 data-spec-section="ICS">ID, CSS & Data specifications</h2>
             <ul>
                 <li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS">Any block/in/line spec can be suffixed with a CSS class spec <code>@classSpec</code></li>
-                <li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS_WITH_MULTIPLE_CLASSES">Multiple CSS classes may be specified at once, separated by the '.' character <code>@classSpecOne.classSpecTwo</code>
+                <li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS_WITH_MULTIPLE_CLASSES">Multiple CSS classes may be specified at once, separated by the '&' character <code>@classSpecOne&classSpecTwo</code>
                 <li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS_WITH_IMPLICIT_BASE_CLASSES">When specified with a double @ as it's opening spec, any CSS classes are split by dashes and any left part taken as base CSS class,
                     all distinct classes are added <code>@@btn-large</code> becomes <code>class='btn btn-large'</code> and <code>@@btn-large.btn-danger</code> becomes <code>class='btn btn-large btn-danger'</code></li>
                 <li data-spec="ICS_SPECS_ALLOWED_ID_SPECS">Any block/in/line spec can be suffixed with an Id spec <code>?idSpec</code></li>
@@ -111,10 +111,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                     <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
                 <li data-spec="ICS_ID_SPEC_OUTPUT_FIRST">When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec'
                     class='classSpec'</code></li>
+                <li data-spec="ICS_SPECS_ALLOWED_ID_SPECS">Any block/in/line spec can be suffixed with a Data spec <code>$key=value</code></li>
+                <li data-spec="ICS_SPECS_ALLOWED_ID_SPECS">Multiple data specs may be specified at once, separated by the '&' character <code>$keyOne=valueOne&keyTwo=valueTwo</code></li>
                 <li data-spec="ICS_ID_AND_CSS_SPECS_DEFAULTS_TO_ALLOW_ALL">By default any Id / CSS spec is valid</li>
                 <li data-spec="ICS_ID_AND_CSS_SPECS_ALLOW_WHITELISTS">However whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignored and not output.</li>
                 <li data-spec="ICS_ID_SPEC_ALLOWED_ONCE_ONLY">Id specs can only be used once. A subsequent use of the same Id will be invalid and ignored.</li>
-                <li data-spec="ICS_ID_AND_CSS_SPECS_CLOSE_EXPLICITLY">An Id / CSS spec is closed explicitly by a repeat of it's initial character <code>?idSpec?</code> or <code>@classOne.classTwo@</code></li>
+                <li data-spec="ICS_ID_AND_CSS_SPECS_CLOSE_EXPLICITLY">An Id / CSS spec is closed explicitly by a repeat of it's initial character <code>?idSpec?</code> or <code>@classOne&classTwo@</code></li>
                 <li data-spec="ICS_ID_AND_CSS_SPECS_CLOSE_IMPLICITLY">An Id / CSS spec is closed implicitly by a space <code>?idSpec Some content</code> or <code>@classOne.classTwo Some content</code></li>
             </ul>
             <hr/>
@@ -133,18 +135,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 </li>
                 <li>There is no limit to the depth of heading that may be specified</li>
             </ul>
-            <h3 data-spec-section="LS_UL">& - Unordered list items</h3>
-            <ul>
-                <li>The depth of the item may be specified after a single & as a number <code>&10</code> nests a list item ten levels deep</li>
-                <li>The depth of the item may be specified by the number of &'s so <code>&&&</code> nests a list item 3 levels deep</li>
-                <li>If an unordered list item line spec occurs outside of an ordered list - a new implicit unordered list is started</li>
-            </ul>
-            <h3 data-spec-section="LS_OL">+ - Ordered list items</h3>
-            <ul>
-                <li>The depth of the item may be specified after a single + as a number <code>+10</code> nests a list item ten levels deep</li>
-                <li>The depth of the item may be specified by the number of +'s so <code>+++</code> nests a list item 3 levels deep</li>
-                <li>If an ordered list item line spec occurs outside of an ordered list - a new implicit ordered list is started</li>
-            </ul>
+
             <hr/>
             <h2 data-spec-section="IS">Inline Specifications</h2>
             <ul>
@@ -262,6 +253,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>A line that contains no line or block spec, and is not currently in a non-blockquote block will open a new paragraph block spec on the line</li>
                 <li>An implicitly opened paragraph will be closed by the explicit opening of any block spec</li>
             </ul>
+            <h3 data-spec-section="LS_UL">& - Unordered list items</h3>
+            <ul>
+                <li>The depth of the item may be specified after a single & as a number <code>&10</code> nests a list item ten levels deep</li>
+                <li>The depth of the item may be specified by the number of &'s so <code>&&&</code> nests a list item 3 levels deep</li>
+                <li>If an unordered list item line spec occurs outside of an ordered list - a new implicit unordered list is started</li>
+                <li>List items cannot be explicitly closed, they are implicitly closed by the next item or by the closing of their list</li>
+            </ul>
+            <h3 data-spec-section="LS_OL">+ - Ordered list items</h3>
+            <ul>
+                <li>The depth of the item may be specified after a single + as a number <code>+10</code> nests a list item ten levels deep</li>
+                <li>The depth of the item may be specified by the number of +'s so <code>+++</code> nests a list item 3 levels deep</li>
+                <li>If an ordered list item line spec occurs outside of an ordered list - a new implicit ordered list is started</li>
+                <li>List items cannot be explicitly closed, they are implicitly closed by the next item or by the closing of their list</li>
+            </ul>
             <h3>
                 <small>Two double quotes</small>
                 - <code>&quot;&quot;</code> - Block Quotes
@@ -291,17 +296,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>Must start and end the line</li>
             </ul>
             <h3>
-                <small>Two ampersands </small>
-                - <code>&&</code> Unordered list
+                <small>Percent then a ampersand</small>
+                - <code>%&</code> Unordered list
 
             </h3>
 
             <h3>
-                <small>Two plus signs </small>
-                - <code>++</code> Ordered list
+                <small>Percent then a plus sign</small>
+                - <code>%+</code> Ordered list
             </h3>
             <ul>
-                <li>Allows trailing number to specify start number - <code>++50</code> outputs as <code>&ltol start='50'&gt;</code></li>
+                <li>Allows trailing number to specify start number - <code>%+50</code> outputs as <code>&ltol start='50'&gt;</code></li>
                 <li>Any start attribute is output after any id and css specs - <code>&ltol id='lead' class='trash' start='50'&gt;</code></li>
             </ul>
             <h3>
