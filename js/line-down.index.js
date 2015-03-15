@@ -89,6 +89,7 @@
     };
 
 
+    /*
     ld.hideTestsForSpecs = function(){
         $('.test').remove();
         $('.testSection').remove();
@@ -112,6 +113,14 @@
 
     // Add Pill with count
 
-    // Add to pill to run tests
+    // Add to pill to run tests*/
+
+    $.get('linedown-spec.ld.txt',function(content){
+       var html = ld.parseNoOptions(content);
+        console.log(html);
+        $('#lineDownOutput').html(html);
+    });
+
+    // render the linedown spec as html
 
 })(window.linedown = window.linedown || {}, jQuery)

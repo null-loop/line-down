@@ -58,10 +58,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i: '#@classy Heading one', o: '<h1 class=\'classy\'>Heading one</h1>', n:'Single hash, single class spec' },
         { i: '#@classy@ Heading one', o: '<h1 class=\'classy\'>Heading one</h1>', n:'Single hash, single closed class spec with space' },
         { i: '#@classy@Heading one', o: '<h1 class=\'classy\'>Heading one</h1>', n:'Single hash, single closed class spec without space' },
-        { i: '#@very.classy Heading one', o: '<h1 class=\'very classy\'>Heading one</h1>', n: 'Single hash, double class spec' },
-        { i: '#@very.classy.thing Heading one', o: '<h1 class=\'very classy thing\'>Heading one</h1>', n: 'Single hash, triple class spec' },
-        { i: '#@very.classy.thing@Heading one', o: '<h1 class=\'very classy thing\'>Heading one</h1>', n: 'Single hash, triple closed class spec without space' },
-        { i: '#@very.classy.thing@ Heading one', o: '<h1 class=\'very classy thing\'>Heading one</h1>', n: 'Single hash, triple closed class spec with space' },
+        { i: '#@very&classy Heading one', o: '<h1 class=\'very classy\'>Heading one</h1>', n: 'Single hash, double class spec' },
+        { i: '#@very&classy&thing Heading one', o: '<h1 class=\'very classy thing\'>Heading one</h1>', n: 'Single hash, triple class spec' },
+        { i: '#@very&classy&thing@Heading one', o: '<h1 class=\'very classy thing\'>Heading one</h1>', n: 'Single hash, triple closed class spec without space' },
+        { i: '#@very&classy&thing@ Heading one', o: '<h1 class=\'very classy thing\'>Heading one</h1>', n: 'Single hash, triple closed class spec with space' },
         { i: '#?classy Heading one', o: '<h1 id=\'classy\'>Heading one</h1>', n: 'Single hash, single id spec' },
         { i: '#?classy? Heading one', o: '<h1 id=\'classy\'>Heading one</h1>', n: 'Single hash, single closed id spec with space' },
         { i: '#?classy?Heading one', o: '<h1 id=\'classy\'>Heading one</h1>', n: 'Single hash, single closed id spec without space' },
@@ -158,15 +158,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'\'\'#' + spec + '' + text + '\'\'',o:'<p><h1><' + element + '>' + text + '</' + element + '></h1></p>',n:name + ' implicitly closed on one line at start of line after h1 open after explicit paragraph open with explicit inline close',s:["IS_FORMAT_SECTION_OF_LINE"]},
         { i:'\'\'#2' + spec + '' + text + '\'\'',o:'<p><h2><' + element + '>' + text + '</' + element + '></h2></p>',n:name + ' implicitly closed on one line at start of line after h2 (by depth) open after explicit paragraph open with explicit inline close',s:["IS_FORMAT_SECTION_OF_LINE"]},
         { i:'' + spec + '?me?' + text + '',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id spec no space'},
+        { i:'' + spec + '$spec=test$' + text + '',o:'<p><' + element + ' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed data spec no space'},
+        { i:'' + spec + '$spec=test ' + text + '',o:'<p><' + element + ' data-spec=\'test\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with implicitly closed data spec'},
+        { i:'' + spec + '$spec=test?me ' + text + '',o:'<p><' + element + ' id=\'me\' data-spec=\'test\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with implicitly closed data spec and id spec no space'},
+        { i:'' + spec + '$spec=test$?me?' + text + '',o:'<p><' + element + ' id=\'me\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with explicitly closed data spec and id spec no space'},
+        { i:'' + spec + '$spec=test&parent=otherTest$?me?' + text + '',o:'<p><' + element + ' id=\'me\' data-spec=\'test\' data-parent=\'otherTest\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with explicitly closed multiple data spec and id spec no space'},
         { i:'\'\'' + spec + '?me?' + text + '',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id spec no space after explicit paragraph open'},
         { i:'\'\'' + spec + '?me?' + text + '\'\'',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '></p>',n:name + ' implicitly closed on one line at start of line with closed id spec no space after explicit paragraph open and explicit inline close'},
         { i:'' + spec + '?me? ' + text + '',o:'<p><' + element + ' id=\'me\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id spec with space'},
         { i:'' + spec + '?me ' + text + '',o:'<p><' + element + ' id=\'me\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with open id spec'},
         { i:'' + spec + '@classy@' + text + '',o:'<p><' + element + ' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class spec no space'},
+        { i:'' + spec + '@classy@$spec=test$' + text + '',o:'<p><' + element + ' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class and data spec no space'},
         { i:'' + spec + '@classy@ ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class spec with space'},
+        { i:'' + spec + '@classy@$spec=test$ ' + text + '',o:'<p><' + element + ' class=\'classy\' data-spec=\'test\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class and data spec with space'},
         { i:'' + spec + '@classy ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with open class spec'},
         { i:'' + spec + '?me?@classy@' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id and class spec no space'},
+        { i:'' + spec + '?me?@classy@$spec=test$' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space'},
         { i:'' + spec + '@classy@?me?' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class and id spec no space'},
+        { i:'' + spec + '@classy@?me?$spec=test$' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one'},
+        { i:'' + spec + '@classy@$spec=test$?me?' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order two'},
+        { i:'' + spec + '$spec=test$@classy@?me?' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order three'},
         { i:'' + spec + '@classy@ ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class spec with space'},
         { i:'' + spec + '@classy ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with open class spec'},
         { i:'Something' + spec + '' + text + '',o:'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line after content with no spacing',s:["IS_FORMAT_SECTION_OF_LINE"]},
@@ -251,15 +262,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     $.each(casesWithOptions,pushCase("Tests with options"));
 
     var listCases = [
-        {i:'&&\r\n&&',o:'<ul>\r\n</ul>',n:'Empty unordered list'},
-        {i:'&&\r\n& An item\r\n&&',o:'<ul>\r\n<li>An item</li>\r\n</ul>',n:'Single item explicit unordered list'},
-        {i:'++\r\n++',o:'<ol>\r\n</ol>',n:'Empty ordered list'},
-        {i:'++\r\n+ An item\r\n++',o:'<ol>\r\n<li>An item</li>\r\n</ol>',n:'Single item explicit ordered list'},
-        {i:'++50\r\n++',o:'<ol start=\'50\'>\r\n</ol>',n:'Empty ordered list with start'},
-        {i:'++50\r\n+Testing testing\r\n++',o:'<ol start=\'50\'>\r\n<li>Testing testing</li>\r\n</ol>',n:'Single ordered list with start'},
-        {i:'++50\r\n+First\r\n+Second\r\n++',o:'<ol start=\'50\'>\r\n<li>First</li>\r\n<li>Second</li>\r\n</ol>',n:'Two item ordered list with start'},
-        {i:'++50?lead\r\n++',o:'<ol id=\'lead\' start=\'50\'>\r\n</ol>',n:'Empty ordered list with start and id spec'},
-        {i:'++50?lead@trash\r\n++',o:'<ol id=\'lead\' class=\'trash\' start=\'50\'>\r\n</ol>',n:'Empty ordered list with start, id spec and css spec'},
+        {i:'%&\r\n%&',o:'<ul>\r\n</ul>',n:'Empty unordered list'},
+        {i:'%&\r\n& An item\r\n%&',o:'<ul>\r\n<li>An item</li>\r\n</ul>',n:'Single item explicit unordered list'},
+        {i:'%+\r\n%+',o:'<ol>\r\n</ol>',n:'Empty ordered list'},
+        {i:'%+\r\n+ An item\r\n%+',o:'<ol>\r\n<li>An item</li>\r\n</ol>',n:'Single item explicit ordered list'},
+        {i:'%+50\r\n%+',o:'<ol start=\'50\'>\r\n</ol>',n:'Empty ordered list with start'},
+        {i:'%+50\r\n+Testing testing\r\n%+',o:'<ol start=\'50\'>\r\n<li>Testing testing</li>\r\n</ol>',n:'Single ordered list with start'},
+        {i:'%+50\r\n+First\r\n+Second\r\n%+',o:'<ol start=\'50\'>\r\n<li>First</li>\r\n<li>Second</li>\r\n</ol>',n:'Two item ordered list with start'},
+        {i:'%+50?lead\r\n%+',o:'<ol id=\'lead\' start=\'50\'>\r\n</ol>',n:'Empty ordered list with start and id spec'},
+        {i:'%+50?lead@trash\r\n%+',o:'<ol id=\'lead\' class=\'trash\' start=\'50\'>\r\n</ol>',n:'Empty ordered list with start, id spec and css spec'},
         {i:'&Implicit unordered item list',o:'<ul><li>Implicit unordered item list</li>\r\n</ul>',n:'Implicit unordered list from single line item'},
         {i:'+Implicit ordered item list',o:'<ol><li>Implicit ordered item list</li>\r\n</ol>',n:'Implicit ordered list from single line item'}
     ];
@@ -268,16 +279,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
     var cssSpecCases = [
         {i:'``@@label-danger@Danger danger``',o:'<p><span class=\'label label-danger\'>Danger danger</span>\r\n</p>',n:'Inferred CSS base classes'},
-        {i:'``@@label.label-danger@Danger danger``',o:'<p><span class=\'label label-danger\'>Danger danger</span>\r\n</p>',n:'Inferred CSS base class ignores already defined base class'},
-        {i:'``@@label.label-danger.btn.btn-danger.btn-large@Danger danger``',o:'<p><span class=\'label label-danger btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred CSS base class ignores multiple already defined base classes'},
-        {i:'``@@label-danger.btn-danger@Danger danger``',o:'<p><span class=\'label btn label-danger btn-danger\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes'},
-        {i:'``@@btn-danger.btn-large@Danger danger``',o:'<p><span class=\'btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes - single base only used once'},
-        {i:'``@@btn-danger.btn-large@?lead?Danger danger``',o:'<p><span id=\'lead\' class=\'btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes with closed id spec after - single base only used once'},
-        {i:'``?lead?@@btn-danger.btn-large@Danger danger``',o:'<p><span id=\'lead\' class=\'btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes with closed id spec before - single base only used once'},
-        {i:'``?lead@@btn-danger.btn-large@Danger danger``',o:'<p><span id=\'lead\' class=\'btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes with open id spec before - single base only used once'}
+        {i:'``@@label&label-danger@Danger danger``',o:'<p><span class=\'label label-danger\'>Danger danger</span>\r\n</p>',n:'Inferred CSS base class ignores already defined base class'},
+        {i:'``@@label&label-danger&btn&btn-danger&btn-large@Danger danger``',o:'<p><span class=\'label label-danger btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred CSS base class ignores multiple already defined base classes'},
+        {i:'``@@label-danger&btn-danger@Danger danger``',o:'<p><span class=\'label btn label-danger btn-danger\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes'},
+        {i:'``@@btn-danger&btn-large@Danger danger``',o:'<p><span class=\'btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes - single base only used once'},
+        {i:'``@@btn-danger&btn-large@?lead?Danger danger``',o:'<p><span id=\'lead\' class=\'btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes with closed id spec after - single base only used once'},
+        {i:'``?lead?@@btn-danger&btn-large@Danger danger``',o:'<p><span id=\'lead\' class=\'btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes with closed id spec before - single base only used once'},
+        {i:'``?lead@@btn-danger&btn-large@Danger danger``',o:'<p><span id=\'lead\' class=\'btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',n:'Inferred multiple CSS base classes with open id spec before - single base only used once'}
     ];
 
     $.each(cssSpecCases,pushCase("Tests about base css specs"));
+
+    //TODO:Data spec tests
 
 
 })(window.linedown = window.linedown || {}, jQuery)

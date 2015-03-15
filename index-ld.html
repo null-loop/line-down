@@ -55,6 +55,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     </div>
 </div>
 <div class="container">
+    <div id="lineDownOutput"></div>
     <div class="page-header">
         <div class="row">
             <div class="col-lg-12 col-md-7 col-sm-6">
@@ -76,12 +77,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     </div>
     <div class="row">
         <div class="col-lg-12">
-<!--
-            <div class="btn-group btn-group-justified">
-                <a id="showTestConnectionsButton" class="btn btn-default">Show Test Connections</a>
-                <a id="hideTestConnectionsButton" class="btn btn-default disabled">Hide Tests Connections</a>
-            </div>
--->
+            <!--
+                        <div class="btn-group btn-group-justified">
+                            <a id="showTestConnectionsButton" class="btn btn-default">Show Test Connections</a>
+                            <a id="hideTestConnectionsButton" class="btn btn-default disabled">Hide Tests Connections</a>
+                        </div>
+            -->
             <h1>Top Level Concepts</h1>
             <ul>
                 <li>Processing should be conducted on a line-by-line basis</li>
@@ -111,8 +112,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                     <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
                 <li data-spec="ICS_ID_SPEC_OUTPUT_FIRST">When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec'
                     class='classSpec'</code></li>
-                <li data-spec="ICS_SPECS_ALLOWED_DATA_SPECS">Any block/in/line spec can be suffixed with a Data spec <code>$key=value</code></li>
-                <li data-spec="ICS_SPECS_ALLOWED_DATA_SPECS">Multiple data specs may be specified at once, separated by the '&' character <code>$keyOne=valueOne&keyTwo=valueTwo</code></li>
+                <li data-spec="ICS_SPECS_ALLOWED_ID_SPECS">Any block/in/line spec can be suffixed with a Data spec <code>$key=value</code></li>
+                <li data-spec="ICS_SPECS_ALLOWED_ID_SPECS">Multiple data specs may be specified at once, separated by the '&' character <code>$keyOne=valueOne&keyTwo=valueTwo</code></li>
                 <li data-spec="ICS_ID_AND_CSS_SPECS_DEFAULTS_TO_ALLOW_ALL">By default any Id / CSS spec is valid</li>
                 <li data-spec="ICS_ID_AND_CSS_SPECS_ALLOW_WHITELISTS">However whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignored and not output.</li>
                 <li data-spec="ICS_ID_SPEC_ALLOWED_ONCE_ONLY">Id specs can only be used once. A subsequent use of the same Id will be invalid and ignored.</li>
@@ -307,7 +308,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             </h3>
             <ul>
                 <li>Allows trailing number to specify start number - <code>%+50</code> outputs as <code>&ltol start='50'&gt;</code></li>
-                <li>Any start attribute is output after any id/css/data specs - <code>&ltol id='lead' class='trash' data-spec='basicRules' start='50'&gt;</code></li>
+                <li>Any start attribute is output after any id and css specs - <code>&ltol id='lead' class='trash' start='50'&gt;</code></li>
             </ul>
             <h3>
                 <small>Three colons</small>
@@ -317,15 +318,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <small>Four colons</small>
                 - <code>::::</code> Data Block
             </h3>
-            <ul>
-                <li>Specifies that the enclosed area will have data captured from data specs and output as a HTML 5 data block.</li>
-                <li>CSS class specifies format : json, xml</li>
-                <li>Output separately at the end</li>
-                <li>Cannot be nested, must occur at the root of the document</li>
-                <li>Multiple data blocks may occur in a single document</li>
-                <li>If no id spec is provided - one is generated from the scheme : <code>dataBlock-{index}</code> where {index} is an auto-increment number scoped to the document.</li>
-            </ul>
-
             <h2 data-spec-section="OP">Options <span class="label label-info">Planned</span></h2>
             <ul>
                 <li><code>idWhitelist</code></li>
