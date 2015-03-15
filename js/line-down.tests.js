@@ -158,15 +158,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'\'\'#' + spec + '' + text + '\'\'',o:'<p><h1><' + element + '>' + text + '</' + element + '></h1></p>',n:name + ' implicitly closed on one line at start of line after h1 open after explicit paragraph open with explicit inline close',s:["IS_FORMAT_SECTION_OF_LINE"]},
         { i:'\'\'#2' + spec + '' + text + '\'\'',o:'<p><h2><' + element + '>' + text + '</' + element + '></h2></p>',n:name + ' implicitly closed on one line at start of line after h2 (by depth) open after explicit paragraph open with explicit inline close',s:["IS_FORMAT_SECTION_OF_LINE"]},
         { i:'' + spec + '?me?' + text + '',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id spec no space'},
+        { i:'' + spec + '$spec=test$' + text + '',o:'<p><' + element + ' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed data spec no space'},
+        { i:'' + spec + '$spec=test ' + text + '',o:'<p><' + element + ' data-spec=\'test\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with implicitly closed data spec'},
+        { i:'' + spec + '$spec=test?me ' + text + '',o:'<p><' + element + ' id=\'me\' data-spec=\'test\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with implicitly closed data spec and id spec no space'},
+        { i:'' + spec + '$spec=test$?me?' + text + '',o:'<p><' + element + ' id=\'me\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with explicitly closed data spec and id spec no space'},
+        { i:'' + spec + '$spec=test&parent=otherTest$?me?' + text + '',o:'<p><' + element + ' id=\'me\' data-spec=\'test\' data-parent=\'otherTest\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with explicitly closed multiple data spec and id spec no space'},
         { i:'\'\'' + spec + '?me?' + text + '',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id spec no space after explicit paragraph open'},
         { i:'\'\'' + spec + '?me?' + text + '\'\'',o:'<p><' + element + ' id=\'me\'>' + text + '</' + element + '></p>',n:name + ' implicitly closed on one line at start of line with closed id spec no space after explicit paragraph open and explicit inline close'},
         { i:'' + spec + '?me? ' + text + '',o:'<p><' + element + ' id=\'me\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id spec with space'},
         { i:'' + spec + '?me ' + text + '',o:'<p><' + element + ' id=\'me\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with open id spec'},
         { i:'' + spec + '@classy@' + text + '',o:'<p><' + element + ' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class spec no space'},
+        { i:'' + spec + '@classy@$spec=test$' + text + '',o:'<p><' + element + ' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class and data spec no space'},
         { i:'' + spec + '@classy@ ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class spec with space'},
+        { i:'' + spec + '@classy@$spec=test$ ' + text + '',o:'<p><' + element + ' class=\'classy\' data-spec=\'test\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class and data spec with space'},
         { i:'' + spec + '@classy ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with open class spec'},
         { i:'' + spec + '?me?@classy@' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id and class spec no space'},
+        { i:'' + spec + '?me?@classy@$spec=test$' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space'},
         { i:'' + spec + '@classy@?me?' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class and id spec no space'},
+        { i:'' + spec + '@classy@?me?$spec=test$' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one'},
+        { i:'' + spec + '@classy@$spec=test$?me?' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order two'},
+        { i:'' + spec + '$spec=test$@classy@?me?' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order three'},
         { i:'' + spec + '@classy@ ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class spec with space'},
         { i:'' + spec + '@classy ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with open class spec'},
         { i:'Something' + spec + '' + text + '',o:'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line after content with no spacing',s:["IS_FORMAT_SECTION_OF_LINE"]},
@@ -278,6 +289,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     ];
 
     $.each(cssSpecCases,pushCase("Tests about base css specs"));
+
+    //TODO:Data spec tests
 
 
 })(window.linedown = window.linedown || {}, jQuery)

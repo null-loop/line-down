@@ -28,8 +28,10 @@
         var numberCount = '';
         var inClasses = false;
         var inId = false;
+        var inData = false;
         var classes = '';
         var id = '';
+        var data = '';
         var inferBaseCss = false;
         var allSymbol = symbol;
         if (allSymbol.length && allSymbol.length > 1)
@@ -78,12 +80,25 @@
                 inId = false;
                 r = r.substring(1);
             }
+            else if (c == '$' && !inData && count > 0)
+            {
+                inData = true;
+                r = r.substring(1);
+            }
+            else if (c == '$' && inData){
+                inData = false;
+                r = r.substring(1);
+            }
             else if (inClasses && c != ' ' && c != '?') {
                 classes = classes + c;
                 r = r.substring(1);
             }
             else if (inId && c != ' ' && c != '@') {
                 id = id + c;
+                r = r.substring(1);
+            }
+            else if (inData && c!= ' ' && c!='$'){
+                data = data + c;
                 r = r.substring(1);
             }
             else if (count > 0) {
@@ -130,9 +145,36 @@
             }
         }
 
+        var dataPairs;
+        if (data && data.length > 0)
+        {
+            dataPairs = [];
+            // split by & then by =
+            var pairs = data.split('&');
+            $.each(pairs,function(k,v){
+               var pair = v.split('=');
+                var key = '';
+                var value = '';
+                if (pair.length==1){
+                    key = 'id';
+                    value = pair[0];
+                }
+                else
+                {
+                    key = pair[0];
+                    value = pair[1];
+                }
+                dataPairs.push({
+                    key:key,
+                    value:value
+                });
+            });
+        }
+
         return {
             id: id,
             classes: classes,
+            dataPairs:dataPairs,
             startsWith: doesStartWith,
             symbol: symbol,
             symbolCount: count,
@@ -151,6 +193,7 @@
             var startSpec = '';
             var startElementId;
             var startElementClasses;
+            var startElementData;
             var closeElement = '';
             var remainder;
 
@@ -160,6 +203,7 @@
                 startSpec = '**';
                 startElementId = strong.id;
                 startElementClasses = strong.classes;
+                startElementData = strong.dataPairs;
                 remainder = strong.remainingLine;
             }
             else if(strong.startsWith){
@@ -174,6 +218,7 @@
                     startSpec = '//';
                     startElementId = emphasis.id;
                     startElementClasses = emphasis.classes;
+                    startElementData = emphasis.dataPairs;
                     remainder = emphasis.remainingLine;
                 }
                 else if(emphasis.startsWith){
@@ -188,6 +233,7 @@
                         startSpec = '__';
                         startElementId = underline.id;
                         startElementClasses = underline.classes;
+                        startElementData = underline.dataPairs;
                         remainder = underline.remainingLine;
                     }
                     else if(underline.startsWith){
@@ -202,6 +248,7 @@
                             startSpec = '^^';
                             startElementId = superscript.id;
                             startElementClasses = superscript.classes;
+                            startElementData = superscript.dataPairs;
                             remainder = superscript.remainingLine;
                         }
                         else if(superscript.startsWith){
@@ -216,6 +263,7 @@
                                 startSpec = '>>';
                                 startElementId = small.id;
                                 startElementClasses = small.classes;
+                                startElementData = small.dataPairs;
                                 remainder = small.remainingLine;
                             }
                             else if(small.startsWith){
@@ -230,6 +278,7 @@
                                     startSpec = '~~';
                                     startElementId = strike.id;
                                     startElementClasses = strike.classes;
+                                    startElementData = strike.dataPairs;
                                     remainder = strike.remainingLine;
                                 }
                                 else if(strike.startsWith){
@@ -244,6 +293,7 @@
                                         startSpec = '!!';
                                         startElementId = subscript.id;
                                         startElementClasses = subscript.classes;
+                                        startElementData = subscript.dataPairs;
                                         remainder = subscript.remainingLine;
                                     }
                                     else if(subscript.startsWith){
@@ -258,6 +308,7 @@
                                             startSpec = '::';
                                             startElementId = code.id;
                                             startElementClasses = code.classes;
+                                            startElementData = code.dataPairs;
                                             remainder = code.remainingLine;
                                         }
                                         else if(code.startsWith){
@@ -271,6 +322,7 @@
                                                 startSpec = '``';
                                                 startElementId = span.id;
                                                 startElementClasses = span.classes;
+                                                startElementData = span.dataPairs;
                                                 remainder = span.remainingLine;
                                             }
                                             else if(span.startsWith){
@@ -294,7 +346,7 @@
                 })
                 linebuilder.append(he.encode(oLine));
                 oLine = '';
-                linebuilder.openTag(startElement, startElementId, startElementClasses);
+                linebuilder.openTag(startElement, startElementId, startElementClasses, startElementData);
                 cLine = remainder;
             }
             else if (closeElement.length > 0)
@@ -343,7 +395,7 @@
                     element: 'blockquote',
                     spec: '\"\"'
                 });
-                linebuilder.openTag('blockquote', blockQuotes.id, blockQuotes.classes);
+                linebuilder.openTag('blockquote', blockQuotes.id, blockQuotes.classes, blockQuotes.dataPairs);
                 trimmedContent = blockQuotes.remainingLine;
                 hasBlockSpec = true;
             }
@@ -360,7 +412,7 @@
                         element: 'p',
                         spec: '\'\''
                     });
-                    linebuilder.openTag('p', paragraph.id, paragraph.classes);
+                    linebuilder.openTag('p', paragraph.id, paragraph.classes, paragraph.dataPairs);
                     trimmedContent = paragraph.remainingLine;
                     hasBlockSpec = true;
                 }
@@ -374,7 +426,7 @@
                     if (scope.isImplicitParagraphScope()){
                         linebuilder.endCurrentScopeWithoutLineBreak(scope);
                     }
-                    linebuilder.selfClosingTag('hr', hr.id, hr.classes);
+                    linebuilder.selfClosingTag('hr', hr.id, hr.classes, hr.dataPairs);
                     trimmedContent = hr.remainingLine;
                     hasBlockSpec = true;
                 }
@@ -391,7 +443,7 @@
                                 element: 'ul',
                                 spec: '%&'
                             });
-                            linebuilder.openTag('ul', ul.id, ul.classes);
+                            linebuilder.openTag('ul', ul.id, ul.classes, ul.dataPairs);
                             trimmedContent = ul.remainingLine;
                             hasBlockSpec = true;
                         }
@@ -410,11 +462,11 @@
                                     spec: '%+'
                                 });
                                 if (ol.numberCapture){
-                                    linebuilder.openTag('ol', ol.id, ol.classes, 'start=\'' + ol.numberCapture + '\'');
+                                    linebuilder.openTag('ol', ol.id, ol.classes, ol.dataPairs, 'start=\'' + ol.numberCapture + '\'');
                                 }
                                 else
                                 {
-                                    linebuilder.openTag('ol', ol.id, ol.classes);
+                                    linebuilder.openTag('ol', ol.id, ol.classes, ol.dataPairs);
                                 }
 
                                 trimmedContent = ol.remainingLine;
@@ -435,7 +487,7 @@
             localScope.pushBlock({
                 element: 'h' + headings.symbolCount
             });
-            linebuilder.openTag('h' + headings.symbolCount, headings.id, headings.classes);
+            linebuilder.openTag('h' + headings.symbolCount, headings.id, headings.classes, headings.dataPairs);
             trimmedContent = headings.remainingLine;
             hasLineSpec = true;
         } else {
@@ -455,7 +507,7 @@
                 localScope.pushBlock({
                     element: 'li'
                 });
-                linebuilder.openTag('li', li.id, li.classes);
+                linebuilder.openTag('li', li.id, li.classes, li.dataPairs);
                 trimmedContent = li.remainingLine;
                 hasLineSpec = true;
             } else {
@@ -474,7 +526,7 @@
                     localScope.pushBlock({
                         element: 'li'
                     });
-                    linebuilder.openTag('li', li.id, li.classes);
+                    linebuilder.openTag('li', li.id, li.classes, li.dataPairs);
                     trimmedContent = li.remainingLine;
                     hasLineSpec = true;
                 }
@@ -644,7 +696,7 @@
                     this._outputLines.push(this.currentLine);
                 }
             },
-            tagWithEnd: function (tag, id, classes, extraAttributes, end) {
+            tagWithEnd: function (tag, id, classes, data,extraAttributes, end) {
                 //TODO:Check against white lists!
                 var t = '<' + tag;
                 if (id) {
@@ -660,6 +712,12 @@
                     t = t + ' class=\'' + classes + '\'';
                 }
 
+                if (data) {
+                    $.each(data,function(k,v){
+                       t = t + ' data-' + v.key + '=\'' + v.value + '\'';
+                    });
+                }
+
                 if (extraAttributes)
                 {
                     t = t + ' ' + extraAttributes;
@@ -668,11 +726,12 @@
                 t = t + end;
                 this.append(t);
             },
-            openTag: function (tag, id, classes, extraAttributes) {
-                this.tagWithEnd(tag,id,classes,extraAttributes, '>');
+            //TODO:data specs... find calls - pass in from matches
+            openTag: function (tag, id, classes, data, extraAttributes) {
+                this.tagWithEnd(tag,id,classes,data,extraAttributes, '>');
             },
-            selfClosingTag:function(tag,id,classes){
-                this.tagWithEnd(tag,id,classes,undefined, '/>');
+            selfClosingTag:function(tag,id,classes,data){
+                this.tagWithEnd(tag,id,classes,data,undefined, '/>');
             },
             append: function (text) {
                 this.currentLine = this.currentLine + text;
