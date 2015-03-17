@@ -176,6 +176,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         { i:'' + spec + '?me?@classy@$spec=test$' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space'},
         { i:'' + spec + '@classy@?me?' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class and id spec no space'},
         { i:'' + spec + '@classy@?me?$spec=test$' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one'},
+        { i:'' + spec + '@classy@?me?$specKey=test$' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key capitalisation'},
+        { i:'' + spec + '@classy@?me?$spec.key=test$' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key dot'},
+        { i:'' + spec + '@classy@?me?$spec#key=test$' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key hash'},
+        { i:'' + spec + '@classy@?me?$spec##key=test$' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key double hash'},
+        { i:'' + spec + '@classy@?me?$spec###key=test$' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key triple hash'},
+        { i:'' + spec + '@classy@?me?$spec£key=test$' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key pound'},
+        { i:'' + spec + '@classy@?me?$spec_key=test$' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key underscore'},
+        { i:'' + spec + '@classy@?me?$spec-key=test$' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key dash'},
         { i:'' + spec + '@classy@$spec=test$?me?' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order two'},
         { i:'' + spec + '$spec=test$@classy@?me?' + text + '',o:'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order three'},
         { i:'' + spec + '@classy@ ' + text + '',o:'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',n:name + ' implicitly closed on one line at start of line with closed class spec with space'},
@@ -290,7 +298,72 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
     $.each(cssSpecCases,pushCase("Tests about base css specs"));
 
-    //TODO:Data spec tests
+    var dataSpecCases = [
+        {i:'``$myKey=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key formatting from capitalisation'},
+        {i:'``$myKeyTheFirstOne=something',o:'<p><span data-my-key-the-first-one=\'something\'></span>\r\n</p>',n:'Data spec key formatting from capitalisation, longer'},
+        {i:'``$myKeyTheFirstOneWeThoughtOfNoReallyHonest=something',o:'<p><span data-my-key-the-first-one-we-thought-of-no-really-honest=\'something\'></span>\r\n</p>',n:'Data spec key formatting from capitalisation, very long'},
+        {i:'``$my-Key=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, but lower'},
+        {i:'``$my--Key=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, but lower, with double dashes removed'},
+        {i:'``$my---Key=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, but lower, with triple dashes removed'},
+        {i:'``$my.Key=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, but lower, with dot replaced with dash'},
+        {i:'``$my_Key=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, but lower, with underscore replaced with dash'},
+        {i:'``$my\'Key=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, but lower, with apostrophe replaced with dash'},
+        {i:'``$my£Key=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, but lower, with pound replaced with dash'},
+        {i:'``$my#Key=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, but lower, with hash replaced with dash'},
+        {i:'``$my!Key=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, but lower, with bang replaced with dash'},
+        {i:'``$my"Key=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, but lower, with double quotes replaced with dash'},
 
+        {i:'``$MY-KEY=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, all caps'},
+        {i:'``$MY--KEY=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, all caps, with double dashes removed'},
+        {i:'``$MY---KEY=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, all caps, with triple dashes removed'},
+        {i:'``$MY.KEY=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, all caps, with dot replaced with dash'},
+        {i:'``$MY_KEY=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing, all caps, with underscore replaced with dash'},
+
+        {i:'``$my-key=something',o:'<p><span data-my-key=\'something\'></span>\r\n</p>',n:'Data spec key preserves existing'}
+    ];
+
+    $.each(dataSpecCases,pushCase("Tests about data specs"));
+
+    //todo:data block tests
+    var dataBlockSpecs = [
+        {i:'$$$$?spec-Data@json\r\n$$$$',o:'<script id=\'spec-Data\' type=\'application/json\'>\r\n</script>',n:'Empty data block - json'},
+        {i:'$$$$?spec-Data@jsonp\r\n$$$$',o:'<script id=\'spec-Data\' type=\'application/javascript\'>\r\n</script>',n:'Empty data block - jsonp'},
+        {i:'$$$$?spec-Data@xml\r\n$$$$',o:'<script id=\'spec-Data\' type=\'application/xml\'>\r\n</script>',n:'Empty data block - xml'},
+        {i:'$$$$?spec-Data\r\n$$$$',o:'<script id=\'spec-Data\' type=\'application/json\'>\r\n</script>',n:'Empty data block - defaults to json'},
+
+        {i:'$$$$?spec-Data@json\r\nTesting testing\r\n$$$$',o:'<p>Testing testing\r\n</p>\r\n<script id=\'spec-Data\' type=\'application/json\'>\r\n</script>',n:'Empty data block comes after content - json'},
+        {i:'$$$$?spec-Data@jsonp\r\nTesting testing\r\n$$$$',o:'<p>Testing testing\r\n</p>\r\n<script id=\'spec-Data\' type=\'application/javascript\'>\r\n</script>',n:'Empty data block comes after content - jsonp'},
+        {i:'$$$$?spec-Data@xml\r\nTesting testing\r\n$$$$',o:'<p>Testing testing\r\n</p>\r\n<script id=\'spec-Data\' type=\'application/xml\'>\r\n</script>',n:'Empty data block comes after content - xml'},
+        {i:'$$$$?spec-Data\r\nTesting testing\r\n$$$$',o:'<p>Testing testing\r\n</p>\r\n<script id=\'spec-Data\' type=\'application/json\'>\r\n</script>',n:'Empty data block comes after content - defaults to json'},
+        {i:'$$$$\r\n$$$$',o:'<script id=\'data-block-1\' type=\'application/json\'>\r\n</script>',n:'Empty data block, auto generated id - defaults to json'},
+        {i:'$$$$\r\n$$$$\r\n$$$$\r\n$$$$',o:'<script id=\'data-block-1\' type=\'application/json\'>\r\n</script>\r\n<script id=\'data-block-2\' type=\'application/json\'>\r\n</script>',n:'2 Empty data blocks, auto generated id - defaults to json'},
+
+        {i:'$$$$@xml\r\n$$$$',o:'<script id=\'data-block-1\' type=\'application/xml\'>\r\n</script>',n:'Empty data block, auto generated id - explicit xml'},
+        {i:'$$$$@xml\r\n$$$$\r\n$$$$@xml\r\n$$$$',o:'<script id=\'data-block-1\' type=\'application/xml\'>\r\n</script>\r\n<script id=\'data-block-2\' type=\'application/xml\'>\r\n</script>',n:'2 Empty data blocks, auto generated id - explicit xml'},
+        {i:'$$$$\r\n$$$$\r\n$$$$@xml\r\n$$$$',o:'<script id=\'data-block-1\' type=\'application/json\'>\r\n</script>\r\n<script id=\'data-block-2\' type=\'application/xml\'>\r\n</script>',n:'2 Empty data blocks, auto generated id - explicit xml for second, default json for first'},
+
+        {i:'$$$$\r\n#Global Rules\r\n$$$$',o:'<h1 id=\'global-rules\'>Global Rules</h1>\r\n<script id=\'data-block-1\' type=\'application/json\'>\r\n</script>',n:'Data block causes auto id generation in heading'}
+    ];
+
+    $.each(dataBlockSpecs,pushCase("Tests about data block specs"));
+
+    var autoIdGenerationCases = [
+        {i:'# First Heading',o:'<h1 id=\'first-heading\'>First Heading</h1>',n:'Generate id from heading with space in content',opt:{generateIds:true}},
+        {i:'# FirstHeading',o:'<h1 id=\'first-heading\'>FirstHeading</h1>',n:'Generate id from heading without space in content',opt:{generateIds:true}},
+        {i:'# Firstheading',o:'<h1 id=\'firstheading\'>Firstheading</h1>',n:'Generate id from heading without space in content, no capitalisation',opt:{generateIds:true}},
+        {i:'#Firstheading',o:'<h1 id=\'firstheading\'>Firstheading</h1>',n:'Generate id from heading without space in content, none after line spec, no capitalisation',opt:{generateIds:true}},
+        {i:'#FirstHeading',o:'<h1 id=\'first-heading\'>FirstHeading</h1>',n:'Generate id from heading without space in content, none after line spec',opt:{generateIds:true}},
+        {i:'#First Heading',o:'<h1 id=\'first-heading\'>First Heading</h1>',n:'Generate id from heading with space in content, without after line spec',opt:{generateIds:true}},
+        {i:'#?ignored?Not Generated',o:'<h1 id=\'ignored\'>Not Generated</h1>',n:'Heading with explicit id doesn\'t have new id generated',opt:{generateIds:true}},
+        {i:'# First Heading\r\n# First Heading',o:'<h1 id=\'first-heading\'>First Heading</h1>\r\n<h1 id=\'first-heading-1\'>First Heading</h1>',n:'Duplicate headings generate unique ids',opt:{generateIds:true}},
+        {i:'# First Heading\r\n# First Heading\r\n# First Heading',o:'<h1 id=\'first-heading\'>First Heading</h1>\r\n<h1 id=\'first-heading-1\'>First Heading</h1>\r\n<h1 id=\'first-heading-2\'>First Heading</h1>',n:'Duplicate headings generate unique ids three times',opt:{generateIds:true}},
+        {i:'# First Heading\r\n# First Heading\r\n# First Heading\r\n# First Heading',o:'<h1 id=\'first-heading\'>First Heading</h1>\r\n<h1 id=\'first-heading-1\'>First Heading</h1>\r\n<h1 id=\'first-heading-2\'>First Heading</h1>\r\n<h1 id=\'first-heading-3\'>First Heading</h1>',n:'Duplicate headings generate unique ids four times',opt:{generateIds:true}},
+        {i:'\'\'First Paragraph',o:'<p id=\'first-paragraph\'>First Paragraph\r\n</p>',n:'Generate id from paragraph with space in content',opt:{generateIds:true}},
+        {i:'\'\'Only Takes The First Hundred Characters Into Account For The Id When Autogenerating Ids From The Content Inside',o:'<p id=\'only-takes-the-first-hundred-characters-into-account-for-the-id-when-autogenerating-ids-from-the-con\'>Only Takes The First Hundred Characters Into Account For The Id When Autogenerating Ids From The Content Inside\r\n</p>',n:'Generate id from paragraph with space in content limited to 100 characters from content',opt:{generateIds:true}},
+        {i:'&First List Item',o:'<ul><li id=\'first-list-item\'>First List Item</li>\r\n</ul>',n:'Generate id from unordered list item with spaces in content',opt:{generateIds:true}},
+        {i:'+First List Item',o:'<ol><li id=\'first-list-item\'>First List Item</li>\r\n</ol>',n:'Generate id from ordered list item with spaces in content',opt:{generateIds:true}},
+    ];
+
+    $.each(autoIdGenerationCases,pushCase("Tests about auto id generation"));
 
 })(window.linedown = window.linedown || {}, jQuery)

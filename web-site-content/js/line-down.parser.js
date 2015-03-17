@@ -41,7 +41,7 @@
 
         while (r.length > 0 && !f) {
             var c = r[0];
-            if (c == symbol) {
+            if (c == symbol && !inData && !inClasses && !inId) {
                 count++;
                 if (allSymbol.length && allSymbol.length > 1 && count <= allSymbol.length)
                 {
@@ -343,10 +343,17 @@
                 scope.pushBlock({
                     element:startElement,
                     spec:startSpec
-                })
+                });
                 linebuilder.append(he.encode(oLine));
                 oLine = '';
-                linebuilder.openTag(startElement, startElementId, startElementClasses, startElementData);
+                var con = {
+                    element:startElement,
+                    id:startElementId,
+                    classes:startElementClasses,
+                    dataPairs:startElementData
+                };
+                linebuilder.applyOptions(con);
+                linebuilder.openTag(startElement, con.id, con.classes, con.dataPairs);
                 cLine = remainder;
             }
             else if (closeElement.length > 0)
@@ -395,6 +402,14 @@
                     element: 'blockquote',
                     spec: '\"\"'
                 });
+                blockQuotes.element = 'blockquote';
+                linebuilder.applyOptions(blockQuotes);
+
+
+                /* TODO: BUILD AND SUPPORT THIS ELSEWHERE
+                scope.pushData(blockQuotes);
+                */
+
                 linebuilder.openTag('blockquote', blockQuotes.id, blockQuotes.classes, blockQuotes.dataPairs);
                 trimmedContent = blockQuotes.remainingLine;
                 hasBlockSpec = true;
@@ -412,6 +427,8 @@
                         element: 'p',
                         spec: '\'\''
                     });
+                    paragraph.element = 'p';
+                    linebuilder.applyOptions(paragraph);
                     linebuilder.openTag('p', paragraph.id, paragraph.classes, paragraph.dataPairs);
                     trimmedContent = paragraph.remainingLine;
                     hasBlockSpec = true;
@@ -426,6 +443,8 @@
                     if (scope.isImplicitParagraphScope()){
                         linebuilder.endCurrentScopeWithoutLineBreak(scope);
                     }
+                    hr.element='hr';
+                    linebuilder.applyOptions(hr);
                     linebuilder.selfClosingTag('hr', hr.id, hr.classes, hr.dataPairs);
                     trimmedContent = hr.remainingLine;
                     hasBlockSpec = true;
@@ -443,6 +462,8 @@
                                 element: 'ul',
                                 spec: '%&'
                             });
+                            ul.element='ul';
+                            linebuilder.applyOptions(ul);
                             linebuilder.openTag('ul', ul.id, ul.classes, ul.dataPairs);
                             trimmedContent = ul.remainingLine;
                             hasBlockSpec = true;
@@ -461,16 +482,35 @@
                                     element: 'ol',
                                     spec: '%+'
                                 });
+                                ol.element='ol';
                                 if (ol.numberCapture){
+                                    linebuilder.applyOptions(ol);
                                     linebuilder.openTag('ol', ol.id, ol.classes, ol.dataPairs, 'start=\'' + ol.numberCapture + '\'');
                                 }
                                 else
                                 {
+                                    linebuilder.applyOptions(ol);
                                     linebuilder.openTag('ol', ol.id, ol.classes, ol.dataPairs);
                                 }
 
                                 trimmedContent = ol.remainingLine;
                                 hasBlockSpec = true;
+                            }
+                        }
+                        else
+                        {
+                            // data block
+                            var dataBlock = startsWith('$', trimmedContent, 4);
+                            if (dataBlock.startsWith){
+                                if (!(scope.inDataBlock() && dataBlock.remainingLine.trim().length == 0)) {
+                                    scope.startDataBlock(dataBlock);
+                                    if (!linebuilder.options.generateIds){
+                                        linebuilder.options.implicitGenerateIds = true;
+                                        linebuilder.options.generateIds = true;
+                                    }
+                                    trimmedContent = dataBlock.remainingLine;
+                                    hasBlockSpec = true;
+                                }
                             }
                         }
                     }
@@ -487,6 +527,8 @@
             localScope.pushBlock({
                 element: 'h' + headings.symbolCount
             });
+            headings.element = 'h';
+            linebuilder.applyOptions(headings);
             linebuilder.openTag('h' + headings.symbolCount, headings.id, headings.classes, headings.dataPairs);
             trimmedContent = headings.remainingLine;
             hasLineSpec = true;
@@ -507,6 +549,8 @@
                 localScope.pushBlock({
                     element: 'li'
                 });
+                li.element = 'li';
+                linebuilder.applyOptions(li);
                 linebuilder.openTag('li', li.id, li.classes, li.dataPairs);
                 trimmedContent = li.remainingLine;
                 hasLineSpec = true;
@@ -526,6 +570,8 @@
                     localScope.pushBlock({
                         element: 'li'
                     });
+                    li.element = 'li';
+                    linebuilder.applyOptions(li);
                     linebuilder.openTag('li', li.id, li.classes, li.dataPairs);
                     trimmedContent = li.remainingLine;
                     hasLineSpec = true;
@@ -570,7 +616,19 @@
                 closeUntil = 'ol';
                 closeLength = 2;
             }
-
+            else
+            {
+                if(trimmedContent.length > 3){
+                    var lFour = trimmedContent.substring(trimmedContent.length - 4, trimmedContent.length);
+                    if (lFour=='$$$$' && scope.inDataBlock()){
+                        if (linebuilder.options.implicitGenerateIds){
+                            linebuilder.options.generateIds = false;
+                        }
+                        scope.finishDataBlock();
+                        trimmedContent = trimmedContent.substring(0, trimmedContent.length - 4).trim();
+                    }
+                }
+            }
             if (closeUntil){
                 trimmedContent = trimmedContent.substring(0, trimmedContent.length - closeLength).trim();
             }
@@ -626,6 +684,36 @@
             _scopeStack: [],
             _currentBlock: null,
             _usedIds: [],
+            _dataBlocks:[],
+            _currentDataBlock:null,
+            _currentGeneratedDataBlockIdIndex:0,
+            inDataBlock:function(){
+                if (this._currentDataBlock==null) return false;
+                else return true;
+            },
+            startDataBlock:function(dataBlock){
+
+                if (!dataBlock.id)
+                {
+                    dataBlock.id = this.generateNextDataBlockId();
+                }
+
+                this._dataBlocks.push(dataBlock);
+                this._currentDataBlock = dataBlock;
+            },
+            generateNextDataBlockId:function(){
+                this._currentGeneratedDataBlockIdIndex++;
+                return 'data-block-' + this._currentGeneratedDataBlockIdIndex.toString();
+            },
+            finishDataBlock:function(){
+                this._currentDataBlock = null;
+            },
+            hasDataBlocks:function(){
+                return this._dataBlocks.length > 0;
+            },
+            getDataBlocks:function(){
+                return this._dataBlocks;
+            },
             hasCurrentBlock: function () {
                 if (this._currentBlock != null) return true;
                 else return false;
@@ -680,10 +768,38 @@
         var newScope = createScope();
         var lineBuilder = {
             _outputLines: [],
+            _generateIdsFor:['h','li','p','blockquote'],
             currentLine: '',
-            cssWhitelist: options.cssWhitelist,
-            idWhitelist: options.idWhitelist,
+            options:options,
             scope: newScope,
+
+            generateId:function(block){
+                var allowed = false;
+                if (block.element=='h' || block.element=='p' || block.element=='li') allowed = true;
+                if (allowed){
+                    var r = block.remainingLine;
+                    var maxLength = 100;
+                    if (r.length > maxLength)
+                    {
+                        r = r.substring(0,maxLength);
+                    }
+                    var possibleId = this.formatDataKey(r);
+                    var base = possibleId;
+                    var s=0;
+                    while (this.scope.hasUsedId(possibleId)){
+                        s++;
+                        possibleId = base + "-" + s.toString();
+                    }
+                    return possibleId;
+                }
+                return undefined;
+                //TODO:this for one thing... also - need to work with the scope to get the real content when working with opening block specs on their own line
+            },
+            applyOptions:function(block){
+                if (options && options.generateIds && !block.id){
+                    block.id = this.generateId(block);
+                }
+            },
 
             beginLine: function () {
                 if (this.currentLine != '') {
@@ -695,6 +811,39 @@
                 if (this.currentLine != '') {
                     this._outputLines.push(this.currentLine);
                 }
+            },
+
+            formatDataKey:function(key){
+                //TODO:This is so naive... - http://stackoverflow.com/questions/9862761/how-to-check-if-character-is-a-letter-in-javascript
+                function isLetter(str) {
+                    return str.length === 1 && str.match(/[a-z]/i);
+                }
+                var k = '';
+                var kc = key.split('');
+                var wasLower = false;
+                $.each(kc,function(i,v){
+                    if (isLetter(v)){
+                        var uv = v.toLocaleUpperCase();
+                        if (uv == v) {
+                            if (wasLower) {
+                                v = '-' + v;
+                                wasLower = false;
+                            }
+                        }
+                        else {
+                            wasLower = true;
+                        }
+                    }
+                    else
+                    {
+                        v='-';
+                    }
+                    k = k + v.toLocaleLowerCase();
+                });
+                while (k.indexOf('--') > -1){
+                    k = k.replace('--','-');
+                }
+                return k;
             },
             tagWithEnd: function (tag, id, classes, data,extraAttributes, end) {
                 //TODO:Check against white lists!
@@ -713,8 +862,9 @@
                 }
 
                 if (data) {
+                    var self = this;
                     $.each(data,function(k,v){
-                       t = t + ' data-' + v.key + '=\'' + v.value + '\'';
+                       t = t + ' data-' + self.formatDataKey(v.key) + '=\'' + v.value + '\'';
                     });
                 }
 
@@ -726,6 +876,7 @@
                 t = t + end;
                 this.append(t);
             },
+
             //TODO:data specs... find calls - pass in from matches
             openTag: function (tag, id, classes, data, extraAttributes) {
                 this.tagWithEnd(tag,id,classes,data,extraAttributes, '>');
@@ -775,9 +926,28 @@
             },
             addInline:function(content){
                 replaceInline(content, this);
+            },
+            writeDataBlocks:function(dataBlocks){
+                var self = this;
+                if (dataBlocks && dataBlocks.length > 0){
+                    console.log("Writing data blocks");
+                    $.each(dataBlocks,function(k,v){
+                       var id = v.id;
+                        var type = v.classes? v.classes.toLocaleLowerCase():'json';
+                        var contentType = type=='json'?'application/json':
+                                          type=='jsonp'?'application/javascript':
+                                          type=='xml'?'application/xml':'text/plain';
+                        self.beginLine();
+                        self.openTag("script",id,undefined,undefined,'type=\'' + contentType + '\'');
+                        //TODO:write the data model out :)
+                        self.beginLine();
+                        self.closeTag("script");
+                    });
+                }
             }
 
-        }
+            // JSON.stringify
+        };
 
 
         while (lineIndex < lines.length) {
@@ -789,6 +959,10 @@
         if (newScope.hasCurrentBlock()) {
             lineBuilder.beginLine();
             lineBuilder.endScope(newScope);
+        }
+
+        if (newScope.hasDataBlocks()){
+            lineBuilder.writeDataBlocks(newScope.getDataBlocks());
         }
 
 
@@ -811,6 +985,7 @@
         //TODO:Support deprecatedTags, idWhitelist & cssWhitelist, idBlacklist & cssBlacklist
     }
 
+    ld.parseWithOptions = parseWithOptions;
     ld.parseNoOptions = noOptionsParse;
     ld.parse = defaultOptionsParse;
     ld.contains = contains;

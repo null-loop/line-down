@@ -109,11 +109,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li data-spec="ICS_SPECS_ALLOWED_ID_SPECS">Any block/in/line spec can be suffixed with an Id spec <code>?idSpec</code></li>
                 <li data-spec="ICS_SPECS_ALLOWED_ID_AND_CSS_SPECS_IN_ANY_ORDER">Any block/in/line spec can specify both a CSS and an Id spec in any order
                     <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
-                <li data-spec="ICS_ID_SPEC_OUTPUT_FIRST">When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec'
-                    class='classSpec'</code></li>
+                <li data-spec="ICS_ID_SPEC_OUTPUT_FIRST">When output - the Id spec comes <strong>before</strong> the CSS spec, which comes before the data spec <code>id='idSpec'
+                    class='classSpec' data-spec='dataSpec'</code></li>
                 <li data-spec="ICS_SPECS_ALLOWED_DATA_SPECS">Any block/in/line spec can be suffixed with a Data spec <code>$key=value</code></li>
                 <li data-spec="ICS_SPECS_ALLOWED_DATA_SPECS">Multiple data specs may be specified at once, separated by the '&' character <code>$keyOne=valueOne&keyTwo=valueTwo</code></li>
-                <li data-spec="ICS_ID_AND_CSS_SPECS_DEFAULTS_TO_ALLOW_ALL">By default any Id / CSS spec is valid</li>
+                <li data-spec="ICS_DATA_SPEC_KEYS_FORMATTING">All data keys will be formatted to the HTML data attribute standard from capitalisation, <code>thisFirstKey</code> becomes <code>this-first-key</code></li>
+                <li data-spec="ICS_DATA_SPEC_KEYS_REPLACEMENT_CHARACTERS">Dashes will replace non-alphanumeric characters in data keys, so <code>my.first.key</code> and <code>my_first_key</code> both become <code>my-first-key</code></li>
+                <li data-spec="ICS_DATA_SPEC_KEYS_MULTIPLE_DASHES">Multiple dashes will be replaced down to a single dash <code>my---first</code> becomes <code>my-first</code> </li>
+                <li data-spec="ICS_ID_AND_CSS_SPECS_DEFAULTS_TO_ALLOW_ALL">By default any Id / CSS / Data spec is valid</li>
                 <li data-spec="ICS_ID_AND_CSS_SPECS_ALLOW_WHITELISTS">However whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignored and not output.</li>
                 <li data-spec="ICS_ID_SPEC_ALLOWED_ONCE_ONLY">Id specs can only be used once. A subsequent use of the same Id will be invalid and ignored.</li>
                 <li data-spec="ICS_ID_AND_CSS_SPECS_CLOSE_EXPLICITLY">An Id / CSS spec is closed explicitly by a repeat of it's initial character <code>?idSpec?</code> or <code>@classOne&classTwo@</code></li>
@@ -310,12 +313,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>Any start attribute is output after any id/css/data specs - <code>&ltol id='lead' class='trash' data-spec='basicRules' start='50'&gt;</code></li>
             </ul>
             <h3>
-                <small>Three colons</small>
-                - <code>:::</code> Preformatted Code
+                <small>Two dollar signs</small>
+                - <code>$$</code> Preformatted Code
             </h3>
             <h3>
-                <small>Four colons</small>
-                - <code>::::</code> Data Block
+                <small>Four dollar signs</small>
+                - <code>$$$$</code> Data Block
             </h3>
             <ul>
                 <li>Specifies that the enclosed area will have data captured from data specs and output as a HTML 5 data block.</li>
@@ -323,7 +326,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li>Output separately at the end</li>
                 <li>Cannot be nested, must occur at the root of the document</li>
                 <li>Multiple data blocks may occur in a single document</li>
-                <li>If no id spec is provided - one is generated from the scheme : <code>dataBlock-{index}</code> where {index} is an auto-increment number scoped to the document.</li>
+                <li>If no id spec is provided - one is generated from the scheme : <code>data-block-{index}</code> where {index} is an auto-increment number scoped to the document starting at 1.</li>
+                <li>If not already set, the option <code>generateIds</code> is set true for the scope of the block</li>
             </ul>
 
             <h2 data-spec-section="OP">Options <span class="label label-info">Planned</span></h2>
@@ -333,7 +337,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <li><code>idBlacklist</code></li>
                 <li><code>cssBlacklist</code></li>
                 <li><code>deprecatedTags</code></li>
-                <li><code>generateHeadingIds</code></li>
+                <li><code>generateIds</code></li>
                 <li><code>autodetectHyperlinks</code></li>
                 <li><code>implicitDataBlockCapture</code></li>
                 <li><code>explicitBaseCssClasses</code></li>
@@ -366,7 +370,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 <script src="js/diff.js"></script>
 <script src="js/line-down.parser.js"></script>
 <script src="js/line-down.tests.js"></script>
-<script src="js/line-down.index.js"></script>
+<!--<script src="js/line-down.index.js"></script>-->
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

@@ -1,0 +1,45 @@
+{
+  "name": "line-down",
+  "version": "0.0.6",
+  "description": "A sensible mark-down-like text to HTML parser - very early in development",
+  "main": "./lib/parser.js",
+  "bin": {
+    "line-down": "bin/line-down"
+  },
+  "scripts": {
+    "test": "node tests/all.js"
+  },
+  "dependencies": {
+    "he": "^0.5.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "test": ">=0.0.5",
+    "travis-lint": "0.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/null-loop/line-down.git"
+  },
+  "keywords": [
+    "beta",
+    "line-down",
+    "text",
+    "HTML",
+    "mark-down"
+  ],
+  "directories": {
+    "lib": "./lib",
+    "test": "./tests",
+    "bin": "./bin"
+  },
+  "author": "Daniel Gray",
+  "license": "GPL2",
+  "bugs": {
+    "url": "https://github.com/null-loop/line-down/issues"
+  },
+  "homepage": "http://null-loop.github.io/line-down/",
+  "files": [
+    "README.md"
+  ]
+}
