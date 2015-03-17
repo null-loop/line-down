@@ -1,5 +1,12 @@
 language: node_js
 node_js:
   - "0.10"
-before_install:
- - cd src/node/parser
+
+install:
+  - cd src/node/parser
+  - npm install
+  - cd ../../../
+
+script:
+  - cd src/node/parser
+  - npm test
