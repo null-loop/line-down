@@ -19,3 +19,7 @@ var ld = require('../lib/parser.js');
 exports.assertParseWithNoOptions = function(assert,linedown,html,d){
     assert.equal(ld.parser.parseWithNoOptions(linedown),html,d);
 };
+
+exports.assertParseWithOptions = function(assert,linedown,html,d,options){
+    assert.equal(ld.parser.parseWithOptions(linedown, options),html,d);
+}

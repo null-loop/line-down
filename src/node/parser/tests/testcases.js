@@ -352,5 +352,9 @@ exports.testCases = function(assert){
         if (!v.opt) {
             h.assertParseWithNoOptions(assert, v.i, v.o, v.n);
         }
+        else
+        {
+            h.assertParseWithOptions(assert, v.i, v.o, v.n, v.opt);
+        }
     });
 };

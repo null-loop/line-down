@@ -40,25 +40,21 @@
             );
             log([
                 '\nUsage:\n',
-                '\the [--escape] string',
-                '\the [--encode] [--use-named-refs] [--everything] [--allow-unsafe] string',
-                '\the [--decode] [--attribute] [--strict] string',
+                '\tline-down string',
                 '\the [-v | --version]',
                 '\the [-h | --help]',
-                '\nExamples:\n',
-                '\the --escape \\<img\\ src\\=\\\'x\\\'\\ onerror\\=\\"prompt\\(1\\)\\"\\>',
-                '\techo \'&copy; &#x1D306;\' | he --decode'
             ].join('\n'));
             return process.exit(1);
         }
 
         if (/^(?:-v|--version)$/.test(option)) {
-            log('v%s', he.version);
+            log('v%s', ld.parser.version);
             return process.exit(1);
         }
 
         strings.forEach(function(string) {
             // Process options
+            /*
             if (string == '--escape') {
                 action = 'escape';
                 return;
@@ -95,33 +91,31 @@
                 action = 'decode';
                 options.strict = true;
                 return;
-            }
+            }*/
             // Process string(s)
             var result;
-            if (!action) {
-                log('Error: he requires at least one option and a string argument.');
-                log('Try `he --help` for more information.');
-                return process.exit(1);
-            }
+
             try {
-                result = he[action](string, options);
+                if (!action)
+                {
+                    result = ld.parser.parseWithDefaultOptions(string);
+                }
                 log(result);
                 count++;
             } catch(error) {
                 log(error.message + '\n');
-                log('Error: failed to %s.', action);
-                log('If you think this is a bug in he, please report it:');
-                log('https://github.com/mathiasbynens/he/issues/new');
+                log('If you think this is a bug in line-down, please report it:');
+                log('https://github.com/null-loop/line-down/issues/new');
                 log(
-                    '\nStack trace using he@%s:\n',
-                    he.version
+                    '\nStack trace using line-down@%s:\n',
+                    ld.parser.version
                 );
                 log(error.stack);
                 return process.exit(1);
             }
         });
         if (!count) {
-            log('Error: he requires a string argument.');
+            log('Error: line-down requires a string argument.');
             log('Try `he --help` for more information.');
             return process.exit(1);
         }
