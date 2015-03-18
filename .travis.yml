@@ -3,10 +3,9 @@ node_js:
   - "0.10"
 
 install:
-  - cd src/node/parser
+  - npm install --global gulp
   - npm install
-  - cd ../../../
+  - gulp buildAll
 
 script:
-  - cd src/node/parser
-  - npm test
+  - gulp testAll

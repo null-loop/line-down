@@ -15,11 +15,24 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-var h = require("./helpers.js");
+exports.each = function(a,h){
+    for(var n in a){
+        if (a.hasOwnProperty(n)){
+            h(n,a[n]);
+        }
+    }
+};
 
-exports.testParseWithNoOptions = function(assert){
+exports.contains = function(a,o){
+    return exports.containsByPredicate(a,function(k,v){
+        return v===o;
+    });
+};
 
-    h.assertParseWithNoOptions(assert,'#Heading','<h1>Heading</h1>','Simple heading test');
-    h.assertParseWithNoOptions(assert,'Paragraph','<p>Paragraph\r\n</p>','Simple paragraph test');
-    h.assertParseWithNoOptions(assert,'**Strong**','<p><strong>Strong</strong>\r\n</p>','Simple strong test');
+exports.containsByPredicate = function(a,p){
+    var has = false;
+    exports.each(a,function(k,v){
+        if (p(k,v)) has = true;
+    });
+    return has;
 };

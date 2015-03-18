@@ -1,0 +1,1 @@
+define("collections",["require","exports","module"],function(n,e){e.each=function(n,e){for(var t in n)n.hasOwnProperty(t)&&e(t,n[t])},e.contains=function(n,t){return e.containsByPredicate(n,function(n,e){return e===t})},e.containsByPredicate=function(n,t){var r=!1;return e.each(n,function(n,e){t(n,e)&&(r=!0)}),r}});
