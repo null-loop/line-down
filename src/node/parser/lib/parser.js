@@ -55,7 +55,7 @@ function parseWithOptions(linedownContent, options) {
     return lineBuilder.result();
 }
 
-exports.parser = { version : '0.0.6' };
+exports.parser = { version : '0.0.7' };
 
 exports.parser.parseWithNoOptions = function(linedownContent){
     return parseWithNoOptions(linedownContent);
