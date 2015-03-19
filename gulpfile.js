@@ -85,7 +85,7 @@ gulp.task('testJs',['buildJs'],function(done){
     done();
 });
 
-gulp.task('testAll',['testJs'], function(done){
+gulp.task('testAll',['buildAll','testJs'], function(done){
 
 });
 
