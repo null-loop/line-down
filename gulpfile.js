@@ -34,8 +34,7 @@ var webParserLib = 'www/js/parser';
 var Logger = require("./logger.js");
 
 gulp.task('updateVersions', function() {
-    // place code for your default task here
-    console.log('Updating all versions to ' + p.version);
+
 });
 
 gulp.task('lint',function(){
