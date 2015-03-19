@@ -18,7 +18,6 @@
 var h = require("./helpers.js");
 
 exports.testParseWithNoOptions = function(assert){
-
     h.assertParseWithNoOptions(assert,'#Heading','<h1>Heading</h1>','Simple heading test');
     h.assertParseWithNoOptions(assert,'Paragraph','<p>Paragraph\r\n</p>','Simple paragraph test');
     h.assertParseWithNoOptions(assert,'**Strong**','<p><strong>Strong</strong>\r\n</p>','Simple strong test');

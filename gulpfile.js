@@ -25,10 +25,13 @@ var wrapper = require('gulp-module-wrapper');
 var harp = require('harp');
 var ugly = require('gulp-uglify');
 var run = require('gulp-run');
+var gutil = require('gulp-util');
 
 var parserScriptsGlob = 'src/js/parser/lib/*.js';
 var nodeParserLib = 'src/node/parser/lib';
 var webParserLib = 'www/js/parser';
+
+var Logger = require("./logger.js");
 
 gulp.task('updateVersions', function() {
     // place code for your default task here
@@ -68,6 +71,10 @@ gulp.task('buildJs',function(done){
     done();
 });
 
+gulp.task('buildWeb',['buildJs'], function(done){
+
+});
+
 gulp.task('testJs',['buildJs'],function(done){
     var parserSmokeTests = require('./src/js/parser/tests/smoke-tests.js');
     var testCases = require('./src/js/parser/tests/testcases.js');
@@ -75,10 +82,11 @@ gulp.task('testJs',['buildJs'],function(done){
         smokeTests:parserSmokeTests.testParseWithNoOptions,
         testCases:testCases.testCases
     };
-    require('test').run(allTests);
+    require('test').run(allTests, Logger({print:gutil.log}));
+    done();
 });
 
-gulp.task('buildWeb',['testJs'], function(done){
+gulp.task('testAll',['testJs'], function(done){
 
 });
 

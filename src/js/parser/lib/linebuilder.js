@@ -184,7 +184,6 @@ exports.createBuilder = function(options, scope){
         writeDataBlocks:function(dataBlocks){
             var self = this;
             if (dataBlocks && dataBlocks.length > 0){
-                console.log("Writing data blocks");
                 col.each(dataBlocks,function(k,v){
                     var id = v.id;
                     var type = v.classes? v.classes.toLocaleLowerCase():'json';
