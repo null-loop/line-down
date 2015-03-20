@@ -19,9 +19,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 <head>
     <meta charset="utf-8">
-    <title>line-down :: It might be wrong, but let's at least make sure it's right.</title>
+    <title>line-down :: The world's got thousands of problems. Let's add another one.</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="google-site-verification" content="pQfMLa1499kqZ5ktebP3F-gzu1lCzepPuWH3yuAPYOc" />
     <link rel="stylesheet" href="css/bootstrap.css" media="screen">
     <link rel="stylesheet" href="css/bootswatch.min.css">
     <link rel="stylesheet" href="css/line-down.css">
@@ -54,79 +55,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     </div>
 </div>
 <div class="container">
+    <div class="row">
+        <div class="col-lg-12"></div>
+    </div>
     <div class="page-header">
         <div class="row">
             <div class="col-lg-12 col-md-7 col-sm-6">
-                <h1>Test Suite</h1>
-
-                <p class="lead">It might be wrong, but let's at least make sure it's right.</p>
+                <h1>line-down</h1>
+                <p class="lead">The world's got thousands of problems. Let's add another one.</p>
+                <a href="https://travis-ci.org/null-loop/line-down">
+                    <img src="https://travis-ci.org/null-loop/line-down.svg?branch=master"/>
+                </a>
+                <a href="https://david-dm.org/null-loop/line-down" title="Dependency status">
+                    <img src="https://david-dm.org/null-loop/line-down.svg"/>
+                </a>
+                <a href="https://david-dm.org/null-loop/line-down#info=devDependencies" title="devDependency status">
+                    <img src="https://david-dm.org/null-loop/line-down/dev-status.svg"/>
+                </a>
             </div>
         </div>
     </div>
-    <div class="row" id="testRunStats">
-        <div class="col-lg-12">
-            <h2>
-                <strong data-bind="text:tests().length"></strong> tests available,
-                <strong data-bind="text:run()"></strong> tests run,
-                <strong data-bind="text:passed"></strong> passed,
-                <strong data-bind="text:failed"></strong> failed,
-            </h2>
-            <h3 data-bind="visible:run()>0">Parser executed for <span data-bind="text:totalParserExecutionTime"></span>ms</h3>
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <button id="runTests" class="btn btn-lg btn-primary">Run All Tests</button>
-            <hr/>
-        </div>
-    </div>
-    <div class="row" id="testRunOutput">
-        <div class="col-lg-12" data-bind="visible: failedTests().length > 0">
-            <h2>Failed Tests</h2>
-        </div>
-        <div data-bind="foreach: failedTests">
-            <div class="col-lg-12">
-                <div class="alert alert-success"
-                     data-bind="css:{'alert-success': passed(), 'alert-danger': !passed() && result()!='Not Run', 'alert-info': result()=='Not Run'}">
-                    <h4><span data-bind="text:description"></span> - <span data-bind="text:result()"></span></h4>
-                    <h5 data-bind="visible:run">Execution took <span data-bind="text:executionTime"></span>ms</h5>
-                </div>
-                <h5>Line-Down input</h5>
-                <pre><code data-bind="text:linedownInput"></code></pre>
-                <h5>Expected HTML</h5>
-                <pre><code data-bind="text:expectedHtmlOutput"></code></pre>
-                <h5>Actual HTML</h5>
-                <pre><code data-bind="text:actualHtmlOutput"></code></pre>
-                <h3>Diff</h3>
-                <pre><code data-bind="html:resultDiff"></code></pre>
-                <h5>Render</h5>
-                <div data-bind="html:actualHtmlOutput"></div>
-                <hr/>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <h2>All Tests</h2>
-        </div>
-        <div data-bind="foreach: tests">
-            <div class="col-lg-12">
-                <div class="alert alert-success"
-                     data-bind="css:{'alert-success': passed(), 'alert-danger': !passed() && result()!='Not Run', 'alert-info': result()=='Not Run'}">
-                    <h4><span data-bind="text:description"></span> - <span data-bind="text:result()"></span></h4>
-                    <h5 data-bind="visible:run">Execution took <span data-bind="text:executionTime"></span>ms</h5>
-                </div>
-                <h5>Line-Down input</h5>
-                <pre><code data-bind="text:linedownInput"></code></pre>
-                <h5>Expected HTML</h5>
-                <pre><code data-bind="text:expectedHtmlOutput"></code></pre>
-                <h5>Actual HTML</h5>
-                <pre><code data-bind="text:actualHtmlOutput"></code></pre>
-                <h5>Render</h5>
-                <div data-bind="html:actualHtmlOutput"></div>
-                <hr/>
-            </div>
-        </div>
-    </div>
+<%- yield %>
     <footer>
         <div class="row">
             <div class="col-lg-12">
@@ -135,6 +84,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                     <li class="pull-right"><a href="#top">Back to top</a></li>
                     <li><a href="https://twitter.com/null_loop">Twitter</a></li>
                     <li><a href="https://github.com/null-loop/line-down/">GitHub</a></li>
+                    <li><a href="https://travis-ci.org/null-loop/line-down/">Travis CI</a></li>
                     <li><a href="http://www.gnu.org/licenses/gpl-2.0.html">GPL v2</a></li>
                 </ul>
                 <p>Another Grayholme Ltd abomination</p>
@@ -147,9 +97,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 <script src="js/knockout.js"></script>
 <script src="js/he.js"></script>
 <script src="js/diff.js"></script>
-<script src="js/line-down.parser.js"></script>
-<script src="js/line-down.tests.js"></script>
-<script src="js/line-down.testsuite.js"></script>
+<script src="js/parser/parser.js"></script>
+<!--<script src="js/line-down.index.js"></script>-->
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -160,5 +109,3 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     ga('send', 'pageview');
 
 </script>
-</body>
-</html>
