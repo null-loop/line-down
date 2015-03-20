@@ -5,6 +5,7 @@ node_js:
 install:
   - npm install --global gulp
   - npm install --global mocha
+  - npm install
   - gulp installAll
 
 script:

@@ -99,12 +99,8 @@ gulp.task('testNpmParser',['buildJs'],function(done){
    run('npm test',{cwd:'src/node/parser'}).exec('',done);
 });
 
-gulp.task('installAll',['installRoot','installNpmParser'],function(done){
+gulp.task('installAll',['installNpmParser'],function(done){
     done();
-});
-
-gulp.task('installRoot',function(done){
-    run('npm install').exec('',done);
 });
 
 gulp.task('installNpmParser',function(done){
