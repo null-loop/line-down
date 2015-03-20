@@ -1,4 +1,6 @@
 /.idea
+/www-old
+/www/www
 **/*.log
 **/node_modules/**
 

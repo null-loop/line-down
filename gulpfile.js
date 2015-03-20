@@ -26,13 +26,15 @@ var harp = require('harp');
 var ugly = require('gulp-uglify');
 var run = require('gulp-run');
 var gutil = require('gulp-util');
+var harp = require('harp');
 
 var parserScriptsGlob = 'src/js/parser/lib/*.js';
 var parserTestScriptsGlob = 'src/js/parser/tests/*.js';
 var nodeParserLib = 'src/node/parser/lib';
 var nodeParserTests = 'src/node/parser/tests';
 var webParserLib = 'www/js/parser';
-
+var harpRoot = 'www';
+var harpOutput = 'www/www';
 var Logger = require("./logger.js");
 
 
@@ -51,8 +53,8 @@ function checkParserJs(){
         .pipe(jshint.reporter('fail'));
 }
 
-gulp.task('buildAll',['buildJs','buildWeb'],function(){
-
+gulp.task('buildAll',['buildJs','buildWeb'],function(done){
+    done();
 });
 
 gulp.task('buildJs',function(done){
@@ -78,10 +80,10 @@ gulp.task('buildJs',function(done){
 });
 
 gulp.task('buildWeb',['buildJs'], function(done){
-    done();
+    harp.compile(harpRoot , undefined ,done);
 });
 
-gulp.task('testJs',['testJsParser'],function(done){
+gulp.task('testJs',['testJsParser','testNpmParser'],function(done){
     done();
 });
 
@@ -93,17 +95,33 @@ gulp.task('testJsParser',['buildJs'],function(done){
     run('mocha src/js/parser/tests/*.js -R dot').exec('',done);
 });
 
-gulp.task('testAll',['buildAll','testJs'], function(done){
+gulp.task('testNpmParser',['buildJs'],function(done){
+   run('npm test',{cwd:'src/node/parser'}).exec('',done);
+});
+
+gulp.task('installAll',['installRoot','installNpmParser'],function(done){
+    done();
+});
+
+gulp.task('installRoot',function(done){
+    run('npm install').exec('',done);
+});
+
+gulp.task('installNpmParser',function(done){
+    run('npm install',{cwd:'src/node/parser'}).exec('',done);
+});
+
+gulp.task('testAll',['testJs'], function(done){
     done();
 });
 
 gulp.task('gh',['buildWeb'], function(done){
-    //
+
 
     // Publish to the gh-pages branch
     bb({
         branch:'gh-pages',
         ignore:['.git','node_modules'],
-        folder:'www'
+        folder:harpOutput
     }, done);
 });
