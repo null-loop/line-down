@@ -95,7 +95,7 @@ gulp.task('testJsParser',['buildJs'],function(done){
     run('mocha src/js/parser/tests/*.js -R dot').exec('',done);
 });
 
-gulp.task('testNpmParser',['buildJs'],function(done){
+gulp.task('testNpmParser',['buildJs','testJsParser'],function(done){
    run('npm test',{cwd:'src/node/parser'}).exec('',done);
 });
 
