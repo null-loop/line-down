@@ -28,10 +28,13 @@ var run = require('gulp-run');
 var gutil = require('gulp-util');
 
 var parserScriptsGlob = 'src/js/parser/lib/*.js';
+var parserTestScriptsGlob = 'src/js/parser/tests/*.js';
 var nodeParserLib = 'src/node/parser/lib';
+var nodeParserTests = 'src/node/parser/tests';
 var webParserLib = 'www/js/parser';
 
 var Logger = require("./logger.js");
+
 
 gulp.task('updateVersions', function() {
 
@@ -61,6 +64,10 @@ gulp.task('buildJs',function(done){
         .pipe(ugly())
         .pipe(gulp.dest(nodeParserLib));
 
+    // copy tests for node
+    gulp.src([parserTestScriptsGlob])
+        .pipe(gulp.dest(nodeParserTests));
+
     // wrap for web
     gulp.src([parserScriptsGlob])
         .pipe(wrapper({type:'amd',exports:false}))
@@ -71,22 +78,23 @@ gulp.task('buildJs',function(done){
 });
 
 gulp.task('buildWeb',['buildJs'], function(done){
-
-});
-
-gulp.task('testJs',['buildJs'],function(done){
-    var parserSmokeTests = require('./src/js/parser/tests/smoke-tests.js');
-    var testCases = require('./src/js/parser/tests/testcases.js');
-    var allTests={
-        smokeTests:parserSmokeTests.testParseWithNoOptions,
-        testCases:testCases.testCases
-    };
-    require('test').run(allTests, Logger({print:gutil.log}));
     done();
 });
 
-gulp.task('testAll',['buildAll','testJs'], function(done){
+gulp.task('testJs',['testJsParser'],function(done){
+    done();
+});
 
+gulp.task('testWeb',['buildWeb'],function(done){
+    done();
+});
+
+gulp.task('testJsParser',['buildJs'],function(done){
+    run('mocha src/js/parser/tests/*.js -R dot').exec('',done);
+});
+
+gulp.task('testAll',['buildAll','testJs'], function(done){
+    done();
 });
 
 gulp.task('gh',['buildWeb'], function(done){

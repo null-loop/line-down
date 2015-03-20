@@ -1,4 +1,9 @@
 /.idea
 **/*.log
 **/node_modules/**
+
 src/node/parser/line-down-*.tgz
+
+src/node/parser/tests/testcases.js
+src/node/parser/tests/smoke-tests.js
+src/node/parser/tests/helpers.js

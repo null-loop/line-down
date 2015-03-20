@@ -1,6 +1,7 @@
 /**
  * Created by Daniel Gray on 17/03/2015.
  */
+var assert = require("assert");
 var h = require("./helpers.js");
 var col = require("../lib/collections.js");
 
@@ -346,16 +347,21 @@ var autoIdGenerationCases = [
     {i:'+First List Item',o:'<ol><li id=\'first-list-item\'>First List Item</li>\r\n</ol>',n:'Generate id from ordered list item with spaces in content',opt:{generateIds:true}},
 ];
 
-col.each(autoIdGenerationCases,pushCase("Tests about auto id generation"));
+//col.each(autoIdGenerationCases,pushCase("Tests about auto id generation"));
 
-exports.testCases = function(assert){
-    col.each(cases,function(k,v){
-        if (!v.opt) {
-            h.assertParseWithNoOptions(assert, v.i, v.o, v.n);
-        }
-        else
-        {
-            h.assertParseWithOptions(assert, v.i, v.o, v.n, v.opt);
-        }
+//var describe = require("mocha");
+
+exports.describeTests = function(){
+    describe('parser',function(){
+       describe('parseWithNoOptions()',function(){
+           col.each(cases, function(k,v){
+               it(v.n,function(done){
+                   h.assertParseWithNoOptions(assert, v.i, v.o, v.n);
+                   done();
+               });
+           });
+       });
     });
 };
+
+exports.describeTests();
