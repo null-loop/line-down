@@ -15,167 +15,69 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
+var col = require("./collections.js");
 var fnc = {
     startsWith:require('./startswith.js').startsWith,
     createScope:require('./scope.js').createScope
 };
 var he = require('he');
 
+exports.inlineSpecs = [
+    { prefix:'**', element:'strong' },
+    { prefix:'//', element:'em' },
+    { prefix:'__', element:'u' },
+    { prefix:'^^', element:'sup' },
+    { prefix:'!!', element:'sub' },
+    { prefix:'>>', element:'small' },
+    { prefix:'::', element:'code' },
+    { prefix:'``', element:'span' },
+    { prefix:'~~', element:'strike' },
+];
+
 exports.replaceInline = function (content, linebuilder){
     var cLine = content;
     var oLine = '';
     var scope = fnc.createScope();
-    while (cLine.length > 0){
+    var started = false;
+    var startElement = '';
+    var startSpec = '';
+    var startElementId;
+    var startElementClasses;
+    var startElementData;
+    var closeElement = '';
+    var remainder = '';
+    started = false;
 
-        var startElement = '';
-        var startSpec = '';
-        var startElementId;
-        var startElementClasses;
-        var startElementData;
-        var closeElement = '';
-        var remainder;
-
-        var strong = fnc.startsWith('*',cLine,2,true);
-        if (strong.startsWith && !scope.hasElementScope('strong')){
-            startElement = 'strong';
-            startSpec = '**';
-            startElementId = strong.id;
-            startElementClasses = strong.classes;
-            startElementData = strong.dataPairs;
-            remainder = strong.remainingLine;
-        }
-        else if(strong.startsWith){
-            closeElement = 'strong';
-            remainder = strong.remainingLine;
-        }
-        else
+    var h = function(k,spec){
+        if (started) return;
+        var sw = fnc.startsWith(spec.prefix[0], cLine, spec.prefix.length, true);
+        if (sw.startsWith && !scope.hasElementScope(spec.element))
         {
-            var emphasis = fnc.startsWith('/',cLine,2,true);
-            if (emphasis.startsWith && !scope.hasElementScope('em')){
-                startElement = 'em';
-                startSpec = '//';
-                startElementId = emphasis.id;
-                startElementClasses = emphasis.classes;
-                startElementData = emphasis.dataPairs;
-                remainder = emphasis.remainingLine;
-            }
-            else if(emphasis.startsWith){
-                closeElement = 'em';
-                remainder = emphasis.remainingLine;
-            }
-            else
-            {
-                var underline = fnc.startsWith('_',cLine,2,true);
-                if (underline.startsWith && !scope.hasElementScope('u')){
-                    startElement = 'u';
-                    startSpec = '__';
-                    startElementId = underline.id;
-                    startElementClasses = underline.classes;
-                    startElementData = underline.dataPairs;
-                    remainder = underline.remainingLine;
-                }
-                else if(underline.startsWith){
-                    closeElement = 'u';
-                    remainder = underline.remainingLine;
-                }
-                else
-                {
-                    var superscript = fnc.startsWith('^',cLine,2,true);
-                    if (superscript.startsWith && !scope.hasElementScope('sup')){
-                        startElement = 'sup';
-                        startSpec = '^^';
-                        startElementId = superscript.id;
-                        startElementClasses = superscript.classes;
-                        startElementData = superscript.dataPairs;
-                        remainder = superscript.remainingLine;
-                    }
-                    else if(superscript.startsWith){
-                        closeElement = 'sup';
-                        remainder = superscript.remainingLine;
-                    }
-                    else
-                    {
-                        var small = fnc.startsWith('>',cLine,2,true);
-                        if (small.startsWith && !scope.hasElementScope('small')){
-                            startElement = 'small';
-                            startSpec = '>>';
-                            startElementId = small.id;
-                            startElementClasses = small.classes;
-                            startElementData = small.dataPairs;
-                            remainder = small.remainingLine;
-                        }
-                        else if(small.startsWith){
-                            closeElement = 'small';
-                            remainder = small.remainingLine;
-                        }
-                        else
-                        {
-                            var strike = fnc.startsWith('~',cLine,2,true);
-                            if (strike.startsWith && !scope.hasElementScope('strike')){
-                                startElement = 'strike';
-                                startSpec = '~~';
-                                startElementId = strike.id;
-                                startElementClasses = strike.classes;
-                                startElementData = strike.dataPairs;
-                                remainder = strike.remainingLine;
-                            }
-                            else if(strike.startsWith){
-                                closeElement = 'strike';
-                                remainder = strike.remainingLine;
-                            }
-                            else
-                            {
-                                var subscript = fnc.startsWith('!',cLine,2,true);
-                                if (subscript.startsWith && !scope.hasElementScope('sub')){
-                                    startElement = 'sub';
-                                    startSpec = '!!';
-                                    startElementId = subscript.id;
-                                    startElementClasses = subscript.classes;
-                                    startElementData = subscript.dataPairs;
-                                    remainder = subscript.remainingLine;
-                                }
-                                else if(subscript.startsWith){
-                                    closeElement = 'sub';
-                                    remainder = subscript.remainingLine;
-                                }
-                                else
-                                {
-                                    var code = fnc.startsWith(':',cLine,2,true);
-                                    if (code.startsWith && !scope.hasElementScope('code')){
-                                        startElement = 'code';
-                                        startSpec = '::';
-                                        startElementId = code.id;
-                                        startElementClasses = code.classes;
-                                        startElementData = code.dataPairs;
-                                        remainder = code.remainingLine;
-                                    }
-                                    else if(code.startsWith){
-                                        closeElement = 'code';
-                                        remainder = code.remainingLine;
-                                    }
-                                    else{
-                                        var span = fnc.startsWith('`',cLine,2,true);
-                                        if (span.startsWith && !scope.hasElementScope('span')){
-                                            startElement = 'span';
-                                            startSpec = '``';
-                                            startElementId = span.id;
-                                            startElementClasses = span.classes;
-                                            startElementData = span.dataPairs;
-                                            remainder = span.remainingLine;
-                                        }
-                                        else if(span.startsWith){
-                                            closeElement = 'span';
-                                            remainder = span.remainingLine;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            started = true;
+            startElement = spec.element;
+            startSpec = spec.prefix;
+            startElementId = sw.id;
+            startElementClasses = sw.classes;
+            startElementData = sw.dataPairs;
+            remainder = sw.remainingLine;
         }
+        else if (sw.startsWith)
+        {
+            closeElement = spec.element;
+            remainder = sw.remainingLine;
+        }
+    };
+
+    while (cLine.length > 0){
+        startElement = '';
+        startSpec = '';
+        startElementId;
+        startElementClasses;
+        startElementData;
+        closeElement = '';
+        remainder = '';
+        started = false;
+        col.each(exports.inlineSpecs, h);
 
         if (startElement.length > 0)
         {

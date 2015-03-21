@@ -20,7 +20,6 @@ var p = require('./package.json');
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
 var bb = require('buildbranch');
-var wrapper = require('gulp-module-wrapper');
 var ugly = require('gulp-uglify');
 var run = require('gulp-run');
 var gutil = require('gulp-util');
@@ -97,10 +96,6 @@ gulp.task('buildWeb',['buildJs'], function(done){
     compileHarp(done);
 });
 
-gulp.task('buildWebContent',function(done){
-    compileHarp(done);
-});
-
 gulp.task('testJs',['testJsParser','testNpmParser'],function(done){
     done();
 });
@@ -131,7 +126,7 @@ gulp.task('testAll',['testJs'], function(done){
     done();
 });
 
-gulp.task('gh', function(done){
+gulp.task('gh-not-used', function(done){
     // Publish the current www/www to the gh-pages branch
     bb({
         branch:'gh-pages',
