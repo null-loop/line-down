@@ -6,7 +6,13 @@
 **/node_modules/**
 
 src/node/parser/line-down-*.tgz
-
+src/node/parser/lib/collections.js
+src/node/parser/lib/inline.js
+src/node/parser/lib/linebuilder.js
+src/node/parser/lib/lineprocessor.js
+src/node/parser/lib/parser.js
+src/node/parser/lib/scope.js
+src/node/parser/lib/startswith.js
 src/node/parser/tests/testcases.js
 src/node/parser/tests/smoke-tests.js
 src/node/parser/tests/helpers.js
