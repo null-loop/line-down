@@ -1,7 +1,7 @@
 /.idea
 /www-old
 /www/www
-/www/js/parser.js
+/www/js/line-down.parser.js
 **/*.log
 **/node_modules/**
 
