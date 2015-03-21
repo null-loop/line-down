@@ -1,6 +1,6 @@
 {
   "name": "line-down",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A sensible mark-down-like text to HTML parser - very early in development",
   "main": "./lib/parser.js",
   "bin": {

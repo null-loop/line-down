@@ -199,7 +199,7 @@ exports.replaceInline = function (content, linebuilder){
         {
             linebuilder.append(he.encode(oLine));
             oLine = '';
-            while (scope.hasCurrentBlock() && scope.currentBlockElement() != closeElement) {
+            while (scope.hasCurrentBlock() && scope.currentBlockElement() !== closeElement) {
                 linebuilder.endCurrentScopeWithoutLineBreak(scope);
             }
             linebuilder.endCurrentScopeWithoutLineBreak(scope);

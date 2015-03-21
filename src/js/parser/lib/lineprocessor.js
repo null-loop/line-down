@@ -16,7 +16,6 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-var col = require('./collections.js');
 var fnc = {
     startsWith:require('./startswith.js').startsWith,
     createScope:require('./scope.js').createScope
@@ -227,7 +226,7 @@ exports.processLine = function(lineContent, scope, linebuilder) {
     if (!hasLineSpec && !hasBlockSpec) {
         if (trimmedContent.length === 0) {
             // close any open blocks
-            while (scope.hasCurrentBlock() && scope.currentBlockElement() != 'blockquote') {
+            while (scope.hasCurrentBlock() && scope.currentBlockElement() !== 'blockquote') {
                 linebuilder.endCurrentScope(scope);
             }
         }
@@ -241,19 +240,19 @@ exports.processLine = function(lineContent, scope, linebuilder) {
         var lTwo = trimmedContent.substring(trimmedContent.length - 2, trimmedContent.length);
         var closeLength;
 
-        if (lTwo == '\'\'' && scope.hasElementScope('p')) {
+        if (lTwo === '\'\'' && scope.hasElementScope('p')) {
             closeUntil = 'p';
             closeLength = 2;
         }
-        else if (lTwo == '\"\"' && scope.hasElementScope('blockquote')) {
+        else if (lTwo === '\"\"' && scope.hasElementScope('blockquote')) {
             closeUntil = 'blockquote';
             closeLength = 2;
         }
-        else if (lTwo == '%&' && scope.hasElementScope('ul')) {
+        else if (lTwo === '%&' && scope.hasElementScope('ul')) {
             closeUntil = 'ul';
             closeLength = 2;
         }
-        else if (lTwo == '%+' && scope.hasElementScope('ol')) {
+        else if (lTwo === '%+' && scope.hasElementScope('ol')) {
             closeUntil = 'ol';
             closeLength = 2;
         }
@@ -276,7 +275,7 @@ exports.processLine = function(lineContent, scope, linebuilder) {
     }
 
     // check and see if we should open a paragraph block
-    if (!localScope.hasCurrentBlock() && (!scope.hasCurrentBlock() || scope.currentBlockElement() == 'blockquote') && trimmedContent.length > 0) {
+    if (!localScope.hasCurrentBlock() && (!scope.hasCurrentBlock() || scope.currentBlockElement() === 'blockquote') && trimmedContent.length > 0) {
         scope.pushBlock({
             element: 'p',
             spec: '\'\'',
@@ -293,7 +292,7 @@ exports.processLine = function(lineContent, scope, linebuilder) {
         // do the inline!
         linebuilder.addInline(trimmedContent);
         linebuilder.endScopeWithoutLineBreak(localScope);
-        while (scope.hasCurrentBlock() && scope.currentBlockElement() != closeUntil) {
+        while (scope.hasCurrentBlock() && scope.currentBlockElement() !== closeUntil) {
             linebuilder.endCurrentScopeWithoutLineBreak(scope);
         }
         linebuilder.endCurrentScopeWithoutLineBreak(scope);

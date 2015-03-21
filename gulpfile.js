@@ -18,34 +18,27 @@
 
 var p = require('./package.json');
 var gulp = require('gulp');
-var watch = require('gulp-watch');
 var jshint = require('gulp-jshint');
 var bb = require('buildbranch');
 var wrapper = require('gulp-module-wrapper');
-var harp = require('harp');
 var ugly = require('gulp-uglify');
 var run = require('gulp-run');
 var gutil = require('gulp-util');
 var harp = require('harp');
 var browserify = require('browserify');
+var jeditor = require("gulp-json-editor");
 
+var masterVersion = p.version;
 var parserScriptsRoot = 'src/js/parser/lib/';
 var parserScriptsGlob = parserScriptsRoot + '*.js';
 var parserTestScriptsGlob = 'src/js/parser/tests/*.js';
 var nodeParserLib = 'src/node/parser/lib';
+var nodeParserPackageFile = 'src/node/parser/package.json';
 var nodeParserTests = 'src/node/parser/tests';
 var webParserLib = './www/js/line-down.parser.js';
 var harpRoot = 'www';
 var harpOutput = 'www/www';
-
-
-gulp.task('updateVersions', function() {
-
-});
-
-gulp.task('lint',function(){
-    checkParserJs();
-});
+var _hs;
 
 function checkParserJs(){
     gulp.src([parserScriptsGlob])
@@ -53,6 +46,32 @@ function checkParserJs(){
         .pipe(jshint.reporter('default'))
         .pipe(jshint.reporter('fail'));
 }
+
+function compileHarp(done){
+    harp.compile(harpRoot , undefined ,done);
+}
+
+function serveHarp(){
+    gutil.log('Starting Harp on port 9000');
+    _hs = harp.server(harpRoot, {port:9000});
+}
+
+function endServeHarp(){
+    if(_hs){
+        gutil.log('Closing Harp');
+        _hs.close();
+    }
+}
+
+gulp.task('updateVersions', function() {
+    gulp.src([nodeParserPackageFile]).pipe(jeditor({
+        'version':masterVersion
+    })).pipe(gulp.dest('src/node/parser'));
+});
+
+gulp.task('lint',function(){
+    checkParserJs();
+});
 
 gulp.task('buildAll',['buildJs','buildWeb'],function(done){
     done();
@@ -78,10 +97,6 @@ gulp.task('buildWeb',['buildJs'], function(done){
     compileHarp(done);
 });
 
-function compileHarp(done){
-    harp.compile(harpRoot , undefined ,done);
-}
-
 gulp.task('buildWebContent',function(done){
     compileHarp(done);
 });
@@ -91,6 +106,8 @@ gulp.task('testJs',['testJsParser','testNpmParser'],function(done){
 });
 
 gulp.task('testWeb',['buildWeb'],function(done){
+    serveHarp();
+    endServeHarp();
     done();
 });
 
@@ -115,8 +132,6 @@ gulp.task('testAll',['testJs'], function(done){
 });
 
 gulp.task('gh', function(done){
-
-
     // Publish the current www/www to the gh-pages branch
     bb({
         branch:'gh-pages',

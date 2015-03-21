@@ -29,7 +29,9 @@ exports.createBuilder = function(options, scope){
 
         generateId:function(block){
             var allowed = false;
-            if (block.element=='h' || block.element=='p' || block.element=='li') allowed = true;
+            if (block.element ==='h' || block.element === 'p' || block.element === 'li') {
+                allowed = true;
+            }
             if (allowed){
                 var r = block.remainingLine;
                 var maxLength = 100;
@@ -78,7 +80,7 @@ exports.createBuilder = function(options, scope){
             col.each(kc,function(i,v){
                 if (isLetter(v)){
                     var uv = v.toLocaleUpperCase();
-                    if (uv == v) {
+                    if (uv === v) {
                         if (wasLower) {
                             v = '-' + v;
                             wasLower = false;
@@ -187,9 +189,9 @@ exports.createBuilder = function(options, scope){
                 col.each(dataBlocks,function(k,v){
                     var id = v.id;
                     var type = v.classes? v.classes.toLocaleLowerCase():'json';
-                    var contentType = type=='json'?'application/json':
-                        type=='jsonp'?'application/javascript':
-                            type=='xml'?'application/xml':'text/plain';
+                    var contentType = type==='json'?'application/json':
+                                      type==='jsonp'?'application/javascript':
+                                      type==='xml'?'application/xml':'text/plain';
                     self.beginLine();
                     self.openTag("script",id,undefined,undefined,'type=\'' + contentType + '\'');
                     //TODO:write the data model out :)

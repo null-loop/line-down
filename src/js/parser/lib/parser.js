@@ -16,7 +16,6 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-var col = require('./collections.js');
 var lb = require('./linebuilder.js');
 var lp = require('./lineprocessor.js');
 var fnc = {
@@ -24,9 +23,6 @@ var fnc = {
     createScope:require('./scope.js').createScope
 };
 
-function parseWithNoOptions(linedownContent) {
-    return parseWithOptions(linedownContent, {});
-}
 function parseWithOptions(linedownContent, options) {
     var re = /\r\n|\n\r|\n|\r/g;
 
@@ -53,6 +49,10 @@ function parseWithOptions(linedownContent, options) {
     lineBuilder.complete();
 
     return lineBuilder.result();
+}
+
+function parseWithNoOptions(linedownContent) {
+    return parseWithOptions(linedownContent, {});
 }
 
 exports.parser = { version : '0.0.7' };

@@ -40,7 +40,7 @@ exports.startsWith = function (symbol, line, fixedCount, preserveWhitespace, all
 
     while (r.length > 0 && !f) {
         var c = r[0];
-        if (c == symbol && !inData && !inClasses && !inId) {
+        if (c === symbol && !inData && !inClasses && !inId) {
             count++;
             if (allSymbol.length && allSymbol.length > 1 && count <= allSymbol.length)
             {
@@ -53,50 +53,50 @@ exports.startsWith = function (symbol, line, fixedCount, preserveWhitespace, all
             }
             r = r.substring(1);
         }
-        else if (col.contains(digits, c) && !inClasses && !inId && ((count == 1) || (count > 1 && allowFloatingNumber))) {
+        else if (col.contains(digits, c) && !inClasses && !inId && ((count === 1) || (count > 1 && allowFloatingNumber))) {
             numberCount = numberCount + c;
             r = r.substring(1);
         }
-        else if (c == '@' && !inClasses && count > 0) {
+        else if (c === '@' && !inClasses && count > 0) {
             inClasses = true;
             inId = false;
             r = r.substring(1);
         }
-        else if (c == '@' && inClasses && classes.length === 0 && !inferBaseCss){
+        else if (c === '@' && inClasses && classes.length === 0 && !inferBaseCss){
             inferBaseCss = true;
             r = r.substring(1);
         }
-        else if (c == '@' && inClasses) {
+        else if (c === '@' && inClasses) {
             inClasses = false;
             r = r.substring(1);
         }
-        else if (c == '?' && !inId && count > 0) {
+        else if (c === '?' && !inId && count > 0) {
             inId = true;
             inClasses = false;
             r = r.substring(1);
         }
-        else if (c == '?' && inId) {
+        else if (c === '?' && inId) {
             inId = false;
             r = r.substring(1);
         }
-        else if (c == '$' && !inData && count > 0)
+        else if (c === '$' && !inData && count > 0)
         {
             inData = true;
             r = r.substring(1);
         }
-        else if (c == '$' && inData){
+        else if (c === '$' && inData){
             inData = false;
             r = r.substring(1);
         }
-        else if (inClasses && c != ' ' && c != '?') {
+        else if (inClasses && c !== ' ' && c !== '?') {
             classes = classes + c;
             r = r.substring(1);
         }
-        else if (inId && c != ' ' && c != '@') {
+        else if (inId && c !== ' ' && c !== '@') {
             id = id + c;
             r = r.substring(1);
         }
-        else if (inData && c!= ' ' && c!='$'){
+        else if (inData && c!== ' ' && c!== '$'){
             data = data + c;
             r = r.substring(1);
         }
@@ -130,7 +130,9 @@ exports.startsWith = function (symbol, line, fixedCount, preserveWhitespace, all
             if (v.indexOf('-')!=-1){
                 var cs = v.split('-');
                 var ex = cs[0];
-                if (!col.contains(extras,ex) && !col.contains(sc,ex)) extras.push(ex);
+                if (!col.contains(extras,ex) && !col.contains(sc,ex)) {
+                    extras.push(ex);
+                }
             }
         });
         var extraClasses='';

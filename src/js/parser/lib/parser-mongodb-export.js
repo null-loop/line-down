@@ -17,6 +17,9 @@
  */
 
 var linedown = window.linedown || {};
+if (linedown && linedown.parser) {
+    return;
+}
 
 linedown.parser = require('./parser.js').parser;
 

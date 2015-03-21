@@ -56,7 +56,9 @@ exports.createScope = function () {
             return this._currentBlock !== null;
         },
         currentBlockElement: function () {
-            if (!this.hasCurrentBlock()) return null;
+            if (!this.hasCurrentBlock()) {
+                return null;
+            }
             return this._currentBlock.element;
         },
         pushBlock: function (block) {
@@ -76,7 +78,9 @@ exports.createScope = function () {
         hasElementScope: function (element) {
             var has = false;
             col.each(this._scopeStack, function (i, v) {
-                if (v.element == element) has = true;
+                if (v.element == element) {
+                    has = true;
+                }
             });
             return has;
         },
@@ -87,8 +91,10 @@ exports.createScope = function () {
             return col.contains(this._usedIds, id);
         },
         isImplicitParagraphScope:function(){
-            if (this._currentBlock === null) return false;
-            return !!(this._currentBlock.element == 'p' && this._currentBlock.implicit);
+            if (this._currentBlock === null) {
+                return false;
+            }
+            return !!(this._currentBlock.element === 'p' && this._currentBlock.implicit);
         }
     };
 };
