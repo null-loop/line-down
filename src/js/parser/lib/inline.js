@@ -71,9 +71,9 @@ exports.replaceInline = function (content, linebuilder){
     while (cLine.length > 0){
         startElement = '';
         startSpec = '';
-        startElementId;
-        startElementClasses;
-        startElementData;
+        startElementId = '';
+        startElementClasses = '';
+        startElementData = '';
         closeElement = '';
         remainder = '';
         started = false;
