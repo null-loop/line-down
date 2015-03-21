@@ -260,7 +260,7 @@ exports.processLine = function(lineContent, scope, linebuilder) {
         {
             if(trimmedContent.length > 3){
                 var lFour = trimmedContent.substring(trimmedContent.length - 4, trimmedContent.length);
-                if (lFour==='$$$$' && scope.inDataBlock()){
+                if (lFour === '$$$$' && scope.inDataBlock()){
                     if (linebuilder.options.implicitGenerateIds){
                         linebuilder.options.generateIds = false;
                     }

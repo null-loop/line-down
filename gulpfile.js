@@ -81,8 +81,9 @@ gulp.task('buildJs',function(done){
 
     // wrap for node
     gulp.src([parserScriptsGlob])
-        .pipe(wrapper({type:'commonjs',exports:false}))
-        .pipe(ugly())
+        //.pipe(wrapper({type:'commonjs',exports:false}))
+        // TODO:This has br0ke! Why?
+        //.pipe(ugly())
         .pipe(gulp.dest(nodeParserLib));
 
     // copy tests for node
