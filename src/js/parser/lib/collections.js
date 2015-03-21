@@ -32,7 +32,7 @@ exports.contains = function(a,o){
 exports.containsByPredicate = function(a,p){
     var has = false;
     exports.each(a,function(k,v){
-        if (p(k,v)) has = true;
+        if (p(k,v)) { has = true; }
     });
     return has;
 };

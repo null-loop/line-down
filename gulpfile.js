@@ -37,7 +37,6 @@ var nodeParserTests = 'src/node/parser/tests';
 var webParserLib = './www/js/line-down.parser.js';
 var harpRoot = 'www';
 var harpOutput = 'www/www';
-var Logger = require("./logger.js");
 
 
 gulp.task('updateVersions', function() {
@@ -115,10 +114,10 @@ gulp.task('testAll',['testJs'], function(done){
     done();
 });
 
-gulp.task('gh',['buildWeb'], function(done){
+gulp.task('gh', function(done){
 
 
-    // Publish to the gh-pages branch
+    // Publish the current www/www to the gh-pages branch
     bb({
         branch:'gh-pages',
         ignore:['.git','node_modules'],
