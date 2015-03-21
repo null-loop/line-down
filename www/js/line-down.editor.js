@@ -1,3 +1,9 @@
+/**
+ * Created by Daniel Gray on 08/03/2015.
+ */
+/**
+ * Created by Daniel Gray on 07/03/2015.
+ */
 /*
  Copyright (C) 2015 Daniel Gray, Grayholme Ltd
 
@@ -18,26 +24,27 @@
 
 (function (ld, $, undefined) {
 
-    if ($('#linedownInput').length==0) return;
-    function updateFromLinedown(linedown){
-        if (!linedown) {
-            linedown = $('#linedownInput')[0].value;
-        }
-        var startTime = window.performance.now();
-        var html = ld.parser.parseWithNoOptions(linedown);
-        var endTime = window.performance.now();
-        var executionTime = Math.floor((endTime - startTime)*1000)/1000;
-
-        $('#linedownOutput').text(html);
-
-        var dom = $(html);
-        $('#linedownHtml').empty();
-        $('#linedownHtml').append(dom);
-
-        $('#htmlGenerationTime').text('HTML generation took ' + executionTime + "ms");
+    function splitLines(content)
+    {
+        var re = /\r\n|\n\r|\n|\r/g;
+        var lines = content.replace(re, "\n").split("\n");
+        return lines;
     }
-    updateFromLinedown();
 
-    ld.editor.init($('#linedownInput'), updateFromLinedown);
+    function init(target, onchangeFunc){
+        //TODO:Hook up the editor here!
+        var jt = $(target);
+        jt.bind('input propertychange', function() {
+            var linedown = jt.val();
+            // update line count
+            var lines = splitLines(linedown);
+            var lineCount = lines.length;
+            // run on the onchangeFunc
+            onchangeFunc();
+        });
+    }
+
+    ld.editor = ld.editor || {};
+    ld.editor.init = init;
 
 })(window.linedown = window.linedown || {}, jQuery)
