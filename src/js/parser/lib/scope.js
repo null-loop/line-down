@@ -78,7 +78,7 @@ exports.createScope = function () {
         hasElementScope: function (element) {
             var has = false;
             col.each(this._scopeStack, function (i, v) {
-                if (v.element == element) {
+                if (v.element === element) {
                     has = true;
                 }
             });

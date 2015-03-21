@@ -149,7 +149,9 @@ exports.createBuilder = function(options, scope){
         result: function () {
             var s = '';
             col.each(this._outputLines, function (key, value) {
-                if (key > 0) s = s + '\r\n';
+                if (key > 0) {
+                    s = s + '\r\n';
+                }
                 s = s + value;
             });
             return s;

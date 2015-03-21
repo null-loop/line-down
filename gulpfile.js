@@ -25,7 +25,6 @@ var ugly = require('gulp-uglify');
 var run = require('gulp-run');
 var gutil = require('gulp-util');
 var harp = require('harp');
-var browserify = require('browserify');
 var jeditor = require("gulp-json-editor");
 
 var masterVersion = p.version;

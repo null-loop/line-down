@@ -115,7 +115,7 @@ exports.startsWith = function (symbol, line, fixedCount, preserveWhitespace, all
         r = r.trim();
     }
 
-    if (fixedCount && count != fixedCount) {
+    if (fixedCount && count !== fixedCount) {
         // no match
         return {
             startsWith: false,
@@ -127,7 +127,7 @@ exports.startsWith = function (symbol, line, fixedCount, preserveWhitespace, all
         var sc = classes.split('&');
         var extras = [];
         col.each(sc,function(k,v){
-            if (v.indexOf('-')!=-1){
+            if (v.indexOf('-')!==-1){
                 var cs = v.split('-');
                 var ex = cs[0];
                 if (!col.contains(extras,ex) && !col.contains(sc,ex)) {
@@ -156,7 +156,7 @@ exports.startsWith = function (symbol, line, fixedCount, preserveWhitespace, all
             var pair = v.split('=');
             var key = '';
             var value = '';
-            if (pair.length==1){
+            if (pair.length===1){
                 key = 'id';
                 value = pair[0];
             }
