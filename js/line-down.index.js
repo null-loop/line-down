@@ -1,6 +1,3 @@
-/**
- * Created by Daniel Gray on 07/03/2015.
- */
 /*
  Copyright (C) 2015 Daniel Gray, Grayholme Ltd
 
@@ -22,6 +19,7 @@
 (function (ld, $, undefined) {
 
     ld.showTestsForSpecs = function(){
+        //TODO:Rewrite this.....
         var specItems = $('[data-spec]');
         var specSections = $('[data-spec-section]');
         var warn = 10;
@@ -89,7 +87,7 @@
     };
 
 
-    /*
+
     ld.hideTestsForSpecs = function(){
         $('.test').remove();
         $('.testSection').remove();
@@ -113,14 +111,13 @@
 
     // Add Pill with count
 
-    // Add to pill to run tests*/
+    // Add to pill to run tests
 
+    // render the spec as html
     $.get('linedown-spec.ld.txt',function(content){
        var html = ld.parseNoOptions(content);
         console.log(html);
         $('#lineDownOutput').html(html);
     });
-
-    // render the linedown spec as html
 
 })(window.linedown = window.linedown || {}, jQuery)

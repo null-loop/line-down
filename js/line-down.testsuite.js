@@ -61,7 +61,17 @@
 
         $.each(model.tests(), function (k, v) {
             var startTime = window.performance.now();
-            var html = linedown.parseNoOptions(v.linedownInput);
+            var html = '';
+
+            if (!v.options)
+            {
+                html = linedown.parseNoOptions(v.linedownInput);
+            }
+            else
+            {
+                html = linedown.parseWithOptions(v.linedownInput, v.options);
+            }
+
             var endTime = window.performance.now();
             var executionTime = Math.floor((endTime - startTime)*1000)/1000;
             var expected = v.expectedHtmlOutput;
@@ -114,6 +124,7 @@
             passed: ko.observable(false),
             result: ko.observable('Not Run'),
             description :v.n,
+            options: v.opt,
             executionTime : ko.observable(0)
         });
     });

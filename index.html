@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     <link rel="stylesheet" href="css/bootstrap.css" media="screen">
     <link rel="stylesheet" href="css/bootswatch.min.css">
     <link rel="stylesheet" href="css/line-down.css">
+    <link rel="stylesheet" href="css/mocha.css">
 </head>
 <body>
 <div class="navbar navbar-default navbar-fixed-top">
@@ -55,295 +56,316 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     </div>
 </div>
 <div class="container">
-    <div class="page-header">
-        <div class="row">
-            <div class="col-lg-12 col-md-7 col-sm-6">
-                <h1>line-down</h1>
-
-                <p class="lead">The world's got thousands of problems. Let's add another one.</p>
-            </div>
-        </div>
-    </div>
+<div class="page-header">
     <div class="row">
-        <div class="col-lg-12">
-            <h2>Progress</h2>
-
-            <p>We've only just started, these rules are likely going to change (and are completely incomplete right
-                now), and the implementation's built for correctness rather than elegance or speed.</p>
-            <p>Other than that - things are going great!</p>
-            <hr/>
+        <div class="col-lg-12 col-md-7 col-sm-6">
+            <h1>line-down</h1>
+            <p class="lead">The world's got thousands of problems. Let's add another one.</p>
+            <a href="https://travis-ci.org/null-loop/line-down">
+                <img src="https://travis-ci.org/null-loop/line-down.svg?branch=master">
+            </a>
+            <a href="https://david-dm.org/null-loop/line-down" title="Dependency status">
+                <img src="https://david-dm.org/null-loop/line-down.svg">
+            </a>
+            <a href="https://david-dm.org/null-loop/line-down#info=devDependencies" title="devDependency status">
+                <img src="https://david-dm.org/null-loop/line-down/dev-status.svg">
+            </a>
+            <a href="http://npmjs.com/package/line-down">
+                <img src="https://img.shields.io/npm/v/line-down.svg">
+            </a>
+            <a href="https://coveralls.io/r/null-loop/line-down">
+                <img src="https://img.shields.io/coveralls/null-loop/line-down/master.svg">
+            </a>
+            <a href="https://www.codacy.com/public/nullloop/line-down">
+                <img src="https://img.shields.io/codacy/22102be6eccf4cd8a97c7506c5d322d2.svg">
+            </a>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12">
-<!--
-            <div class="btn-group btn-group-justified">
-                <a id="showTestConnectionsButton" class="btn btn-default">Show Test Connections</a>
-                <a id="hideTestConnectionsButton" class="btn btn-default disabled">Hide Tests Connections</a>
-            </div>
--->
-            <h1>Top Level Concepts</h1>
-            <ul>
-                <li>Processing should be conducted on a line-by-line basis</li>
-                <li>The contents of a line <strong>cannot</strong> affect the output of any preceding line</li>
-            </ul>
-            <h2 data-spec-section="GR">General Rules</h2>
-            <ul>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <h2>Progress</h2>
 
-                <li data-spec="GR_IGNORE_LEADING_TRAILING_WHITESPACE">Leading and trailing whitespace will be ignored (with the exception of code blocks)</li>
-                <li data-spec="GR_MULTIPLE_BLANK_LANES_ROLLUP">Multiple blank lines will count as one blank line (with the exception of code blocks)</li>
-                <li data-spec="GR_HTML_ENTITY_REPLACEMENT">HTML entity replacement will be conducted on appropriate characters not interpreted as specs</li>
-
-            </ul>
-            <h3>Finally - the most important rule of them all...</h3>
-            <ul>
-                <li>There is <strong>nah</strong> line-break</li>
-            </ul>
-            <hr/>
-            <h2 data-spec-section="ICS">ID, CSS & Data specifications</h2>
-            <ul>
-                <li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS">Any block/in/line spec can be suffixed with a CSS class spec <code>@classSpec</code></li>
-                <li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS_WITH_MULTIPLE_CLASSES">Multiple CSS classes may be specified at once, separated by the '&' character <code>@classSpecOne&classSpecTwo</code>
-                <li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS_WITH_IMPLICIT_BASE_CLASSES">When specified with a double @ as it's opening spec, any CSS classes are split by dashes and any left part taken as base CSS class,
-                    all distinct classes are added <code>@@btn-large</code> becomes <code>class='btn btn-large'</code> and <code>@@btn-large.btn-danger</code> becomes <code>class='btn btn-large btn-danger'</code></li>
-                <li data-spec="ICS_SPECS_ALLOWED_ID_SPECS">Any block/in/line spec can be suffixed with an Id spec <code>?idSpec</code></li>
-                <li data-spec="ICS_SPECS_ALLOWED_ID_AND_CSS_SPECS_IN_ANY_ORDER">Any block/in/line spec can specify both a CSS and an Id spec in any order
-                    <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
-                <li data-spec="ICS_ID_SPEC_OUTPUT_FIRST">When output - the Id spec comes <strong>before</strong> the CSS spec <code>id='idSpec'
-                    class='classSpec'</code></li>
-                <li data-spec="ICS_SPECS_ALLOWED_DATA_SPECS">Any block/in/line spec can be suffixed with a Data spec <code>$key=value</code></li>
-                <li data-spec="ICS_SPECS_ALLOWED_DATA_SPECS">Multiple data specs may be specified at once, separated by the '&' character <code>$keyOne=valueOne&keyTwo=valueTwo</code></li>
-                <li data-spec="ICS_ID_AND_CSS_SPECS_DEFAULTS_TO_ALLOW_ALL">By default any Id / CSS spec is valid</li>
-                <li data-spec="ICS_ID_AND_CSS_SPECS_ALLOW_WHITELISTS">However whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignored and not output.</li>
-                <li data-spec="ICS_ID_SPEC_ALLOWED_ONCE_ONLY">Id specs can only be used once. A subsequent use of the same Id will be invalid and ignored.</li>
-                <li data-spec="ICS_ID_AND_CSS_SPECS_CLOSE_EXPLICITLY">An Id / CSS spec is closed explicitly by a repeat of it's initial character <code>?idSpec?</code> or <code>@classOne&classTwo@</code></li>
-                <li data-spec="ICS_ID_AND_CSS_SPECS_CLOSE_IMPLICITLY">An Id / CSS spec is closed implicitly by a space <code>?idSpec Some content</code> or <code>@classOne.classTwo Some content</code></li>
-            </ul>
-            <hr/>
-            <h2 data-spec-setion="LS">Line Specifications</h2>
-            <ul>
-                <li data-spec="LS_FORMAT_WHOLE_LINE_EXCLUDING_BLOCK_CLOSE">Line specs format the whole line following them - excluding any block spec closures</li>
-                <li data-spec="LS_OCCUR_AT_START_OF_LINE">Line specs may occur at the start of a line</li>
-                <li data-spec="LS_OCCUR_AFTER_BLOCK_OPEN">Line specs may occur immediately following a block spec open</li>
-            </ul>
-            <h3 data-spec-section="LS_H"># - Headings <span class="label label-success">Done</span></h3>
-            <ul>
-                <li>The hash character (#) specifies the line will be formatted as a heading.</li>
-                <li>A single # will become a H1, ## becomes a H2, ### becomes a H3 and so on.</li>
-                <li>The level of the heading may be specified after a single # as a number <code>#100</code> equates to
-                    H100
-                </li>
-                <li>There is no limit to the depth of heading that may be specified</li>
-            </ul>
-
-            <hr/>
-            <h2 data-spec-section="IS">Inline Specifications</h2>
-            <ul>
-                <li data-spec="IS_FORMAT_SECTION_OF_LINE">Inline specs format a section of a line.</li>
-
-                <!--TODO:CONTINUE IN THIS VEIN DAN with spec attributes ! -->
-                <!--TODO:Setup s data on tests cases -->
-                <!--TODO:Format test cases source file better -->
-
-                <li>Inline specs do not flow between lines - they finish when the line does</li>
-                <li>When handling inline specifications, whitespace is preserved. So <code>** I'm strong **</code> is <code>&lt;strong&gt; I'm strong &lt;/strong&gt;</code></li>
-                <li>As a consequence implicitly closed id/class specs will leave a whitespace in their output, considering explicitly closing them if this is
-                    not desired, i.e. <code>**?lead?A strong lead**</code> to produce <code>&lt;strong id='lead'&gt;A strong lead&lt;/strong&gt;</code> or
-                    <code>**?lead?@classy@A strong lead**</code> to produce <code>&lt;strong id='lead' class='classy'&gt;A strong lead&lt;/strong&gt;</code>
-                </li>
-            </ul>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Spec</th>
-                    <th>Outputs</th>
-                    <th>Rendered As</th>
-                    <th>Comments</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr data-spec="IS_STRONG">
-                    <td>Bold / strong</td>
-                    <td><code>Something **important**</code></td>
-                    <td><code>Something &lt;strong&gt;important&lt;/strong&gt;</code></td>
-                    <td>Something <strong>important</strong></td>
-                    <td><span class="label label-success">Done</span></td>
-                </tr>
-                <tr data-spec="IS_EMPHASIS">
-                    <td>Italics / emphasis</td>
-                    <td><code>Something //oblique//</code></td>
-                    <td><code>Something &lt;em&gt;oblique&lt;/em&gt;</code></td>
-                    <td>Something <em>oblique</em></td>
-                    <td><span class="label label-success">Done</span></td>
-                </tr>
-                <tr data-spec="IS_UNDERLINE">
-                    <td>Underline</td>
-                    <td><code>Something __reinforced__</code></td>
-                    <td><code>Something &lt;u&gt;reinforced&lt;/u&gt;</code></td>
-                    <td>Something <u>reinforced</u></td>
-                    <td><span class="label label-success">Done</span></td>
-                </tr>
-                <tr data-spec="IS_SUPERSCRIPT">
-                    <td>Superscript</td>
-                    <td><code>Something ^^raised up^^</code></td>
-                    <td><code>Something &lt;sup&gt;raised up&lt;/sup&gt;</code></td>
-                    <td>Something <sup>raised up</sup></td>
-                    <td><span class="label label-success">Done</span></td>
-                </tr>
-                <tr data-spec="IS_SUBSCRIPT">
-                    <td>Subscript</td>
-                    <td><code>Something !!pulled down!!</code></td>
-                    <td><code>Something &lt;sub&gt;pulled down&lt;/sub&gt;</code></td>
-                    <td>Something <sub>pulled down</sub></td>
-                    <td><span class="label label-success">Done</span></td>
-                </tr>
-                <tr data-spec="IS_SMALL">
-                    <td>Small</td>
-                    <td><code>Something >>small>></code></td>
-                    <td><code>Something &lt;small&gt;small&lt;/small&gt;</code></td>
-                    <td>Something <small>small</small></td>
-                    <td><span class="label label-success">Done</span></td>
-                </tr>
-                <tr data-spec="IS_STRIKE">
-                    <td>Strike through</td>
-                    <td><code>Something ~~that was relevant~~</code></td>
-                    <td><code>Something &lt;strike&gt;that was relevant&lt;/strike&gt;</code></td>
-                    <td>Something <strike>that was relevant</strike></td>
-                    <td><span class="label label-success">Done</span></td>
-                </tr>
-                <tr data-spec="IS_CODE">
-                    <td>Code</td>
-                    <td><code>Something ::Codified::</code></td>
-                    <td><code>Something &lt;code&gt;Codified&lt;/code&gt;</code></td>
-                    <td>Something <code>Codified</code></td>
-                    <td><span class="label label-success">Done</span></td>
-                </tr>
-                <tr data-spec="IS_SPAN">
-                    <td>Span</td>
-                    <td><code>Something ``Spanned``</code></td>
-                    <td><code>Something &lt;span&gt;Spanned&lt;/span&gt;</code></td>
-                    <td>Something <span>Spanned</span></td>
-                    <td><span class="label label-success">Done</span></td>
-                </tr>
-                <tr>
-                    <td>Hyperlinks</td>
-                </tr>
-                </tbody>
-            </table>
-            <hr/>
-            <h2 data-spec-section="BS">Block Specifications</h2>
-            <ul>
-                <li>Block specs are always the first non-whitespace characters</li>
-                <li>Block specs can be on their own line - and their corresponding opening element will be output on its
-                    own line
-                </li>
-                <li>Block specs can be on a line before other content - and their corresponding opening element will be
-                    output at the start of the line
-                </li>
-                <li>Block specs may be nested</li>
-                <li>Nested block spec open/closes must be on separate lines</li>
-                <li>Block specs may be explicitly closed</li>
-                <li>Explicit block spec closes must be the last non whitespace characters on a line</li>
-                <li>A block spec that appears at both the start and end of a line when there is any open block will be treated as a close</li>
-                <li>Explicit block closes may be out of sequence - you can explicitly open a block quote and a paragraph and then only explicitly close the block quote (the paragraph will be implicitly closed).</li>
-                <li>All currently open block specs are implicitly closed by an empty line (a line with no non-whitespace
-                    characters)
-                </li>
-                <li>A line that contains no line or block spec, and is not currently in a non-blockquote block will open a new paragraph block spec on the line</li>
-                <li>An implicitly opened paragraph will be closed by the explicit opening of any block spec</li>
-            </ul>
-            <h3 data-spec-section="LS_UL">& - Unordered list items</h3>
-            <ul>
-                <li>The depth of the item may be specified after a single & as a number <code>&10</code> nests a list item ten levels deep</li>
-                <li>The depth of the item may be specified by the number of &'s so <code>&&&</code> nests a list item 3 levels deep</li>
-                <li>If an unordered list item line spec occurs outside of an ordered list - a new implicit unordered list is started</li>
-                <li>List items cannot be explicitly closed, they are implicitly closed by the next item or by the closing of their list</li>
-            </ul>
-            <h3 data-spec-section="LS_OL">+ - Ordered list items</h3>
-            <ul>
-                <li>The depth of the item may be specified after a single + as a number <code>+10</code> nests a list item ten levels deep</li>
-                <li>The depth of the item may be specified by the number of +'s so <code>+++</code> nests a list item 3 levels deep</li>
-                <li>If an ordered list item line spec occurs outside of an ordered list - a new implicit ordered list is started</li>
-                <li>List items cannot be explicitly closed, they are implicitly closed by the next item or by the closing of their list</li>
-            </ul>
-            <h3>
-                <small>Two double quotes</small>
-                - <code>&quot;&quot;</code> - Block Quotes
-                <span class="label label-success">Done</span>
-            </h3>
-            <ul>
-                <li>Outputs as the <code>blockquote</code> element</li>
-                <li>Allows implicit paragraphs to be created within it</li>
-                <li>Implicit block spec closure stops at a block quote</li>
-            </ul>
-            <h3>
-                <small>Two apostrophes</small>
-                - <code>&apos;&apos;</code> - Paragraph
-                <span class="label label-success">Done</span>
-            </h3>
-            <ul>
-                <li>Output as the <code>p</code> element</li>
-                <li>Use over the implicit paragraph block allows Id and CSS specs to be added</li>
-            </ul>
-            <h3>
-                <small>Three dashes</small>
-                - <code>---</code> Horizontal Rule
-                <span class="label label-success">Done</span>
-            </h3>
-            <ul>
-                <li>Self closing block</li>
-                <li>Must start and end the line</li>
-            </ul>
-            <h3>
-                <small>Percent then a ampersand</small>
-                - <code>%&</code> Unordered list
-
-            </h3>
-
-            <h3>
-                <small>Percent then a plus sign</small>
-                - <code>%+</code> Ordered list
-            </h3>
-            <ul>
-                <li>Allows trailing number to specify start number - <code>%+50</code> outputs as <code>&ltol start='50'&gt;</code></li>
-                <li>Any start attribute is output after any id/css/data specs - <code>&ltol id='lead' class='trash' data-spec='basicRules' start='50'&gt;</code></li>
-            </ul>
-            <h3>
-                <small>Three colons</small>
-                - <code>:::</code> Preformatted Code
-            </h3>
-            <h3>
-                <small>Four colons</small>
-                - <code>::::</code> Data Block
-            </h3>
-            <ul>
-                <li>Specifies that the enclosed area will have data captured from data specs and output as a HTML 5 data block.</li>
-                <li>CSS class specifies format : json, xml</li>
-                <li>Output separately at the end</li>
-                <li>Cannot be nested, must occur at the root of the document</li>
-                <li>Multiple data blocks may occur in a single document</li>
-                <li>If no id spec is provided - one is generated from the scheme : <code>dataBlock-{index}</code> where {index} is an auto-increment number scoped to the document.</li>
-            </ul>
-
-            <h2 data-spec-section="OP">Options <span class="label label-info">Planned</span></h2>
-            <ul>
-                <li><code>idWhitelist</code></li>
-                <li><code>cssWhitelist</code></li>
-                <li><code>idBlacklist</code></li>
-                <li><code>cssBlacklist</code></li>
-                <li><code>deprecatedTags</code></li>
-                <li><code>generateHeadingIds</code></li>
-                <li><code>autodetectHyperlinks</code></li>
-                <li><code>implicitDataBlockCapture</code></li>
-                <li><code>explicitBaseCssClasses</code></li>
-            </ul>
-            <h3>
-                <small>Two vertical pipes</small>
-                - <code>||</code> Line Down free zone
-            </h3>
-        </div>
+        <p>We've only just started, these rules are likely going to change (and are completely incomplete right
+            now), and the implementation's built for correctness rather than elegance or speed.</p>
+        <p>Other than that - things are going great!</p>
+        <hr>
     </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <!--
+                    <div class="btn-group btn-group-justified">
+                        <a id="showTestConnectionsButton" class="btn btn-default">Show Test Connections</a>
+                        <a id="hideTestConnectionsButton" class="btn btn-default disabled">Hide Tests Connections</a>
+                    </div>
+        -->
+        <h1>Top Level Concepts</h1>
+        <ul>
+            <li>Processing should be conducted on a line-by-line basis</li>
+            <li>The contents of a line <strong>cannot</strong> affect the output of any preceding line</li>
+        </ul>
+        <h2 data-spec-section="GR">General Rules</h2>
+        <ul>
+
+            <li data-spec="GR_IGNORE_LEADING_TRAILING_WHITESPACE">Leading and trailing whitespace will be ignored (with the exception of code blocks)</li>
+            <li data-spec="GR_MULTIPLE_BLANK_LANES_ROLLUP">Multiple blank lines will count as one blank line (with the exception of code blocks)</li>
+            <li data-spec="GR_HTML_ENTITY_REPLACEMENT">HTML entity replacement will be conducted on appropriate characters not interpreted as specs</li>
+
+        </ul>
+        <h3>Finally - the most important rule of them all...</h3>
+        <ul>
+            <li>There is <strong>nah</strong> line-break</li>
+        </ul>
+        <hr>
+        <h2 data-spec-section="ICS">ID, CSS & Data specifications</h2>
+        <ul>
+            <li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS">Any block/in/line spec can be suffixed with a CSS class spec <code>@classSpec</code></li>
+            <li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS_WITH_MULTIPLE_CLASSES">Multiple CSS classes may be specified at once, separated by the '&' character <code>@classSpecOne&classSpecTwo</code>
+            </li><li data-spec="ICS_SPECS_ALLOWED_CSS_SPECS_WITH_IMPLICIT_BASE_CLASSES">When specified with a double @ as it's opening spec, any CSS classes are split by dashes and any left part taken as base CSS class,
+                all distinct classes are added <code>@@btn-large</code> becomes <code>class='btn btn-large'</code> and <code>@@btn-large.btn-danger</code> becomes <code>class='btn btn-large btn-danger'</code></li>
+            <li data-spec="ICS_SPECS_ALLOWED_ID_SPECS">Any block/in/line spec can be suffixed with an Id spec <code>?idSpec</code></li>
+            <li data-spec="ICS_SPECS_ALLOWED_ID_AND_CSS_SPECS_IN_ANY_ORDER">Any block/in/line spec can specify both a CSS and an Id spec in any order
+                <code>@classSpec?idSpec</code> and <code>?idSpec@classSpec</code></li>
+            <li data-spec="ICS_ID_SPEC_OUTPUT_FIRST">When output - the Id spec comes <strong>before</strong> the CSS spec, which comes before the data spec <code>id='idSpec'
+                    class='classSpec' data-spec='dataSpec'</code></li>
+            <li data-spec="ICS_SPECS_ALLOWED_DATA_SPECS">Any block/in/line spec can be suffixed with a Data spec <code>$key=value</code></li>
+            <li data-spec="ICS_SPECS_ALLOWED_DATA_SPECS">Multiple data specs may be specified at once, separated by the '&' character <code>$keyOne=valueOne&keyTwo=valueTwo</code></li>
+            <li data-spec="ICS_DATA_SPEC_KEYS_FORMATTING">All data keys will be formatted to the HTML data attribute standard from capitalisation, <code>thisFirstKey</code> becomes <code>this-first-key</code></li>
+            <li data-spec="ICS_DATA_SPEC_KEYS_REPLACEMENT_CHARACTERS">Dashes will replace non-alphanumeric characters in data keys, so <code>my.first.key</code> and <code>my_first_key</code> both become <code>my-first-key</code></li>
+            <li data-spec="ICS_DATA_SPEC_KEYS_MULTIPLE_DASHES">Multiple dashes will be replaced down to a single dash <code>my---first</code> becomes <code>my-first</code> </li>
+            <li data-spec="ICS_ID_AND_CSS_SPECS_DEFAULTS_TO_ALLOW_ALL">By default any Id / CSS / Data spec is valid</li>
+            <li data-spec="ICS_ID_AND_CSS_SPECS_ALLOW_WHITELISTS">However whitelists may provide exclusive lists of Id and CSS specs. Any invalid spec is ignored and not output.</li>
+            <li data-spec="ICS_ID_SPEC_ALLOWED_ONCE_ONLY">Id specs can only be used once. A subsequent use of the same Id will be invalid and ignored.</li>
+            <li data-spec="ICS_ID_AND_CSS_SPECS_CLOSE_EXPLICITLY">An Id / CSS spec is closed explicitly by a repeat of it's initial character <code>?idSpec?</code> or <code>@classOne&classTwo@</code></li>
+            <li data-spec="ICS_ID_AND_CSS_SPECS_CLOSE_IMPLICITLY">An Id / CSS spec is closed implicitly by a space <code>?idSpec Some content</code> or <code>@classOne.classTwo Some content</code></li>
+        </ul>
+        <hr>
+        <h2 data-spec-setion="LS">Line Specifications</h2>
+        <ul>
+            <li data-spec="LS_FORMAT_WHOLE_LINE_EXCLUDING_BLOCK_CLOSE">Line specs format the whole line following them - excluding any block spec closures</li>
+            <li data-spec="LS_OCCUR_AT_START_OF_LINE">Line specs may occur at the start of a line</li>
+            <li data-spec="LS_OCCUR_AFTER_BLOCK_OPEN">Line specs may occur immediately following a block spec open</li>
+        </ul>
+        <h3 data-spec-section="LS_H"># - Headings <span class="label label-success">Done</span></h3>
+        <ul>
+            <li>The hash character (#) specifies the line will be formatted as a heading.</li>
+            <li>A single # will become a H1, ## becomes a H2, ### becomes a H3 and so on.</li>
+            <li>The level of the heading may be specified after a single # as a number <code>#100</code> equates to
+                H100
+            </li>
+            <li>There is no limit to the depth of heading that may be specified</li>
+        </ul>
+
+        <hr>
+        <h2 data-spec-section="IS">Inline Specifications</h2>
+        <ul>
+            <li data-spec="IS_FORMAT_SECTION_OF_LINE">Inline specs format a section of a line.</li>
+
+            <!--TODO:CONTINUE IN THIS VEIN DAN with spec attributes ! -->
+            <!--TODO:Setup s data on tests cases -->
+            <!--TODO:Format test cases source file better -->
+
+            <li>Inline specs do not flow between lines - they finish when the line does</li>
+            <li>When handling inline specifications, whitespace is preserved. So <code>** I'm strong **</code> is <code>&lt;strong&gt; I'm strong &lt;/strong&gt;</code></li>
+            <li>As a consequence implicitly closed id/class specs will leave a whitespace in their output, considering explicitly closing them if this is
+                not desired, i.e. <code>**?lead?A strong lead**</code> to produce <code>&lt;strong id='lead'&gt;A strong lead&lt;/strong&gt;</code> or
+                <code>**?lead?@classy@A strong lead**</code> to produce <code>&lt;strong id='lead' class='classy'&gt;A strong lead&lt;/strong&gt;</code>
+            </li>
+        </ul>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Spec</th>
+                <th>Outputs</th>
+                <th>Rendered As</th>
+                <th>Comments</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-spec="IS_STRONG">
+                <td>Bold / strong</td>
+                <td><code>Something **important**</code></td>
+                <td><code>Something &lt;strong&gt;important&lt;/strong&gt;</code></td>
+                <td>Something <strong>important</strong></td>
+                <td><span class="label label-success">Done</span></td>
+            </tr>
+            <tr data-spec="IS_EMPHASIS">
+                <td>Italics / emphasis</td>
+                <td><code>Something //oblique//</code></td>
+                <td><code>Something &lt;em&gt;oblique&lt;/em&gt;</code></td>
+                <td>Something <em>oblique</em></td>
+                <td><span class="label label-success">Done</span></td>
+            </tr>
+            <tr data-spec="IS_UNDERLINE">
+                <td>Underline</td>
+                <td><code>Something __reinforced__</code></td>
+                <td><code>Something &lt;u&gt;reinforced&lt;/u&gt;</code></td>
+                <td>Something <u>reinforced</u></td>
+                <td><span class="label label-success">Done</span></td>
+            </tr>
+            <tr data-spec="IS_SUPERSCRIPT">
+                <td>Superscript</td>
+                <td><code>Something ^^raised up^^</code></td>
+                <td><code>Something &lt;sup&gt;raised up&lt;/sup&gt;</code></td>
+                <td>Something <sup>raised up</sup></td>
+                <td><span class="label label-success">Done</span></td>
+            </tr>
+            <tr data-spec="IS_SUBSCRIPT">
+                <td>Subscript</td>
+                <td><code>Something !!pulled down!!</code></td>
+                <td><code>Something &lt;sub&gt;pulled down&lt;/sub&gt;</code></td>
+                <td>Something <sub>pulled down</sub></td>
+                <td><span class="label label-success">Done</span></td>
+            </tr>
+            <tr data-spec="IS_SMALL">
+                <td>Small</td>
+                <td><code>Something >>small>></code></td>
+                <td><code>Something &lt;small&gt;small&lt;/small&gt;</code></td>
+                <td>Something <small>small</small></td>
+                <td><span class="label label-success">Done</span></td>
+            </tr>
+            <tr data-spec="IS_STRIKE">
+                <td>Strike through</td>
+                <td><code>Something ~~that was relevant~~</code></td>
+                <td><code>Something &lt;strike&gt;that was relevant&lt;/strike&gt;</code></td>
+                <td>Something <strike>that was relevant</strike></td>
+                <td><span class="label label-success">Done</span></td>
+            </tr>
+            <tr data-spec="IS_CODE">
+                <td>Code</td>
+                <td><code>Something ::Codified::</code></td>
+                <td><code>Something &lt;code&gt;Codified&lt;/code&gt;</code></td>
+                <td>Something <code>Codified</code></td>
+                <td><span class="label label-success">Done</span></td>
+            </tr>
+            <tr data-spec="IS_SPAN">
+                <td>Span</td>
+                <td><code>Something ``Spanned``</code></td>
+                <td><code>Something &lt;span&gt;Spanned&lt;/span&gt;</code></td>
+                <td>Something <span>Spanned</span></td>
+                <td><span class="label label-success">Done</span></td>
+            </tr>
+            <tr>
+                <td>Hyperlinks</td>
+            </tr>
+            </tbody>
+        </table>
+        <hr>
+        <h2 data-spec-section="BS">Block Specifications</h2>
+        <ul>
+            <li>Block specs are always the first non-whitespace characters</li>
+            <li>Block specs can be on their own line - and their corresponding opening element will be output on its
+                own line
+            </li>
+            <li>Block specs can be on a line before other content - and their corresponding opening element will be
+                output at the start of the line
+            </li>
+            <li>Block specs may be nested</li>
+            <li>Nested block spec open/closes must be on separate lines</li>
+            <li>Block specs may be explicitly closed</li>
+            <li>Explicit block spec closes must be the last non whitespace characters on a line</li>
+            <li>A block spec that appears at both the start and end of a line when there is any open block will be treated as a close</li>
+            <li>Explicit block closes may be out of sequence - you can explicitly open a block quote and a paragraph and then only explicitly close the block quote (the paragraph will be implicitly closed).</li>
+            <li>All currently open block specs are implicitly closed by an empty line (a line with no non-whitespace
+                characters)
+            </li>
+            <li>A line that contains no line or block spec, and is not currently in a non-blockquote block will open a new paragraph block spec on the line</li>
+            <li>An implicitly opened paragraph will be closed by the explicit opening of any block spec</li>
+        </ul>
+        <h3 data-spec-section="LS_UL">& - Unordered list items</h3>
+        <ul>
+            <li>The depth of the item may be specified after a single & as a number <code>&10</code> nests a list item ten levels deep</li>
+            <li>The depth of the item may be specified by the number of &'s so <code>&&&</code> nests a list item 3 levels deep</li>
+            <li>If an unordered list item line spec occurs outside of an ordered list - a new implicit unordered list is started</li>
+            <li>List items cannot be explicitly closed, they are implicitly closed by the next item or by the closing of their list</li>
+        </ul>
+        <h3 data-spec-section="LS_OL">+ - Ordered list items</h3>
+        <ul>
+            <li>The depth of the item may be specified after a single + as a number <code>+10</code> nests a list item ten levels deep</li>
+            <li>The depth of the item may be specified by the number of +'s so <code>+++</code> nests a list item 3 levels deep</li>
+            <li>If an ordered list item line spec occurs outside of an ordered list - a new implicit ordered list is started</li>
+            <li>List items cannot be explicitly closed, they are implicitly closed by the next item or by the closing of their list</li>
+        </ul>
+        <h3>
+            <small>Two double quotes</small>
+            - <code>&quot;&quot;</code> - Block Quotes
+            <span class="label label-success">Done</span>
+        </h3>
+        <ul>
+            <li>Outputs as the <code>blockquote</code> element</li>
+            <li>Allows implicit paragraphs to be created within it</li>
+            <li>Implicit block spec closure stops at a block quote</li>
+        </ul>
+        <h3>
+            <small>Two apostrophes</small>
+            - <code>&apos;&apos;</code> - Paragraph
+            <span class="label label-success">Done</span>
+        </h3>
+        <ul>
+            <li>Output as the <code>p</code> element</li>
+            <li>Use over the implicit paragraph block allows Id and CSS specs to be added</li>
+        </ul>
+        <h3>
+            <small>Three dashes</small>
+            - <code>---</code> Horizontal Rule
+            <span class="label label-success">Done</span>
+        </h3>
+        <ul>
+            <li>Self closing block</li>
+            <li>Must start and end the line</li>
+        </ul>
+        <h3>
+            <small>Percent then a ampersand</small>
+            - <code>%&</code> Unordered list
+
+        </h3>
+
+        <h3>
+            <small>Percent then a plus sign</small>
+            - <code>%+</code> Ordered list
+        </h3>
+        <ul>
+            <li>Allows trailing number to specify start number - <code>%+50</code> outputs as <code>&ltol start='50'&gt;</code></li>
+            <li>Any start attribute is output after any id/css/data specs - <code>&ltol id='lead' class='trash' data-spec='basicRules' start='50'&gt;</code></li>
+        </ul>
+        <h3>
+            <small>Two dollar signs</small>
+            - <code>$$</code> Preformatted Code
+        </h3>
+        <h3>
+            <small>Four dollar signs</small>
+            - <code>$$$$</code> Data Block
+        </h3>
+        <ul>
+            <li>Specifies that the enclosed area will have data captured from data specs and output as a HTML 5 data block.</li>
+            <li>CSS class specifies format : json, xml</li>
+            <li>Output separately at the end</li>
+            <li>Cannot be nested, must occur at the root of the document</li>
+            <li>Multiple data blocks may occur in a single document</li>
+            <li>If no id spec is provided - one is generated from the scheme : <code>data-block-{index}</code> where {index} is an auto-increment number scoped to the document starting at 1.</li>
+            <li>If not already set, the option <code>generateIds</code> is set true for the scope of the block</li>
+        </ul>
+
+        <h2 data-spec-section="OP">Options <span class="label label-info">Planned</span></h2>
+        <ul>
+            <li><code>idWhitelist</code></li>
+            <li><code>cssWhitelist</code></li>
+            <li><code>idBlacklist</code></li>
+            <li><code>cssBlacklist</code></li>
+            <li><code>deprecatedTags</code></li>
+            <li><code>generateIds</code></li>
+            <li><code>autodetectHyperlinks</code></li>
+            <li><code>implicitDataBlockCapture</code></li>
+            <li><code>explicitBaseCssClasses</code></li>
+        </ul>
+        <h3>
+            <small>Two vertical pipes</small>
+            - <code>||</code> Line Down free zone
+        </h3>
+    </div>
+</div>
     <footer>
         <div class="row">
             <div class="col-lg-12">
@@ -352,6 +374,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                     <li class="pull-right"><a href="#top">Back to top</a></li>
                     <li><a href="https://twitter.com/null_loop">Twitter</a></li>
                     <li><a href="https://github.com/null-loop/line-down/">GitHub</a></li>
+                    <li><a href="https://travis-ci.org/null-loop/line-down/">Travis CI</a></li>
                     <li><a href="http://www.gnu.org/licenses/gpl-2.0.html">GPL v2</a></li>
                 </ul>
                 <p>Another Grayholme Ltd abomination</p>
@@ -362,11 +385,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/knockout.js"></script>
-<script src="js/he.js"></script>
-<script src="js/diff.js"></script>
 <script src="js/line-down.parser.js"></script>
-<script src="js/line-down.tests.js"></script>
-<script src="js/line-down.index.js"></script>
+<script src="js/line-down.editor.js"></script>
+<script src="js/line-down.parser.tryit.js"></script>
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -377,5 +398,3 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     ga('send', 'pageview');
 
 </script>
-</body>
-</html>

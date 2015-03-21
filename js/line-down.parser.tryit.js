@@ -17,12 +17,14 @@
  */
 
 (function (ld, $, undefined) {
+
+    if ($('#linedownInput').length==0) return;
     function updateFromLinedown(linedown){
         if (!linedown) {
             linedown = $('#linedownInput')[0].value;
         }
         var startTime = window.performance.now();
-        var html = ld.parse(linedown);
+        var html = ld.parser.parseWithNoOptions(linedown);
         var endTime = window.performance.now();
         var executionTime = Math.floor((endTime - startTime)*1000)/1000;
 
@@ -34,7 +36,6 @@
 
         $('#htmlGenerationTime').text('HTML generation took ' + executionTime + "ms");
     }
-
     updateFromLinedown();
 
     ld.editor.init($('#linedownInput'), updateFromLinedown);
