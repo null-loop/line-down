@@ -72,9 +72,7 @@ gulp.task('buildJs',function(done){
     gulp.src([parserTestScriptsGlob])
         .pipe(gulp.dest(nodeParserTests));
 
-    run('browserify ' + parserScriptsRoot + 'parser.js -o ' + webParserLib).exec();
-
-    done();
+    run('browserify ' + parserScriptsRoot + 'parser-www-export.js -o ' + webParserLib).exec('',done);
 });
 
 gulp.task('buildWeb',['buildJs'], function(done){
