@@ -76,7 +76,15 @@ gulp.task('buildJs',function(done){
 });
 
 gulp.task('buildWeb',['buildJs'], function(done){
+    compileHarp(done);
+});
+
+function compileHarp(done){
     harp.compile(harpRoot , undefined ,done);
+}
+
+gulp.task('buildWebContent',function(done){
+    compileHarp(done);
 });
 
 gulp.task('testJs',['testJsParser','testNpmParser'],function(done){
