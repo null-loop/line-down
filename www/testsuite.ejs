@@ -1,0 +1,22 @@
+<div class="page-header">
+    <div class="row">
+        <div class="col-lg-12 col-md-7 col-sm-6">
+            <h1>Test Suite</h1>
+
+            <p class="lead">It might be wrong, but let's at least make sure it's right.</p>
+        </div>
+    </div>
+</div>
+<div class="row" id="testRunStats">
+    <div class="col-lg-12">
+        <h2>
+            Not Functioning ::
+            <strong data-bind="text:tests().length">0</strong> tests available,
+            <strong data-bind="text:run()">0</strong> tests run,
+            <strong data-bind="text:passed">0</strong> passed,
+            <strong data-bind="text:failed">0</strong> failed,
+        </h2>
+        <h3 data-bind="visible:run()>0">Parser executed for <span data-bind="text:totalParserExecutionTime">0</span>ms</h3>
+
+    </div>
+</div>
