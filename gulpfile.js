@@ -27,12 +27,14 @@ var ugly = require('gulp-uglify');
 var run = require('gulp-run');
 var gutil = require('gulp-util');
 var harp = require('harp');
+var browserify = require('browserify');
 
-var parserScriptsGlob = 'src/js/parser/lib/*.js';
+var parserScriptsRoot = 'src/js/parser/lib/';
+var parserScriptsGlob = parserScriptsRoot + '*.js';
 var parserTestScriptsGlob = 'src/js/parser/tests/*.js';
 var nodeParserLib = 'src/node/parser/lib';
 var nodeParserTests = 'src/node/parser/tests';
-var webParserLib = 'www/js/parser';
+var webParserLib = './www/js/parser.js';
 var harpRoot = 'www';
 var harpOutput = 'www/www';
 var Logger = require("./logger.js");
@@ -70,11 +72,7 @@ gulp.task('buildJs',function(done){
     gulp.src([parserTestScriptsGlob])
         .pipe(gulp.dest(nodeParserTests));
 
-    // wrap for web
-    gulp.src([parserScriptsGlob])
-        .pipe(wrapper({type:'amd',exports:false}))
-        .pipe(ugly())
-        .pipe(gulp.dest(webParserLib));
+    run('browserify ' + parserScriptsRoot + 'parser.js -o ' + webParserLib).exec();
 
     done();
 });

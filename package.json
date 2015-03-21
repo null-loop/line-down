@@ -2,6 +2,7 @@
   "name": "line-down",
   "version": "0.0.7",
   "devDependencies": {
+    "browserify": "^9.0.3",
     "buildbranch": "0.0.3",
     "coveralls": "^2.11.2",
     "gulp": "^3.8.11",

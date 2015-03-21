@@ -1,6 +1,7 @@
 /.idea
 /www-old
 /www/www
+/www/js/parser.js
 **/*.log
 **/node_modules/**
 
