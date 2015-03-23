@@ -60,6 +60,7 @@ exports.startsWith = function (symbol, line, fixedCount, preserveWhitespace, all
         else if (c === '@' && !inClasses && count > 0) {
             inClasses = true;
             inId = false;
+            inData = false;
             r = r.substring(1);
         }
         else if (c === '@' && inClasses && classes.length === 0 && !inferBaseCss){
@@ -73,6 +74,7 @@ exports.startsWith = function (symbol, line, fixedCount, preserveWhitespace, all
         else if (c === '?' && !inId && count > 0) {
             inId = true;
             inClasses = false;
+            inData = false;
             r = r.substring(1);
         }
         else if (c === '?' && inId) {
@@ -82,6 +84,8 @@ exports.startsWith = function (symbol, line, fixedCount, preserveWhitespace, all
         else if (c === '$' && !inData && count > 0)
         {
             inData = true;
+            inId = false;
+            inClasses = false;
             r = r.substring(1);
         }
         else if (c === '$' && inData){

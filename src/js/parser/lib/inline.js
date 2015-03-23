@@ -31,7 +31,7 @@ exports.inlineSpecs = [
     { prefix:'>>', element:'small' },
     { prefix:'::', element:'code' },
     { prefix:'``', element:'span' },
-    { prefix:'~~', element:'strike' },
+    { prefix:'~~', element:'strike' }
 ];
 
 exports.replaceInline = function (content, linebuilder){
@@ -49,7 +49,9 @@ exports.replaceInline = function (content, linebuilder){
     started = false;
 
     var h = function(k,spec){
-        if (started) return;
+        if (started) {
+            return;
+        }
         var sw = fnc.startsWith(spec.prefix[0], cLine, spec.prefix.length, true);
         if (sw.startsWith && !scope.hasElementScope(spec.element))
         {

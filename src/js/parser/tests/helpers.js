@@ -24,3 +24,7 @@ exports.assertParseWithNoOptions = function(assert,linedown,html,d){
 exports.assertParseWithOptions = function(assert,linedown,html,d,options){
     assert.equal(ld.parser.parseWithOptions(linedown, options),html);
 }
+
+exports.describeFromJson = function(jsonTestCases){
+  //TODO:Describe the tests
+};

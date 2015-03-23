@@ -7,13 +7,13 @@
     "line-down": "bin/line-down"
   },
   "scripts": {
-    "test": "mocha tests/*.js -R dot"
+    "test": "mocha tests/mocha-all.js -R dot"
   },
   "dependencies": {
     "he": "^0.5.0"
   },
   "devDependencies": {
-    "mocha": "^2.2.1"
+    "mocha": "~1.9"
   },
   "repository": {
     "type": "git",

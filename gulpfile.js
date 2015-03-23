@@ -15,24 +15,24 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 var p = require('./package.json');
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
-var bb = require('buildbranch');
-var ugly = require('gulp-uglify');
 var run = require('gulp-run');
 var gutil = require('gulp-util');
 var harp = require('harp');
 var jeditor = require("gulp-json-editor");
+var testGen = require("./src/tests/test-generator.js");
 
 var masterVersion = p.version;
 var parserScriptsRoot = 'src/js/parser/lib/';
 var parserScriptsGlob = parserScriptsRoot + '*.js';
 var parserTestScriptsGlob = 'src/js/parser/tests/*.js';
+var parserTestJsonGlob = 'src/tests/*.json';
 var nodeParserLib = 'src/node/parser/lib';
 var nodeParserPackageFile = 'src/node/parser/package.json';
 var nodeParserTests = 'src/node/parser/tests';
+var jsParserTests = 'src/js/parser/tests';
 var webParserLib = './www/js/line-down.parser.js';
 var harpRoot = 'www';
 var harpOutput = 'www/www';
@@ -75,15 +75,40 @@ gulp.task('buildAll',['buildJs','buildWeb'],function(done){
     done();
 });
 
-gulp.task('buildJs',function(done){
+function generateParserTestCases()
+{
+    testGen.generateInlineSpecTestSetsFile([
+        {spec:'**',element:'strong',name:'strong',preserveWhiteSpace:true},
+        {spec:'//',element:'em',name:'emphasis',preserveWhiteSpace:true},
+        {spec:'__',element:'u',name:'underline',preserveWhiteSpace:true},
+        {spec:'^^',element:'sup',name:'superscript',preserveWhiteSpace:true},
+        {spec:'!!',element:'sub',name:'subscript',preserveWhiteSpace:true},
+        {spec:'>>',element:'small',name:'small',preserveWhiteSpace:true},
+        {spec:'::',element:'code',name:'code',preserveWhiteSpace:true},
+        {spec:'``',element:'span',name:'span',preserveWhiteSpace:true},
+        {spec:'~~',element:'strike',name:'strike through',preserveWhiteSpace:true}
+    ], './src/tests/parser-no-options-*-specs-generated-test-sets.json');
+}
+
+gulp.task('generateParserTestCases',function(done){
+    generateParserTestCases();
+    done();
+});
+
+gulp.task('buildJs',['generateParserTestCases'],function(done){
     checkParserJs();
 
     // wrap for node
     gulp.src([parserScriptsGlob])
-        //.pipe(wrapper({type:'commonjs',exports:false}))
-        // TODO:This has br0ke! Why?
-        //.pipe(ugly())
         .pipe(gulp.dest(nodeParserLib));
+
+    // copy json for js
+    gulp.src([parserTestJsonGlob])
+        .pipe(gulp.dest(jsParserTests));
+
+    // copy json for node
+    gulp.src([parserTestJsonGlob])
+        .pipe(gulp.dest(nodeParserTests));
 
     // copy tests for node
     gulp.src([parserTestScriptsGlob])
@@ -106,8 +131,16 @@ gulp.task('testWeb',['buildWeb'],function(done){
     done();
 });
 
+
+//gulp.task('testJsParser',['testJsParserNoCoverage'],function(done){
+    //--reporter mocha-lcov-reporter > ./artifacts/parser-testscases-coverage.js
+//    run('mocha mocha-all.js --require blanket',
+//        {cwd:'src/js/parser/tests'}).exec('',done);
+//});
+
 gulp.task('testJsParser',['buildJs'],function(done){
-    run('mocha src/js/parser/tests/*.js -R dot').exec('',done);
+    run('mocha mocha-all.js -R dot',
+        {cwd:'src/js/parser/tests'}).exec('',done);
 });
 
 gulp.task('testNpmParser',['buildJs','testJsParser'],function(done){
@@ -124,13 +157,4 @@ gulp.task('installNpmParser',function(done){
 
 gulp.task('testAll',['testJs'], function(done){
     done();
-});
-
-gulp.task('gh-not-used', function(done){
-    // Publish the current www/www to the gh-pages branch
-    bb({
-        branch:'gh-pages',
-        ignore:['.git','node_modules'],
-        folder:harpOutput
-    }, done);
 });

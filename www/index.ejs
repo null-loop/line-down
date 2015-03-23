@@ -292,15 +292,18 @@
 
         <h2 data-spec-section="OP">Options <span class="label label-info">Planned</span></h2>
         <ul>
-            <li><code>idWhitelist</code></li>
-            <li><code>cssWhitelist</code></li>
-            <li><code>idBlacklist</code></li>
-            <li><code>cssBlacklist</code></li>
-            <li><code>deprecatedTags</code></li>
-            <li><code>generateIds</code></li>
+            <li><code>idWhitelist</code> - Explicit list of allowed ids, either just a list or a hashmap of tags to ids</li>
+            <li><code>cssWhitelist</code> - Explicit list of allowed CSS classes, either just a list or a hashmap of tags to classes</li>
+            <li><code>idBlacklist</code> - Explicit list of DISallowed ids</li>
+            <li><code>cssBlacklist</code> - Explicit list of DISallowed CSS classes</li>
+            <li><code>deprecatedTags</code> - Mapping of elements to replacement element and CSS class</li>
+            <li><code>generateIds</code> - Whether or not to automatically generate IDs for significant elements if no explicit ID is given</li>
             <li><code>autodetectHyperlinks</code></li>
             <li><code>implicitDataBlockCapture</code></li>
             <li><code>explicitBaseCssClasses</code></li>
+            <li><code>additionalInlineSpecs</code></li>
+            <li><code>linkStereotypes</code></li>
+            <li><code>outputComments</code></li>
         </ul>
         <h3>
             <small>Two vertical pipes</small>
