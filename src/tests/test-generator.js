@@ -35,14 +35,14 @@ function generateInlineTestCasesForSpec(s, allInlineSpecs){
     var g = generateSimpleOneLineImplicitParagraphWithNestedOpenInlineSpecTestCase;
     var cases = [];
     var generating = true;
-    var n=[];
+    var n = [];
     var originalNests = allInlineSpecs.slice(0);
     // remove ourselves
     var ourIndex = originalNests.indexOf(s);
     if (ourIndex > -1){
         originalNests.splice(ourIndex,1);
     }
-    var forwards=true;
+    var forwards = true;
     var remainingNests = originalNests.slice(0);
 
     while(generating){
@@ -144,8 +144,8 @@ function generateSimpleOneLineImplicitParagraphWithNestedOpenInlineSpecTestCase(
         col.each(nestedSpecs,function(k,v){nestedPrefix=nestedPrefix+v.spec});
         input = replaceAll('##',nestedPrefix+spec.spec,input);
         output = replaceAll('##',spec.element,output);
-        var nestedStartHtml='';
-        var nestedEndHtml='';
+        var nestedStartHtml = '';
+        var nestedEndHtml = '';
         col.each(nestedSpecs,function(k,v){
             nestedStartHtml=nestedStartHtml+"<"+ v.element + ">";
             nestedEndHtml="</"+ v.element + ">" + nestedEndHtml;
