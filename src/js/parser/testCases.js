@@ -280,27 +280,7 @@ var cssSpecCases = [
 col.each(cssSpecCases,pushCase("Tests about base css specs"));
 
 var dataSpecCases = [
-    {"i":'``$myKey=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key formatting from capitalisation'},
-    {"i":'``$myKeyTheFirstOne=something',"o":'<p><span data-my-key-the-first-one=\'something\'></span>\r\n</p>',"n":'Data spec key formatting from capitalisation, longer'},
-    {"i":'``$myKeyTheFirstOneWeThoughtOfNoReallyHonest=something',"o":'<p><span data-my-key-the-first-one-we-thought-of-no-really-honest=\'something\'></span>\r\n</p>',"n":'Data spec key formatting from capitalisation, very long'},
-    {"i":'``$my-Key=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, but lower'},
-    {"i":'``$my--Key=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, but lower, with double dashes removed'},
-    {"i":'``$my---Key=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, but lower, with triple dashes removed'},
-    {"i":'``$my.Key=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, but lower, with dot replaced with dash'},
-    {"i":'``$my_Key=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, but lower, with underscore replaced with dash'},
-    {"i":'``$my\'Key=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, but lower, with apostrophe replaced with dash'},
-    {"i":'``$my£Key=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, but lower, with pound replaced with dash'},
-    {"i":'``$my#Key=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, but lower, with hash replaced with dash'},
-    {"i":'``$my!Key=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, but lower, with bang replaced with dash'},
-    {"i":'``$my"Key=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, but lower, with double quotes replaced with dash'},
 
-    {"i":'``$MY-KEY=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, all caps'},
-    {"i":'``$MY--KEY=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, all caps, with double dashes removed'},
-    {"i":'``$MY---KEY=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, all caps, with triple dashes removed'},
-    {"i":'``$MY.KEY=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, all caps, with dot replaced with dash'},
-    {"i":'``$MY_KEY=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing, all caps, with underscore replaced with dash'},
-
-    {"i":'``$my-key=something',"o":'<p><span data-my-key=\'something\'></span>\r\n</p>',"n":'Data spec key preserves existing'}
 ];
 
 col.each(dataSpecCases,pushCase("Tests about data specs"));
