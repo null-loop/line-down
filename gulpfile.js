@@ -139,7 +139,7 @@ gulp.task('testWeb',['buildWeb'],function(done){
 //});
 
 gulp.task('testJsParser',['buildJs'],function(done){
-    run('mocha mocha-all.js -R progress',
+    run('mocha mocha-all.js -R dot',
         {cwd:'src/js/parser/tests'}).exec('',done);
 });
 
