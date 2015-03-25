@@ -1,7 +1,3 @@
-var assert = require("assert");
-var h = require("./tests/helpers.js");
-var col = require("lib/collections.js");
-
 var cases = [
     { "i": '#Heading one', "o": '<h1>Heading one</h1>', "n": 'Single hash, no spacing' },
     { "i": '\r\n#Heading one', "o": '<h1>Heading one</h1>', "n": 'Single hash, newline before' },
@@ -126,95 +122,6 @@ var cases = [
     { "i":'\"\" Explicit blockquote\r\n---\r\nWith a HR!\r\n\"\"',"o":'<blockquote><p>Explicit blockquote\r\n</p><hr/>\r\n<p>With a HR!\r\n</p></blockquote>',"n":'Horizontal rule nested in explicit blockquote closed on new line'},
 ];
 
-function buildInlineTestCases(spec,element,text,name,commonSpec)
-{
-    var a = [
-        { "i":'' + spec + '' + text + '',"o":'<p><' + element + '>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line'},
-        { "i":'\'\'' + spec + '' + text + '',"o":'<p><' + element + '>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line after explicit paragraph open',"s":["IS_FORMAT_SECTION_OF_LINE"]},
-        { "i":'\'\'' + spec + '' + text + '\'\'',"o":'<p><' + element + '>' + text + '</' + element + '></p>',"n":name + ' implicitly closed on one line at start of line after explicit paragraph open and explicit inline close',"s":["IS_FORMAT_SECTION_OF_LINE"]},
-        { "i":'#' + spec + '' + text + '',"o":'<h1><' + element + '>' + text + '</' + element + '></h1>',"n":name + ' implicitly closed on one line at start of line after h1 open',"s":["IS_FORMAT_SECTION_OF_LINE"]},
-        { "i":'#2' + spec + '' + text + '',"o":'<h2><' + element + '>' + text + '</' + element + '></h2>',"n":name + ' implicitly closed on one line at start of line after h2 (by depth) open',"s":["IS_FORMAT_SECTION_OF_LINE"]},
-        { "i":'\'\'#' + spec + '' + text + '',"o":'<p><h1><' + element + '>' + text + '</' + element + '></h1>\r\n</p>',"n":name + ' implicitly closed on one line at start of line after h1 open after explicit paragraph open',"s":["IS_FORMAT_SECTION_OF_LINE"]},
-        { "i":'\'\'#2' + spec + '' + text + '',"o":'<p><h2><' + element + '>' + text + '</' + element + '></h2>\r\n</p>',"n":name + ' implicitly closed on one line at start of line after h2 (by depth) open after explicit paragraph open',"s":["IS_FORMAT_SECTION_OF_LINE"]},
-        { "i":'\'\'#' + spec + '' + text + '\'\'',"o":'<p><h1><' + element + '>' + text + '</' + element + '></h1></p>',"n":name + ' implicitly closed on one line at start of line after h1 open after explicit paragraph open with explicit inline close',"s":["IS_FORMAT_SECTION_OF_LINE"]},
-        { "i":'\'\'#2' + spec + '' + text + '\'\'',"o":'<p><h2><' + element + '>' + text + '</' + element + '></h2></p>',"n":name + ' implicitly closed on one line at start of line after h2 (by depth) open after explicit paragraph open with explicit inline close',"s":["IS_FORMAT_SECTION_OF_LINE"]},
-        { "i":'' + spec + '?me?' + text + '',"o":'<p><' + element + ' id=\'me\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id spec no space'},
-        { "i":'' + spec + '$spec=test$' + text + '',"o":'<p><' + element + ' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed data spec no space'},
-        { "i":'' + spec + '$spec=test ' + text + '',"o":'<p><' + element + ' data-spec=\'test\'> ' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with implicitly closed data spec'},
-        { "i":'' + spec + '$spec=test?me ' + text + '',"o":'<p><' + element + ' id=\'me\' data-spec=\'test\'> ' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with implicitly closed data spec and id spec no space'},
-        { "i":'' + spec + '$spec=test$?me?' + text + '',"o":'<p><' + element + ' id=\'me\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with explicitly closed data spec and id spec no space'},
-        { "i":'' + spec + '$spec=test&parent=otherTest$?me?' + text + '',"o":'<p><' + element + ' id=\'me\' data-spec=\'test\' data-parent=\'otherTest\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with explicitly closed multiple data spec and id spec no space'},
-        { "i":'\'\'' + spec + '?me?' + text + '',"o":'<p><' + element + ' id=\'me\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id spec no space after explicit paragraph open'},
-        { "i":'\'\'' + spec + '?me?' + text + '\'\'',"o":'<p><' + element + ' id=\'me\'>' + text + '</' + element + '></p>',"n":name + ' implicitly closed on one line at start of line with closed id spec no space after explicit paragraph open and explicit inline close'},
-        { "i":'' + spec + '?me? ' + text + '',"o":'<p><' + element + ' id=\'me\'> ' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id spec with space'},
-        { "i":'' + spec + '?me ' + text + '',"o":'<p><' + element + ' id=\'me\'> ' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with open id spec'},
-        { "i":'' + spec + '@classy@' + text + '',"o":'<p><' + element + ' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed class spec no space'},
-        { "i":'' + spec + '@classy@$spec=test$' + text + '',"o":'<p><' + element + ' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed class and data spec no space'},
-        { "i":'' + spec + '@classy@ ' + text + '',"o":'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed class spec with space'},
-        { "i":'' + spec + '@classy@$spec=test$ ' + text + '',"o":'<p><' + element + ' class=\'classy\' data-spec=\'test\'> ' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed class and data spec with space'},
-        { "i":'' + spec + '@classy ' + text + '',"o":'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with open class spec'},
-        { "i":'' + spec + '?me?@classy@' + text + '',"o":'<p><' + element + ' id=\'me\' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id and class spec no space'},
-        { "i":'' + spec + '?me?@classy@$spec=test$' + text + '',"o":'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id, class and data spec no space'},
-        { "i":'' + spec + '@classy@?me?' + text + '',"o":'<p><' + element + ' id=\'me\' class=\'classy\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed class and id spec no space'},
-        { "i":'' + spec + '@classy@?me?$spec=test$' + text + '',"o":'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one'},
-        { "i":'' + spec + '@classy@?me?$specKey=test$' + text + '',"o":'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key capitalisation'},
-        { "i":'' + spec + '@classy@?me?$spec.key=test$' + text + '',"o":'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key dot'},
-        { "i":'' + spec + '@classy@?me?$spec#key=test$' + text + '',"o":'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key hash'},
-        { "i":'' + spec + '@classy@?me?$spec##key=test$' + text + '',"o":'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key double hash'},
-        { "i":'' + spec + '@classy@?me?$spec###key=test$' + text + '',"o":'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key triple hash'},
-        { "i":'' + spec + '@classy@?me?$spec£key=test$' + text + '',"o":'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key pound'},
-        { "i":'' + spec + '@classy@?me?$spec_key=test$' + text + '',"o":'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key underscore'},
-        { "i":'' + spec + '@classy@?me?$spec-key=test$' + text + '',"o":'<p><' + element + ' id=\'me\' class=\'classy\' data-spec-key=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order one with data key dash'},
-        { "i":'' + spec + '@classy@$spec=test$?me?' + text + '',"o":'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order two'},
-        { "i":'' + spec + '$spec=test$@classy@?me?' + text + '',"o":'<p><' + element + ' id=\'me\' class=\'classy\' data-spec=\'test\'>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed id, class and data spec no space, different order three'},
-        { "i":'' + spec + '@classy@ ' + text + '',"o":'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with closed class spec with space'},
-        { "i":'' + spec + '@classy ' + text + '',"o":'<p><' + element + ' class=\'classy\'> ' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line at start of line with open class spec'},
-        { "i":'Something' + spec + '' + text + '',"o":'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line after content with no spacing',"s":["IS_FORMAT_SECTION_OF_LINE"]},
-        { "i":'Something ' + spec + '' + text + '',"o":'<p>Something <' + element + '>' + text + '</' + element + '>\r\n</p>',"n":name + ' implicitly closed on one line after content with spacing',"s":["IS_FORMAT_SECTION_OF_LINE"]},
-        { "i":'Something' + spec + '' + text + '' + spec,"o":'<p>Something<' + element + '>' + text + '</' + element + '>\r\n</p>',"n":name + ' explicitly closed on one line after content with no spacing',"s":["IS_FORMAT_SECTION_OF_LINE"]},
-        { "i":'Something ' + spec + '' + text + '' + spec,"o":'<p>Something <' + element + '>' + text + '</' + element + '>\r\n</p>',"n":name + ' explicitly closed on one line after content with spacing',"s":["IS_FORMAT_SECTION_OF_LINE"]},
-        { "i":'Something ' + spec + ' ' + text + ' ' + spec,"o":'<p>Something <' + element + '> ' + text + ' </' + element + '>\r\n</p>',"n":name + ' explicitly closed on one line after content with spacing in ' + name + ' before and after',"s":["IS_FORMAT_SECTION_OF_LINE"]},
-        { "i":'Something ' + spec + ' ' + text + ' ' + spec + ' And more!',"o":'<p>Something <' + element + '> ' + text + ' </' + element + '> And more!\r\n</p>',"n":name + ' explicitly closed on one line before and after content with spacing in ' + name + ' before and after',"s":["IS_FORMAT_SECTION_OF_LINE"]},
-    ];
-    col.each(a,function(k,v){
-        if (!v.s)
-        {
-            v.s =[];
-        }
-        v.s.push(commonSpec);
-    });
-    return a;
-}
-
-var generatedTests =
-    buildInlineTestCases('**', 'strong', 'Strong', 'Strong','IS_STRONG').concat(
-        buildInlineTestCases('//', 'em', 'Emphasis', 'Emphasis','IS_EMPHASIS').concat(
-            buildInlineTestCases('__', 'u', 'Underlined', 'Underlined','IS_UNDERLINE').concat(
-                buildInlineTestCases('^^', 'sup', 'Super', 'Superscript','IS_SUPERSCRIPT').concat(
-                    buildInlineTestCases('>>', 'small', 'Small', 'Small','IS_SMALL').concat(
-                        buildInlineTestCases('~~', 'strike', 'Striken', 'Strikethrough','IS_STRIKE').concat(
-                            buildInlineTestCases('!!', 'sub', 'Beneath', 'Subscript','IS_SUBSCRIPT').concat(
-                                buildInlineTestCases('::', 'code', 'Codified', 'Inline Code','IS_CODE').concat(
-                                    buildInlineTestCases('``', 'span', 'Spanned', 'span','IS_SPAN')
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
-
-function pushCase(groupName){
-    return function(k,v){
-        v.groupName = groupName;
-        cases.push(v);
-    }
-}
-
-col.each(generatedTests,pushCase("Inline generated tests"));
-
-
 var moreCases = [
     { "i":'**//Nested inlines',"o":'<p><strong><em>Nested inlines</em></strong>\r\n</p>',"n":'Emphasis nested in strong, implicit close'},
     { "i":'**Strongly //Nested inlines',"o":'<p><strong>Strongly <em>Nested inlines</em></strong>\r\n</p>',"n":'Part emphasis nested in strong, implicit close'},
@@ -233,22 +140,6 @@ var moreCases = [
     { "i":'!"£$%^&*()_+-=[]{}:@~#\';?><,./\\|`¬',"o":'<p>!&#x22;&#xA3;$%^&#x26;*()_+-=[]{}:@~#&#x27;;?&#x3E;&#x3C;,./\\|&#x60;&#xAC;\r\n</p>',"n":'All simple special characters'}
 ];
 
-col.each(moreCases,pushCase("More tests cases"));
-
-var bugs = [
-    { "i":'::h2::',"o":'<p><code>h2</code>\r\n</p>',"n":'h2 in code inline spec bug'},
-    { "i":'::h3::',"o":'<p><code>h3</code>\r\n</p>',"n":'h2 in code inline spec bug - h3'},
-    { "i":'**h2**',"o":'<p><strong>h2</strong>\r\n</p>',"n":'h2 in strong inline spec'},
-    { "i":'\"\"//\"Emphasised?\"// - Missing quote',"o":'<blockquote><p><em>&#x22;Emphasised?&#x22;</em> - Missing quote\r\n</p>\r\n</blockquote>',"n":'Emphasised question mark & quote missing from block quote'}
-];
-
-col.each(bugs,pushCase("Bug tests"));
-
-var casesWithOptions =[
-
-];
-
-col.each(casesWithOptions,pushCase("Tests with options"));
 
 var listCases = [
     {"i":'%&\r\n%&',"o":'<ul>\r\n</ul>',"n":'Empty unordered list'},
@@ -264,8 +155,6 @@ var listCases = [
     {"i":'+Implicit ordered item list',"o":'<ol><li>Implicit ordered item list</li>\r\n</ol>',"n":'Implicit ordered list from single line item'}
 ];
 
-col.each(listCases,pushCase("Tests about lists"));
-
 var cssSpecCases = [
     {"i":'``@@label-danger@Danger danger``',"o":'<p><span class=\'label label-danger\'>Danger danger</span>\r\n</p>',"n":'Inferred CSS base classes'},
     {"i":'``@@label&label-danger@Danger danger``',"o":'<p><span class=\'label label-danger\'>Danger danger</span>\r\n</p>',"n":'Inferred CSS base class ignores already defined base class'},
@@ -276,14 +165,6 @@ var cssSpecCases = [
     {"i":'``?lead?@@btn-danger&btn-large@Danger danger``',"o":'<p><span id=\'lead\' class=\'btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',"n":'Inferred multiple CSS base classes with closed id spec before - single base only used once'},
     {"i":'``?lead@@btn-danger&btn-large@Danger danger``',"o":'<p><span id=\'lead\' class=\'btn btn-danger btn-large\'>Danger danger</span>\r\n</p>',"n":'Inferred multiple CSS base classes with open id spec before - single base only used once'}
 ];
-
-col.each(cssSpecCases,pushCase("Tests about base css specs"));
-
-var dataSpecCases = [
-
-];
-
-col.each(dataSpecCases,pushCase("Tests about data specs"));
 
 var dataBlockSpecs = [
     {"i":'$$$$?spec-Data@json\r\n$$$$',"o":'<script id=\'spec-Data\' type=\'application/json\'>\r\n</script>',"n":'Empty data block - json'},
@@ -305,8 +186,6 @@ var dataBlockSpecs = [
     {"i":'$$$$\r\n#Global Rules\r\n$$$$',"o":'<h1 id=\'global-rules\'>Global Rules</h1>\r\n<script id=\'data-block-1\' type=\'application/json\'>\r\n</script>',"n":'Data block causes auto id generation in heading'}
 ];
 
-col.each(dataBlockSpecs,pushCase("Tests about data block specs"));
-
 var autoIdGenerationCases = [
     {"i":'# First Heading',"o":'<h1 id=\'first-heading\'>First Heading</h1>',"n":'Generate id from heading with space in content',"opt":{generateIds:true}},
     {"i":'# FirstHeading',"o":'<h1 id=\'first-heading\'>FirstHeading</h1>',"n":'Generate id from heading without space in content',"opt":{generateIds:true}},
@@ -324,21 +203,4 @@ var autoIdGenerationCases = [
     {"i":'+First List Item',"o":'<ol><li id=\'first-list-item\'>First List Item</li>\r\n</ol>',"n":'Generate id from ordered list item with spaces in content',"opt":{generateIds:true}},
 ];
 
-//col.each(autoIdGenerationCases,pushCase("Tests about auto id generation"));
-
-//var describe = require("mocha");
-
-exports.describeTests = function(){
-    describe('parser',function(){
-        describe('parseWithNoOptions()',function(){
-            col.each(cases, function(k,v){
-                it(v.n,function(done){
-                    h.assertParseWithNoOptions(assert, v.i, v.o, v.n);
-                    done();
-                });
-            });
-        });
-    });
-};
-
-exports.describeTests();
+//TODO:Write something to export these to JSON files - then scrap this file :)
