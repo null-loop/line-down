@@ -166,9 +166,9 @@ function generateSimpleOneLineImplicitParagraphWithNestedOpenInlineSpecTestCase(
         name = replaceAll('##',spec.name,name);
     }
     return{
-        n:name,
         i:input,
-        o:output
+        o:output,
+        n:name
     }
 }
 

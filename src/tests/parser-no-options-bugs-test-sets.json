@@ -1,0 +1,24 @@
+{
+  "name": "Test data spec generation",
+  "object": "parser",
+  "testSets": [
+    {
+      "name": "Test data spec generation on a span in a paragraph",
+      "method": "parse-no-options",
+      "testCases": [
+        { "i": "::h2::",
+          "o":"<p><code>h2</code>\r\n</p>",
+          "n":"h2 in code inline spec bug"},
+        { "i": "::h3::",
+          "o":"<p><code>h3</code>\r\n</p>",
+          "n":"h2 in code inline spec bug - h3"},
+        { "i": "**h2**",
+          "o":"<p><strong>h2</strong>\r\n</p>",
+          "n":"h2 in strong inline spec"},
+        { "i": "\"\"//\"Emphasised?\"// - Missing quote",
+          "o": "<blockquote><p><em>&#x22;Emphasised?&#x22;</em> - Missing quote\r\n</p>\r\n</blockquote>",
+          "n":"Emphasised question mark & quote missing from block quote"}
+        ]
+    }
+  ]
+}
