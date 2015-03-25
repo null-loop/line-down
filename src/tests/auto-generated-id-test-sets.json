@@ -1,0 +1,96 @@
+{
+  "name": "Tests for the autogeneration of ids",
+  "object": "parser",
+  "testSets": [
+    {
+      "name": "Tests with options for autogeneration set",
+      "method": "parse-options",
+      "testCases": [
+        {
+          "i": "# First Heading",
+          "o": "<h1 id='first-heading'>First Heading</h1>",
+          "n": "Generate id from heading with space in content",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "# FirstHeading",
+          "o": "<h1 id='first-heading'>FirstHeading</h1>",
+          "n": "Generate id from heading without space in content",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "# Firstheading",
+          "o": "<h1 id='firstheading'>Firstheading</h1>",
+          "n": "Generate id from heading without space in content, no capitalisation",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "#Firstheading",
+          "o": "<h1 id='firstheading'>Firstheading</h1>",
+          "n": "Generate id from heading without space in content, none after line spec, no capitalisation",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "#FirstHeading",
+          "o": "<h1 id='first-heading'>FirstHeading</h1>",
+          "n": "Generate id from heading without space in content, none after line spec",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "#First Heading",
+          "o": "<h1 id='first-heading'>First Heading</h1>",
+          "n": "Generate id from heading with space in content, without after line spec",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "#?ignored?Not Generated",
+          "o": "<h1 id='ignored'>Not Generated</h1>",
+          "n": "Heading with explicit id doesn't have new id generated",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "# First Heading\r\n# First Heading",
+          "o": "<h1 id='first-heading'>First Heading</h1>\r\n<h1 id='first-heading-1'>First Heading</h1>",
+          "n": "Duplicate headings generate unique ids",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "# First Heading\r\n# First Heading\r\n# First Heading",
+          "o": "<h1 id='first-heading'>First Heading</h1>\r\n<h1 id='first-heading-1'>First Heading</h1>\r\n<h1 id='first-heading-2'>First Heading</h1>",
+          "n": "Duplicate headings generate unique ids three times",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "# First Heading\r\n# First Heading\r\n# First Heading\r\n# First Heading",
+          "o": "<h1 id='first-heading'>First Heading</h1>\r\n<h1 id='first-heading-1'>First Heading</h1>\r\n<h1 id='first-heading-2'>First Heading</h1>\r\n<h1 id='first-heading-3'>First Heading</h1>",
+          "n": "Duplicate headings generate unique ids four times",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "''First Paragraph",
+          "o": "<p id='first-paragraph'>First Paragraph\r\n</p>",
+          "n": "Generate id from paragraph with space in content",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "''Only Takes The First Hundred Characters Into Account For The Id When Autogenerating Ids From The Content Inside",
+          "o": "<p id='only-takes-the-first-hundred-characters-into-account-for-the-id-when-autogenerating-ids-from-the-con'>Only Takes The First Hundred Characters Into Account For The Id When Autogenerating Ids From The Content Inside\r\n</p>",
+          "n": "Generate id from paragraph with space in content limited to 100 characters from content",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "&First List Item",
+          "o": "<ul><li id='first-list-item'>First List Item</li>\r\n</ul>",
+          "n": "Generate id from unordered list item with spaces in content",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "+First List Item",
+          "o": "<ol><li id='first-list-item'>First List Item</li>\r\n</ol>",
+          "n": "Generate id from ordered list item with spaces in content",
+          "opt": {"generateIds": true}
+        }
+      ]
+    }
+    ]
+}

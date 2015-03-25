@@ -51,6 +51,21 @@ var methodRunnerLookup = {
         {
             assert.equal(actualOutput, expectedOutput, testCaseName);
         }
+    },
+    "parser.parseWithOptions":function(testCase){
+        var input = testCase.i;
+        var expectedOutput = testCase.o;
+        var testCaseName = testCase.n;
+        var options = testCase.opt;
+        var actualOutput = linedown.parser.parseWithOptions(input,options);
+        if (actualOutput!==expectedOutput)
+        {
+            assert.fail(actualOutput, expectedOutput,testCaseName,"==");
+        }
+        else
+        {
+            assert.equal(actualOutput, expectedOutput, testCaseName);
+        }
     }
 };
 

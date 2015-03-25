@@ -1,9 +1,9 @@
 {
-  "name": "Test data spec generation",
+  "name": "Tests for bugs, bugs for tests",
   "object": "parser",
   "testSets": [
     {
-      "name": "Test data spec generation on a span in a paragraph",
+      "name": "Internally discovered",
       "method": "parse-no-options",
       "testCases": [
         { "i": "::h2::",

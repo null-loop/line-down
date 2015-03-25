@@ -1,0 +1,82 @@
+{
+  "name": "Tests for generation of data blocks",
+  "object": "parser",
+  "testSets": [
+    {
+      "name": "Simple empty data blocks with default options",
+      "method": "parse-no-options",
+      "testCases": [
+        {
+          "i": "$$$$?spec-Data@json\r\n$$$$",
+          "o": "<script id='spec-Data' type='application/json'>\r\n</script>",
+          "n": "Empty data block - json"
+        },
+        {
+          "i": "$$$$?spec-Data@jsonp\r\n$$$$",
+          "o": "<script id='spec-Data' type='application/javascript'>\r\n</script>",
+          "n": "Empty data block - jsonp"
+        },
+        {
+          "i": "$$$$?spec-Data@xml\r\n$$$$",
+          "o": "<script id='spec-Data' type='application/xml'>\r\n</script>",
+          "n": "Empty data block - xml"
+        },
+        {
+          "i": "$$$$?spec-Data\r\n$$$$",
+          "o": "<script id='spec-Data' type='application/json'>\r\n</script>",
+          "n": "Empty data block - defaults to json"
+        },
+        {
+          "i": "$$$$?spec-Data@json\r\nTesting testing\r\n$$$$",
+          "o": "<p>Testing testing\r\n</p>\r\n<script id='spec-Data' type='application/json'>\r\n</script>",
+          "n": "Empty data block comes after content - json"
+        },
+        {
+          "i": "$$$$?spec-Data@jsonp\r\nTesting testing\r\n$$$$",
+          "o": "<p>Testing testing\r\n</p>\r\n<script id='spec-Data' type='application/javascript'>\r\n</script>",
+          "n": "Empty data block comes after content - jsonp"
+        },
+        {
+          "i": "$$$$?spec-Data@xml\r\nTesting testing\r\n$$$$",
+          "o": "<p>Testing testing\r\n</p>\r\n<script id='spec-Data' type='application/xml'>\r\n</script>",
+          "n": "Empty data block comes after content - xml"
+        },
+        {
+          "i": "$$$$?spec-Data\r\nTesting testing\r\n$$$$",
+          "o": "<p>Testing testing\r\n</p>\r\n<script id='spec-Data' type='application/json'>\r\n</script>",
+          "n": "Empty data block comes after content - defaults to json"
+        },
+        {
+          "i": "$$$$\r\n$$$$",
+          "o": "<script id='data-block-1' type='application/json'>\r\n</script>",
+          "n": "Empty data block, auto generated id - defaults to json"
+        },
+        {
+          "i": "$$$$\r\n$$$$\r\n$$$$\r\n$$$$",
+          "o": "<script id='data-block-1' type='application/json'>\r\n</script>\r\n<script id='data-block-2' type='application/json'>\r\n</script>",
+          "n": "2 Empty data blocks, auto generated id - defaults to json"
+        },
+        {
+          "i": "$$$$@xml\r\n$$$$",
+          "o": "<script id='data-block-1' type='application/xml'>\r\n</script>",
+          "n": "Empty data block, auto generated id - explicit xml"
+        },
+        {
+          "i": "$$$$@xml\r\n$$$$\r\n$$$$@xml\r\n$$$$",
+          "o": "<script id='data-block-1' type='application/xml'>\r\n</script>\r\n<script id='data-block-2' type='application/xml'>\r\n</script>",
+          "n": "2 Empty data blocks, auto generated id - explicit xml"
+        },
+        {
+          "i": "$$$$\r\n$$$$\r\n$$$$@xml\r\n$$$$",
+          "o": "<script id='data-block-1' type='application/json'>\r\n</script>\r\n<script id='data-block-2' type='application/xml'>\r\n</script>",
+          "n": "2 Empty data blocks, auto generated id - explicit xml for second, default json for first"
+        },
+        {
+          "i": "$$$$\r\n#Global Rules\r\n$$$$",
+          "o": "<h1 id='global-rules'>Global Rules</h1>\r\n<script id='data-block-1' type='application/json'>\r\n</script>",
+          "n": "Data block causes auto id generation in heading"
+        }
+      ]
+    }
+  ]
+}

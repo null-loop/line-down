@@ -1,0 +1,82 @@
+{
+  "name": "Tests for horizontal rules",
+  "object": "parser",
+  "testSets": [
+    {
+      "name": "Tests for horizontal rules with no options",
+      "method": "parse-no-options",
+      "testCases": [
+        {
+          "i": "---",
+          "o": "<hr/>",
+          "n": "Simple horizontal rule on own line"
+        },
+        {
+          "i": "  ---",
+          "o": "<hr/>",
+          "n": "Simple horizontal rule on own line with spacing before"
+        },
+        {
+          "i": "---  ",
+          "o": "<hr/>",
+          "n": "Simple horizontal rule on own line with spacing after"
+        },
+        {
+          "i": "---?rule",
+          "o": "<hr id='rule'/>",
+          "n": "Simple horizontal rule on own line with open id spec"
+        },
+        {
+          "i": "---?rule?",
+          "o": "<hr id='rule'/>",
+          "n": "Simple horizontal rule on own line with closed id spec"
+        },
+        {
+          "i": "---?rule@classy",
+          "o": "<hr id='rule' class='classy'/>",
+          "n": "Simple horizontal rule on own line with open id and CSS spec"
+        },
+        {
+          "i": "---?rule?@classy@",
+          "o": "<hr id='rule' class='classy'/>",
+          "n": "Simple horizontal rule on own line with closed id and CSS spec"
+        },
+        {
+          "i": "Haha --- Ignored!",
+          "o": "<p>Haha --- Ignored!\r\n</p>",
+          "n": "Horizontal rule is ignored when not first and last"
+        },
+        {
+          "i": "Haha ---",
+          "o": "<p>Haha ---\r\n</p>",
+          "n": "Horizontal rule is ignored when not first"
+        },
+        {
+          "i": "--- Ignored!",
+          "o": "<p>--- Ignored!\r\n</p>",
+          "n": "Horizontal rule is ignored when not last"
+        },
+        {
+          "i": "'' Explicit paragraph\r\n---\r\nWith a HR!''",
+          "o": "<p>Explicit paragraph\r\n<hr/>\r\nWith a HR!</p>",
+          "n": "Horizontal rule nested in explicit paragraph"
+        },
+        {
+          "i": "'' Explicit paragraph\r\n---\r\nWith a HR!\r\n''",
+          "o": "<p>Explicit paragraph\r\n<hr/>\r\nWith a HR!\r\n</p>",
+          "n": "Horizontal rule nested in explicit paragraph closed on new line"
+        },
+        {
+          "i": "\"\" Explicit blockquote\r\n---\r\nWith a HR!\"\"",
+          "o": "<blockquote><p>Explicit blockquote\r\n</p><hr/>\r\n<p>With a HR!</p></blockquote>",
+          "n": "Horizontal rule nested in explicit blockquote"
+        },
+        {
+          "i": "\"\" Explicit blockquote\r\n---\r\nWith a HR!\r\n\"\"",
+          "o": "<blockquote><p>Explicit blockquote\r\n</p><hr/>\r\n<p>With a HR!\r\n</p></blockquote>",
+          "n": "Horizontal rule nested in explicit blockquote closed on new line"
+        }
+      ]
+    }
+  ]
+}

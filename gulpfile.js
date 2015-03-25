@@ -87,7 +87,7 @@ function generateParserTestCases()
         {spec:'::',element:'code',name:'code',preserveWhiteSpace:true},
         {spec:'``',element:'span',name:'span',preserveWhiteSpace:true},
         {spec:'~~',element:'strike',name:'strike through',preserveWhiteSpace:true}
-    ], './src/tests/parser-no-options-*-specs-generated-test-sets.json');
+    ], './src/tests/*-generated-test-sets.json');
 }
 
 gulp.task('generateParserTestCases',function(done){
@@ -139,7 +139,7 @@ gulp.task('testWeb',['buildWeb'],function(done){
 //});
 
 gulp.task('testJsParser',['buildJs'],function(done){
-    run('mocha mocha-all.js -R dot',
+    run('mocha mocha-all.js -R progress',
         {cwd:'src/js/parser/tests'}).exec('',done);
 });
 
