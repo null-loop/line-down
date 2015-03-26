@@ -546,13 +546,19 @@ exports.createBuilder = function(options, scope){
                     s++;
                     possibleId = base + "-" + s.toString();
                 }
+                if (possibleId.substring(0,1)==='-'){
+                    possibleId = possibleId.substring(1,possibleId.length - 1);
+                }
+                if (possibleId.substring(possibleId.length - 1)==='-'){
+                    possibleId = possibleId.substring(0,possibleId.length - 1);
+                }
                 return possibleId;
             }
             return undefined;
             //TODO:this for one thing... also - need to work with the scope to get the real content when working with opening block specs on their own line
         },
         applyOptions:function(block){
-            if (options && options.generateIds && !block.id){
+            if (options && options.generateIds && (!block.id || this.scope.hasUsedId(block.id))){
                 block.id = this.generateId(block);
             }
         },
@@ -1004,7 +1010,13 @@ exports.processLine = function(lineContent, scope, linebuilder) {
             spec: '\'\'',
             implicit: true
         });
-        linebuilder.openTag('p');
+        var impP = {
+            element:'p',
+            remainingLine:trimmedContent
+        };
+        linebuilder.applyOptions(impP);
+        linebuilder.openTag('p', impP.id, impP.classes, impP.dataPairs);
+
     }
 
 
