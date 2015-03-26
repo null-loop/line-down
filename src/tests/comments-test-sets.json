@@ -1,0 +1,44 @@
+{
+  "name": "Tests for comments",
+  "object": "parser",
+  "testSets": [
+    {
+      "name": "Tests for comments when no options are present - i.e no output of comments",
+      "method": "parse-no-options",
+      "testCases": [
+        { "i": "/This whole line will be ignored!",
+          "o":"",
+          "n":"Comment causes whole line to be ignored"},
+        { "i": "None of this /will be ignored",
+          "o":"<p>None of this /will be ignored\r\n</p>",
+          "n":"Comment ignored when in middle of line"},
+        { "i": "''/This is ignored",
+          "o":"<p>\r\n</p>",
+          "n":"Comment causes line after block spec start to be ignored"}
+      ]
+    },{
+      "name":"Test for comments when options are present setting outputComments to true",
+      "method":"parse-options",
+      "testCases":[
+        {"i":"/This whole line will be a comment in HTML!",
+         "o":"<!--This whole line will be a comment in HTML!-->",
+         "n":"Outputs as entire commented line",
+         "opt":{
+           "outputComments":true
+         }},
+        {"i":"/This **whole** line will be a comment in //HTML//!",
+          "o":"<!--This **whole** line will be a comment in //HTML//!-->",
+          "n":"Outputs as entire commented line - linedown ignored",
+          "opt":{
+            "outputComments":true
+          }},
+        {"i":"/This whole line will be a /comment in HTML!",
+          "o":"<!--This whole line will be a /comment in HTML!-->",
+          "n":"Outputs as entire commented line - cannot be closed early",
+          "opt":{
+            "outputComments":true
+          }}
+      ]
+    }
+  ]
+}

@@ -69,7 +69,14 @@ exports.parser.defaultOptions = {
     deprecatedTags:[
         {tag:"u",class:"underline"},
         {tag:"strike",class:"strikethrough"}
-    ]
+    ],
+    outputComments:false,
+    generateIds:false,
+    autodetectHyperlinks:false,
+    implicitDataBlockCapture:false,
+    implicitBaseCssClasses:undefined,
+    additionalInlineSpecs:undefined,
+    linkFormatters:undefined
 };
 
 exports.parser.parseWithDefaultOptions = function(linedownContent){

@@ -86,8 +86,8 @@
         <h2 data-spec-setion="LS">Line Specifications</h2>
         <ul>
             <li data-spec="LS_FORMAT_WHOLE_LINE_EXCLUDING_BLOCK_CLOSE">Line specs format the whole line following them - excluding any block spec closures</li>
-            <li data-spec="LS_OCCUR_AT_START_OF_LINE">Line specs may occur at the start of a line</li>
             <li data-spec="LS_OCCUR_AFTER_BLOCK_OPEN">Line specs may occur immediately following a block spec open</li>
+            <li data-spec="LS_OCCUR_AT_START_OF_LINE">Line specs must appear at the start of a line (excepting the above)</li>
         </ul>
         <h3 data-spec-section="LS_H"># - Headings <span class="label label-success">Done</span></h3>
         <ul>
@@ -98,16 +98,15 @@
             </li>
             <li>There is no limit to the depth of heading that may be specified</li>
         </ul>
-
+        <h3 data-spec-section="LS_C">/ - Comment</h3>
+        <ul>
+            <li>The remainder of the line is treated as comment and not processed further by line-down</li>
+            <li>Except if the <code>outputComments</code> option is enabled in which case the remainder of the line will be rendered wrapped in HTML comments</li>
+        </ul>
         <hr/>
         <h2 data-spec-section="IS">Inline Specifications</h2>
         <ul>
             <li data-spec="IS_FORMAT_SECTION_OF_LINE">Inline specs format a section of a line.</li>
-
-            <!--TODO:CONTINUE IN THIS VEIN DAN with spec attributes ! -->
-            <!--TODO:Setup s data on tests cases -->
-            <!--TODO:Format test cases source file better -->
-
             <li>Inline specs do not flow between lines - they finish when the line does</li>
             <li>When handling inline specifications, whitespace is preserved. So <code>** I'm strong **</code> is <code>&lt;strong&gt; I'm strong &lt;/strong&gt;</code></li>
             <li>As a consequence implicitly closed id/class specs will leave a whitespace in their output, considering explicitly closing them if this is
@@ -192,6 +191,9 @@
             <tr>
                 <td>Hyperlinks</td>
             </tr>
+            <tr>
+                <td>Images</td>
+            </tr>
             </tbody>
         </table>
         <hr/>
@@ -213,7 +215,7 @@
             <li>All currently open block specs are implicitly closed by an empty line (a line with no non-whitespace
                 characters)
             </li>
-            <li>A line that contains no line or block spec, and is not currently in a non-blockquote block will open a new paragraph block spec on the line</li>
+            <li>An implicit paragraph is opened by a line that contains no line or block spec, and is not currently in a block spec (excluding blockquote)</li>
             <li>An implicitly opened paragraph will be closed by the explicit opening of any block spec</li>
         </ul>
         <h3 data-spec-section="LS_UL">& - Unordered list items</h3>
@@ -291,20 +293,30 @@
         </ul>
 
         <h2 data-spec-section="OP">Options <span class="label label-info">Planned</span></h2>
-        <ul>
-            <li><code>idWhitelist</code> - Explicit list of allowed ids, either just a list or a hashmap of tags to ids</li>
-            <li><code>cssWhitelist</code> - Explicit list of allowed CSS classes, either just a list or a hashmap of tags to classes</li>
-            <li><code>idBlacklist</code> - Explicit list of DISallowed ids</li>
-            <li><code>cssBlacklist</code> - Explicit list of DISallowed CSS classes</li>
-            <li><code>deprecatedTags</code> - Mapping of elements to replacement element and CSS class</li>
-            <li><code>generateIds</code> - Whether or not to automatically generate IDs for significant elements if no explicit ID is given</li>
-            <li><code>autodetectHyperlinks</code></li>
-            <li><code>implicitDataBlockCapture</code></li>
-            <li><code>explicitBaseCssClasses</code></li>
-            <li><code>additionalInlineSpecs</code></li>
-            <li><code>linkStereotypes</code></li>
-            <li><code>outputComments</code></li>
-        </ul>
+        <h4><code>idWhitelist</code></h4>
+        <p>Explicit list of allowed ids, either just a list or a hashmap of tags to ids</p>
+        <h4><code>cssWhitelist</code></h4>
+        <p>Explicit list of allowed CSS classes, either just a list or a hashmap of tags to classes</p>
+        <h4><code>idBlacklist</code></h4>
+        <p>Explicit list of DISallowed ids</p>
+        <h4><code>cssBlacklist</code></h4>
+        <p>Explicit list of DISallowed CSS classes</p>
+        <h4><code>deprecatedTags</code></h4>
+        <p>Mapping of elements to replacement element and CSS class</p>
+        <h4><code>generateIds</code></h4>
+        <p>Whether or not to automatically generate IDs for significant elements if no explicit ID is given - can be either a boolean or a list of elements to generate for</p>
+        <h4><code>autodetectHyperlinks</code></h4>
+        <p>Whether to auto-detect http:// and other prefixes as links</p>
+        <h4><code>implicitDataBlockCapture</code></h4>
+        <p>Whether to include an implicit data block around the entire document (any existing explicit data blocks are preserved and rendered separately)</p>
+        <h4><code>implicitBaseCssClasses</code></h4>
+        <p>A list of CSS base classes to add to normal CSS specs when matching the first part of any hyphenated class, i.e. <code>'btn','label'</code> means that <code>@btn-large&label-danger&ignored-bored</code> becomes <code>class="btn label btn-large label-danger ignored-bored"</code></p>
+        <h4><code>additionalInlineSpecs</code></h4>
+        <p>A list of custom inline spec formats - <strong>TBD if this is a good idea or not</strong></p>
+        <h4><code>linkFormatters</code></h4>
+        <p>A hashmap of link prefixes to custom formatters</p>
+        <h4><code>outputComments</code></h4>
+        <p>Whether to render comments into the HTML output</p>
         <h3>
             <small>Two vertical pipes</small>
             - <code>||</code> Line Down free zone

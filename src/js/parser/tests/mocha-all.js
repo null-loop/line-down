@@ -45,7 +45,7 @@ var methodRunnerLookup = {
         var actualOutput = linedown.parser.parseWithNoOptions(input);
         if (actualOutput!==expectedOutput)
         {
-            assert.fail(actualOutput, expectedOutput,testCaseName,"==");
+            assert.fail(actualOutput, expectedOutput);
         }
         else
         {
@@ -60,7 +60,7 @@ var methodRunnerLookup = {
         var actualOutput = linedown.parser.parseWithOptions(input,options);
         if (actualOutput!==expectedOutput)
         {
-            assert.fail(actualOutput, expectedOutput,testCaseName,"==");
+            assert.fail(actualOutput, expectedOutput);
         }
         else
         {

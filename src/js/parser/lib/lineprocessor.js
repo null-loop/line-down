@@ -175,6 +175,7 @@ exports.processLine = function(lineContent, scope, linebuilder) {
     } else {
         // more line specs
 
+        //TODO: move these into block specs...
         var li = fnc.startsWith('+', trimmedContent);
         //TODO:Implicit OL
         if (li.startsWith && li.remainingLine.trim().length !== 0) {
@@ -219,6 +220,19 @@ exports.processLine = function(lineContent, scope, linebuilder) {
             else
             {
                 // more line specs
+                var c = fnc.startsWith('/', trimmedContent);
+                if (c.startsWith && c.symbolCount === 1){
+                    if (linebuilder.options && linebuilder.options.outputComments){
+                        // write it as a HTML comment
+                        linebuilder.append('<!--' + c.remainingLine + '-->');
+                        // the rest of the line simply does not exist!
+                        trimmedContent = '';
+                    }
+                    else{
+                        // the rest of the line simply does not exist!
+                        trimmedContent = '';
+                    }
+                }
             }
         }
     }
