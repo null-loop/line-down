@@ -291,6 +291,10 @@
             <li>If no id spec is provided - one is generated from the scheme : <code>data-block-{index}</code> where {index} is an auto-increment number scoped to the document starting at 1.</li>
             <li>If not already set, the option <code>generateIds</code> is set true for the scope of the block</li>
         </ul>
+        <h3>
+            <small>Two vertical pipes</small>
+            - <code>||</code> Line Down free zone
+        </h3>
 
         <h2 data-spec-section="OP">Options <span class="label label-info">Planned</span></h2>
         <h4><code>idWhitelist</code></h4>
@@ -304,7 +308,7 @@
         <h4><code>deprecatedTags</code></h4>
         <p>Mapping of elements to replacement element and CSS class</p>
         <h4><code>generateIds</code></h4>
-        <p>Whether or not to automatically generate IDs for significant elements if no explicit ID is given - can be either a boolean or a list of elements to generate for</p>
+        <p>Whether or not to automatically generate IDs for significant elements if no explicit ID is given - can be either a boolean or a list of elements to generate for - currently only boolean supported - generate for h, p & li</p>
         <h4><code>autodetectHyperlinks</code></h4>
         <p>Whether to auto-detect http:// and other prefixes as links</p>
         <h4><code>implicitDataBlockCapture</code></h4>
@@ -317,9 +321,6 @@
         <p>A hashmap of link prefixes to custom formatters</p>
         <h4><code>outputComments</code></h4>
         <p>Whether to render comments into the HTML output</p>
-        <h3>
-            <small>Two vertical pipes</small>
-            - <code>||</code> Line Down free zone
-        </h3>
+
     </div>
 </div>

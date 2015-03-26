@@ -85,9 +85,21 @@
           "opt": {"generateIds": true}
         },
         {
-          "i": "+First List Item",
-          "o": "<ol><li id='first-list-item'>First List Item</li>\r\n</ol>",
-          "n": "Generate id from ordered list item with spaces in content",
+          "i": "Generate for me too",
+          "o": "<p id='generate-for-me-too'>Generate for me too\r\n</p>",
+          "n": "Generate id for implicit paragraph",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "Generate for me too!",
+          "o": "<p id='generate-for-me-too'>Generate for me too!\r\n</p>",
+          "n": "Generate id for implicit paragraph without leaving trailing hyphen",
+          "opt": {"generateIds": true}
+        },
+        {
+          "i": "+ **Wow**",
+          "o": "<ol><li id='wow'><strong>Wow</strong></li>\r\n</ol>",
+          "n": "Generate id for implicit paragraph without leaving trailing hyphen",
           "opt": {"generateIds": true}
         }
       ]

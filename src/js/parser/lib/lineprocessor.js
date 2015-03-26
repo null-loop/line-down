@@ -295,7 +295,13 @@ exports.processLine = function(lineContent, scope, linebuilder) {
             spec: '\'\'',
             implicit: true
         });
-        linebuilder.openTag('p');
+        var impP = {
+            element:'p',
+            remainingLine:trimmedContent
+        };
+        linebuilder.applyOptions(impP);
+        linebuilder.openTag('p', impP.id, impP.classes, impP.dataPairs);
+
     }
 
 

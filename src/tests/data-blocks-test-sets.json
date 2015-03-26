@@ -28,22 +28,22 @@
         },
         {
           "i": "$$$$?spec-Data@json\r\nTesting testing\r\n$$$$",
-          "o": "<p>Testing testing\r\n</p>\r\n<script id='spec-Data' type='application/json'>\r\n</script>",
+          "o": "<p id='testing-testing'>Testing testing\r\n</p>\r\n<script id='spec-Data' type='application/json'>\r\n</script>",
           "n": "Empty data block comes after content - json"
         },
         {
           "i": "$$$$?spec-Data@jsonp\r\nTesting testing\r\n$$$$",
-          "o": "<p>Testing testing\r\n</p>\r\n<script id='spec-Data' type='application/javascript'>\r\n</script>",
+          "o": "<p id='testing-testing'>Testing testing\r\n</p>\r\n<script id='spec-Data' type='application/javascript'>\r\n</script>",
           "n": "Empty data block comes after content - jsonp"
         },
         {
           "i": "$$$$?spec-Data@xml\r\nTesting testing\r\n$$$$",
-          "o": "<p>Testing testing\r\n</p>\r\n<script id='spec-Data' type='application/xml'>\r\n</script>",
+          "o": "<p id='testing-testing'>Testing testing\r\n</p>\r\n<script id='spec-Data' type='application/xml'>\r\n</script>",
           "n": "Empty data block comes after content - xml"
         },
         {
           "i": "$$$$?spec-Data\r\nTesting testing\r\n$$$$",
-          "o": "<p>Testing testing\r\n</p>\r\n<script id='spec-Data' type='application/json'>\r\n</script>",
+          "o": "<p id='testing-testing'>Testing testing\r\n</p>\r\n<script id='spec-Data' type='application/json'>\r\n</script>",
           "n": "Empty data block comes after content - defaults to json"
         },
         {

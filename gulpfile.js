@@ -35,6 +35,7 @@ var nodeParserTests = 'src/node/parser/tests';
 var jsParserTests = 'src/js/parser/tests';
 var webParserLib = './www/js/line-down.parser.js';
 var harpRoot = 'www';
+var webTestCases = 'www/test/cases';
 var harpOutput = 'www/www';
 var _hs;
 
@@ -114,6 +115,7 @@ gulp.task('buildJs',['generateParserTestCases'],function(done){
     gulp.src([parserTestScriptsGlob])
         .pipe(gulp.dest(nodeParserTests));
 
+    // browersify for the web
     run('browserify ' + parserScriptsRoot + 'parser-www-export.js -o ' + webParserLib).exec('',done);
 });
 

@@ -23,8 +23,25 @@
         if (!linedown) {
             linedown = $('#linedownInput')[0].value;
         }
+
+        var outputComments = $('#options-outputComments').is(':checked');
+        var generateIds = $('#options-generateIds').is(':checked');
+
+        var html ='';
         var startTime = window.performance.now();
-        var html = ld.parser.parseWithNoOptions(linedown);
+
+        if (outputComments || generateIds)
+        {
+            html = ld.parser.parseWithOptions(linedown,{
+                outputComments:outputComments,
+                generateIds:generateIds
+            });
+        }
+        else
+        {
+            html = ld.parser.parseWithNoOptions(linedown);
+        }
+
         var endTime = window.performance.now();
         var executionTime = Math.floor((endTime - startTime)*1000)/1000;
 
@@ -37,6 +54,14 @@
         $('#htmlGenerationTime').text('HTML generation took ' + executionTime + "ms");
     }
     updateFromLinedown();
+
+    $('#options-outputComments').change(function(){
+        updateFromLinedown();
+    });
+
+    $('#options-generateIds').change(function(){
+        updateFromLinedown();
+    });
 
     ld.editor.init($('#linedownInput'), updateFromLinedown);
 
