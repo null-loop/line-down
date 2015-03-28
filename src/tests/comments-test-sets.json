@@ -3,7 +3,7 @@
   "object": "parser",
   "testSets": [
     {
-      "name": "Tests for comments when no options are present - i.e no output of comments",
+      "name": "Tests for line comments when no options are present - i.e no output of comments",
       "method": "parse-no-options",
       "testCases": [
         { "i": "/This whole line will be ignored!",
@@ -17,7 +17,7 @@
           "n":"Comment causes line after block spec start to be ignored"}
       ]
     },{
-      "name":"Test for comments when options are present setting outputComments to true",
+      "name":"Test for line comments when options are present setting outputComments to true",
       "method":"parse-options",
       "testCases":[
         {"i":"/This whole line will be a comment in HTML!",
@@ -35,6 +35,24 @@
         {"i":"/This whole line will be a /comment in HTML!",
           "o":"<!--This whole line will be a /comment in HTML!-->",
           "n":"Outputs as entire commented line - cannot be closed early",
+          "opt":{
+            "outputComments":true
+          }},
+        { "i":"/@ignored Please!",
+          "o":"<!--@ignored Please!-->",
+          "n":"Comments ignore css specs",
+          "opt":{
+            "outputComments":true
+          }},
+        { "i":"/?ignored Please!",
+          "o":"<!--?ignored Please!-->",
+          "n":"Comments ignore id specs",
+          "opt":{
+            "outputComments":true
+          }},
+        { "i":"/$ignored=please!",
+          "o":"<!--$ignored=please!-->",
+          "n":"Comments ignore data specs",
           "opt":{
             "outputComments":true
           }}

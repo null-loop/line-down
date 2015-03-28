@@ -98,10 +98,11 @@
             </li>
             <li>There is no limit to the depth of heading that may be specified</li>
         </ul>
-        <h3 data-spec-section="LS_C">/ - Comment</h3>
+        <h3 data-spec-section="LS_C">/ - Comment <span class="label label-success">Done</span></h3>
         <ul>
             <li>The remainder of the line is treated as comment and not processed further by line-down</li>
             <li>Except if the <code>outputComments</code> option is enabled in which case the remainder of the line will be rendered wrapped in HTML comments</li>
+            <li>Comments will not accept id / css or data specs, these will be rendered as normal content</li>
         </ul>
         <hr/>
         <h2 data-spec-section="IS">Inline Specifications</h2>

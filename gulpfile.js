@@ -23,6 +23,7 @@ var gutil = require('gulp-util');
 var harp = require('harp');
 var jeditor = require("gulp-json-editor");
 var testGen = require("./src/tests/test-generator.js");
+var fs = require("fs");
 
 var masterVersion = p.version;
 var parserScriptsRoot = 'src/js/parser/lib/';
@@ -37,6 +38,7 @@ var webParserLib = './www/js/line-down.parser.js';
 var harpRoot = 'www';
 var webTestCases = 'www/test/cases';
 var harpOutput = 'www/www';
+var distDir = 'dist/' + masterVersion;
 var _hs;
 
 function checkParserJs(){
@@ -62,7 +64,7 @@ function endServeHarp(){
     }
 }
 
-gulp.task('updateVersions', function() {
+gulp.task('update-versions', function() {
     gulp.src([nodeParserPackageFile]).pipe(jeditor({
         'version':masterVersion
     })).pipe(gulp.dest('src/node/parser'));
@@ -72,7 +74,7 @@ gulp.task('lint',function(){
     checkParserJs();
 });
 
-gulp.task('buildAll',['buildJs','buildWeb'],function(done){
+gulp.task('build-all',['build-js','build-web'],function(done){
     done();
 });
 
@@ -91,12 +93,12 @@ function generateParserTestCases()
     ], './src/tests/*-generated-test-sets.json');
 }
 
-gulp.task('generateParserTestCases',function(done){
+gulp.task('generate-parser-test-cases',function(done){
     generateParserTestCases();
     done();
 });
 
-gulp.task('buildJs',['generateParserTestCases'],function(done){
+gulp.task('build-js',['generate-parser-test-cases'],function(done){
     checkParserJs();
 
     // wrap for node
@@ -119,18 +121,41 @@ gulp.task('buildJs',['generateParserTestCases'],function(done){
     run('browserify ' + parserScriptsRoot + 'parser-www-export.js -o ' + webParserLib).exec('',done);
 });
 
-gulp.task('buildWeb',['buildJs'], function(done){
+gulp.task('build-web',['build-js'], function(done){
     compileHarp(done);
 });
 
-gulp.task('testJs',['testJsParser','testNpmParser'],function(done){
+gulp.task('test-js',['test-js-parser','test-npm-parser'],function(done){
     done();
 });
 
-gulp.task('testWeb',['buildWeb'],function(done){
+gulp.task('test-web',['build-web'],function(done){
     serveHarp();
     endServeHarp();
     done();
+});
+
+gulp.task('clean-dist',function(done){
+    if (fs.existsSync(distDir)) {
+        fs.rmdirSync(distDir);
+    }
+   done();
+});
+
+gulp.task('dist',['clean-dist','build-all'],function(done){
+    if (!fs.existsSync('dist')) {
+        fs.mkdirSync('dist');
+    }
+    fs.mkdirSync(distDir);
+    // build a distribution package - dist/masterVersion
+    // of
+    // changelog
+    // readme
+    // license
+    // /www - web version
+    // /npm - npm version
+    // /tests - test cases
+    // /doc - documentation & specification
 });
 
 
@@ -140,23 +165,23 @@ gulp.task('testWeb',['buildWeb'],function(done){
 //        {cwd:'src/js/parser/tests'}).exec('',done);
 //});
 
-gulp.task('testJsParser',['buildJs'],function(done){
+gulp.task('test-js-parser',['build-js'],function(done){
     run('mocha mocha-all.js -R dot',
         {cwd:'src/js/parser/tests'}).exec('',done);
 });
 
-gulp.task('testNpmParser',['buildJs','testJsParser'],function(done){
+gulp.task('test-npm-parser',['build-js','test-js-parser'],function(done){
    run('npm test',{cwd:'src/node/parser'}).exec('',done);
 });
 
-gulp.task('installAll',['installNpmParser'],function(done){
+gulp.task('install-all',['install-npm-parser'],function(done){
     done();
 });
 
-gulp.task('installNpmParser',function(done){
+gulp.task('install-npm-parser',function(done){
     run('npm install',{cwd:'src/node/parser'}).exec('',done);
 });
 
-gulp.task('testAll',['testJs'], function(done){
+gulp.task('test-all',['test-js'], function(done){
     done();
 });

@@ -24,6 +24,11 @@ var fnc = {
 exports.processLine = function(lineContent, scope, linebuilder) {
 
     linebuilder.beginLine();
+    if (scope.hasElementScope('cb') && lineContent === '/*'){
+      scope.popBlock();
+    } else if (scope.hasElementScope('cb')){
+      linebuilder.append(lineContent);
+    }
 
     var trimmedContent = lineContent.trim();
     var hasLineSpec;
@@ -151,6 +156,9 @@ exports.processLine = function(lineContent, scope, linebuilder) {
                                 hasBlockSpec = true;
                             }
                         }
+                        else{
+
+                        }
                     }
                 }
 
@@ -220,7 +228,7 @@ exports.processLine = function(lineContent, scope, linebuilder) {
             else
             {
                 // more line specs
-                var c = fnc.startsWith('/', trimmedContent);
+                var c = fnc.startsWith('/', trimmedContent, 1, true, false, true);
                 if (c.startsWith && c.symbolCount === 1){
                     if (linebuilder.options && linebuilder.options.outputComments){
                         // write it as a HTML comment

@@ -19,7 +19,7 @@
 var col = require('./collections.js');
 var digits = '0123456789';
 
-exports.startsWith = function (symbol, line, fixedCount, preserveWhitespace, allowFloatingNumber) {
+exports.startsWith = function (symbol, line, fixedCount, preserveWhitespace, allowFloatingNumber, disallowSpecs) {
     var doesStartWith = false;
     var r = line;
     var count = 0;
@@ -57,7 +57,7 @@ exports.startsWith = function (symbol, line, fixedCount, preserveWhitespace, all
             numberCount = numberCount + c;
             r = r.substring(1);
         }
-        else if (c === '@' && !inClasses && count > 0) {
+        else if (c === '@' && !inClasses && count > 0 && !disallowSpecs) {
             inClasses = true;
             inId = false;
             inData = false;
@@ -71,7 +71,7 @@ exports.startsWith = function (symbol, line, fixedCount, preserveWhitespace, all
             inClasses = false;
             r = r.substring(1);
         }
-        else if (c === '?' && !inId && count > 0) {
+        else if (c === '?' && !inId && count > 0 && !disallowSpecs) {
             inId = true;
             inClasses = false;
             inData = false;
@@ -81,7 +81,7 @@ exports.startsWith = function (symbol, line, fixedCount, preserveWhitespace, all
             inId = false;
             r = r.substring(1);
         }
-        else if (c === '$' && !inData && count > 0)
+        else if (c === '$' && !inData && count > 0 && !disallowSpecs)
         {
             inData = true;
             inId = false;

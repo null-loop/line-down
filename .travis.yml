@@ -7,7 +7,7 @@ install:
   - npm install --global mocha
   - npm install --global browserify
   - npm install
-  - gulp installAll
+  - gulp install-all
 
 script:
-  - gulp testAll
+  - gulp test-all
