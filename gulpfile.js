@@ -98,7 +98,7 @@ gulp.task('generate-parser-test-cases',function(done){
     done();
 });
 
-gulp.task('build-js',['generate-parser-test-cases'],function(done){
+gulp.task('build-js',['lint','generate-parser-test-cases'],function(done){
     checkParserJs();
 
     // wrap for node
@@ -142,7 +142,7 @@ gulp.task('clean-dist',function(done){
    done();
 });
 
-gulp.task('dist',['clean-dist','build-all'],function(done){
+gulp.task('dist',['update-versions','clean-dist','build-all'],function(done){
     if (!fs.existsSync('dist')) {
         fs.mkdirSync('dist');
     }
@@ -182,6 +182,6 @@ gulp.task('install-npm-parser',function(done){
     run('npm install',{cwd:'src/node/parser'}).exec('',done);
 });
 
-gulp.task('test-all',['test-js'], function(done){
+gulp.task('test-all',['test-js','test-web'], function(done){
     done();
 });

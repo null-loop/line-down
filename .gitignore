@@ -22,3 +22,4 @@ src/node/parser/tests/*.json
 src/js/parser/tests/*.json
 
 src/tests/*-generated-test-sets.json
+docs/*.~vsdx
