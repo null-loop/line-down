@@ -7,7 +7,11 @@
 **/node_modules/**
 
 src/**/*.tgz
-
+src/**/*.user
+src/**/*.suo
+src/net/**/bin/
+src/net/**/obj/
+src/net/**/packages/*/
 src/node/parser/lib/collections.js
 src/node/parser/lib/inline.js
 src/node/parser/lib/linebuilder.js

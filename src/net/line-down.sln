@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C7C5E624-D794-4FC3-AD8B-1D147A4E3E77}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Parser", "Parser", "{908BE97E-C3A2-4AEB-AFE2-BC63329A1FBE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{4BE06D71-ED33-4BA2-A447-6FC8B0DBBB7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "line-down.Tests.Parser", "tests\line-down.Tests.Parser\line-down.Tests.Parser.csproj", "{1BDDFB95-5E64-4A2F-A179-2C89D1E75091}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "line-down.Parser.Core", "Parser\line-down.Parser.Core\line-down.Parser.Core.csproj", "{ACC49589-686C-45B1-998D-A575A4419B63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "line-down.Parser.CmdLine", "parser\line-down.Parser.CmdLine\line-down.Parser.CmdLine.csproj", "{ACD92677-4CA9-4B98-B997-184DAFA4655A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "line-down.Parser", "parser\line-down.Parser\line-down.Parser.csproj", "{790C9EA2-6F41-4A21-8799-C7880F98EBB2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1BDDFB95-5E64-4A2F-A179-2C89D1E75091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BDDFB95-5E64-4A2F-A179-2C89D1E75091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BDDFB95-5E64-4A2F-A179-2C89D1E75091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BDDFB95-5E64-4A2F-A179-2C89D1E75091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACC49589-686C-45B1-998D-A575A4419B63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACC49589-686C-45B1-998D-A575A4419B63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACC49589-686C-45B1-998D-A575A4419B63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACC49589-686C-45B1-998D-A575A4419B63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACD92677-4CA9-4B98-B997-184DAFA4655A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACD92677-4CA9-4B98-B997-184DAFA4655A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACD92677-4CA9-4B98-B997-184DAFA4655A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACD92677-4CA9-4B98-B997-184DAFA4655A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{790C9EA2-6F41-4A21-8799-C7880F98EBB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{790C9EA2-6F41-4A21-8799-C7880F98EBB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{790C9EA2-6F41-4A21-8799-C7880F98EBB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{790C9EA2-6F41-4A21-8799-C7880F98EBB2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1BDDFB95-5E64-4A2F-A179-2C89D1E75091} = {C7C5E624-D794-4FC3-AD8B-1D147A4E3E77}
+		{ACC49589-686C-45B1-998D-A575A4419B63} = {908BE97E-C3A2-4AEB-AFE2-BC63329A1FBE}
+		{ACD92677-4CA9-4B98-B997-184DAFA4655A} = {908BE97E-C3A2-4AEB-AFE2-BC63329A1FBE}
+		{790C9EA2-6F41-4A21-8799-C7880F98EBB2} = {908BE97E-C3A2-4AEB-AFE2-BC63329A1FBE}
+	EndGlobalSection
+EndGlobal
