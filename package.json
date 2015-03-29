@@ -9,6 +9,7 @@
     "gulp-jshint": "^1.9.4",
     "gulp-json-editor": "^2.2.1",
     "gulp-module-wrapper": "^0.3.6",
+    "gulp-msbuild": "^0.2.8",
     "gulp-run": "^1.6.6",
     "gulp-util": "^3.0.4",
     "harp": "^0.15.2",

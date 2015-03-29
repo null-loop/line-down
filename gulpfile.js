@@ -24,6 +24,7 @@ var harp = require('harp');
 var jeditor = require("gulp-json-editor");
 var testGen = require("./src/tests/test-generator.js");
 var fs = require("fs");
+var msbuild = require("gulp-msbuild");
 
 var masterVersion = p.version;
 var parserScriptsRoot = 'src/js/parser/lib/';
@@ -74,7 +75,7 @@ gulp.task('lint',function(){
     checkParserJs();
 });
 
-gulp.task('build-all',['build-js','build-web'],function(done){
+gulp.task('build-all',['build-js','build-dot-net','build-web'],function(done){
     done();
 });
 
@@ -96,6 +97,10 @@ function generateParserTestCases()
 gulp.task('generate-parser-test-cases',function(done){
     generateParserTestCases();
     done();
+});
+
+gulp.task('build-dot-net',['lint','generate-parser-test-cases'],function(done){
+    return gulp.src("./src/net/line-down.sln").pipe(msbuild());
 });
 
 gulp.task('build-js',['lint','generate-parser-test-cases'],function(done){
@@ -174,12 +179,16 @@ gulp.task('test-npm-parser',['build-js','test-js-parser'],function(done){
    run('npm test',{cwd:'src/node/parser'}).exec('',done);
 });
 
-gulp.task('install-all',['install-npm-parser'],function(done){
+gulp.task('install-all',['install-npm-parser','install-gulp-line-down'],function(done){
     done();
 });
 
 gulp.task('install-npm-parser',function(done){
     run('npm install',{cwd:'src/node/parser'}).exec('',done);
+});
+
+gulp.task('install-gulp-line-down',function(done){
+    run('npm install',{cwd:'src/node/gulp-line-down'}).exec('',done);
 });
 
 gulp.task('test-all',['test-js','test-web'], function(done){

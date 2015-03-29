@@ -25,7 +25,7 @@ writes the following to the console:
 ```
 <h1>This is awesome</h1>
 ```
-A cmd-line version and a gulp wrapper are in the works, but are little way off.
+A cmd-line version and a gulp wrapper are in the works, but are a little way off.
 
 ### Working with the source
 
@@ -36,4 +36,8 @@ If you want to get down and dirty with the actual source of line-down - these ar
 * `src/node/parser` - extensions / pieces for node environment
 * `src/net` - .NET Solution
 
-We run our build chain using `gulp`
+We run our build chain using `gulp`, with the main top level tasks being:
+
+* `build-all` - Builds all the components
+* `test-all` - Tests all the components
+* `install-all` - Installs all packages for sub-components
