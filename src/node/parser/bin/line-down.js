@@ -38,9 +38,10 @@
                 'line-down v%s - null-loop.github.io/line-down',
                 ld.parser.version
             );
+            //TODO:Make this work............
             log([
                 '\nUsage:\n',
-                '\tline-down string',
+                '\tline-down --input source-file.ld --output output-file.html',
                 '\the [-v | --version]',
                 '\the [-h | --help]',
             ].join('\n'));

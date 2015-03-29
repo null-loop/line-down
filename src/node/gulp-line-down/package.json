@@ -1,13 +1,10 @@
 {
-  "name": "line-down",
-  "version": "0.0.11",
-  "description": "A sensible mark-down-like text to HTML parser - very early in development",
-  "main": "./lib/parser.js",
-  "scripts": {
-    "test": "mocha tests/mocha-all.js -R dot"
-  },
+  "name": "gulp-line-down",
+  "version": "0.0.5",
+  "description": "gulp integration for line-down - stub for res at the moment, coming very soon",
+  "main": "./lib/index.js",
   "dependencies": {
-    "he": "^0.5.0"
+    "line-down": ">=0.0.11"
   },
   "devDependencies": {
     "mocha": "~1.9"
@@ -17,6 +14,7 @@
     "url": "https://github.com/null-loop/line-down.git"
   },
   "keywords": [
+    "gulp",
     "beta",
     "line-down",
     "text",
@@ -24,9 +22,7 @@
     "mark-down"
   ],
   "directories": {
-    "lib": "./lib",
-    "test": "./tests",
-    "bin": "./bin"
+    "lib": "./lib"
   },
   "author": "Daniel Gray",
   "license": "GPL2",
@@ -37,15 +33,6 @@
   "files": [
     "README.md",
     "LICENSE-GPL2.txt",
-    "lib/collections.js",
-    "lib/inline.js",
-    "lib/linebuilder.js",
-    "lib/lineprocessor.js",
-    "lib/parser.js",
-    "lib/scope.js",
-    "lib/startswith.js",
-
-    "bin/",
-    "tests/"
+    "lib/"
   ]
 }
