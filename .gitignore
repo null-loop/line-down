@@ -12,6 +12,7 @@ src/**/*.suo
 src/net/**/bin/
 src/net/**/obj/
 src/net/**/packages/*/
+src/net/Tests/line-down.Tests.Parser/test-case-data/*.json
 src/node/parser/lib/collections.js
 src/node/parser/lib/inline.js
 src/node/parser/lib/linebuilder.js

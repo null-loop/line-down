@@ -25,7 +25,7 @@ var jeditor = require("gulp-json-editor");
 var testGen = require("./src/tests/test-generator.js");
 var fs = require("fs");
 var msbuild = require("gulp-msbuild");
-
+var col = require("./src/js/parser/lib/collections.js");
 var masterVersion = p.version;
 var parserScriptsRoot = 'src/js/parser/lib/';
 var parserScriptsGlob = parserScriptsRoot + '*.js';
@@ -35,6 +35,9 @@ var nodeParserLib = 'src/node/parser/lib';
 var nodeParserPackageFile = 'src/node/parser/package.json';
 var nodeParserTests = 'src/node/parser/tests';
 var jsParserTests = 'src/js/parser/tests';
+var netParserTests = 'src/net/Tests/line-down.Tests.Parser/test-case-data';
+var netParserTestProject = 'src/net/Tests/line-down.Tests.Parser/line-down.Tests.Parser.csproj';
+var oldNetParserTests = 'src/net/Tests/line-down.Tests.Parser/test-case-data/*.json';
 var webParserLib = './www/js/line-down.parser.js';
 var harpRoot = 'www';
 var webTestCases = 'www/test/cases';
@@ -71,7 +74,7 @@ gulp.task('update-versions', function() {
     })).pipe(gulp.dest('src/node/parser'));
 });
 
-gulp.task('lint',function(){
+gulp.task('lint-js',function(){
     checkParserJs();
 });
 
@@ -99,11 +102,81 @@ gulp.task('generate-parser-test-cases',function(done){
     done();
 });
 
-gulp.task('build-dot-net',['lint','generate-parser-test-cases'],function(done){
+gulp.task('build-dot-net',['inject-dot-net-test-cases'],function(done){
     return gulp.src("./src/net/line-down.sln").pipe(msbuild());
 });
 
-gulp.task('build-js',['lint','generate-parser-test-cases'],function(done){
+function getJsonFiles(directory)
+{
+    // find all the json files
+    var files = fs.readdirSync(directory);
+    var jsonFiles =[];
+    col.each(files,function(k,v){
+        if (v.length > 5)
+        {
+            var e = v.substring(v.length - 5);
+            if (e.toLocaleLowerCase()==='.json')
+            {
+                jsonFiles.push(v);
+            }
+        }
+    });
+    return jsonFiles;
+}
+
+function generateInjected(allJsonFiles){
+    var output = [];
+    col.each(allJsonFiles,function(k,j){
+        output.push('\t<EmbeddedResource Include="test-case-data\\' + j + '" />');
+    });
+    return output;
+}
+
+function injectJsonTestCases()
+{
+    var allJson = getJsonFiles(netParserTests);
+    var csProj = fs.readFileSync(netParserTestProject, {encoding:'utf8'});
+    var re = /\r\n|\n\r|\n|\r/g;
+
+    var csProjLines = csProj.replace(re, "\n").split("\n");
+    var newCsProjLines = [];
+    var injectedJson = false;
+    col.each(csProjLines,function(k,line){
+        var trimmed = line.trim();
+        if (trimmed.length === 0) {
+            newCsProjLines.push('');
+        } else if (trimmed.length > 17) {
+            var last = trimmed.substring(trimmed.length-9);
+            if (trimmed.substring(0,17)==='<EmbeddedResource' && last==='.json" />'){
+                // ignore this line
+                if (!injectedJson){
+                    var injected = generateInjected(allJson);
+                    col.each(injected, function(ki,injectedLine){
+                       newCsProjLines.push(injectedLine);
+                    });
+                    injectedJson = true;
+                }
+            }
+            else {
+                newCsProjLines.push(line);
+            }
+        }
+        else {
+            newCsProjLines.push(line);
+        }
+    });
+
+    fs.writeFileSync(netParserTestProject, newCsProjLines.join('\r\n'));
+}
+
+gulp.task('inject-dot-net-test-cases',['generate-parser-test-cases'],function(done){
+    gulp.src([parserTestJsonGlob])
+        .pipe(gulp.dest(netParserTests));
+    injectJsonTestCases();
+    done();
+});
+
+gulp.task('build-js',['lint-js','generate-parser-test-cases'],function(done){
     checkParserJs();
 
     // wrap for node

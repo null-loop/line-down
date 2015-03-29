@@ -48,11 +48,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataDrivenSpecTests.cs" />
     <Compile Include="ParserDefaultApiTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+	<EmbeddedResource Include="test-case-data\auto-generated-id-test-sets.json" />
+	<EmbeddedResource Include="test-case-data\bugs-test-sets.json" />
+	<EmbeddedResource Include="test-case-data\code-generated-test-sets.json" />
+	<EmbeddedResource Include="test-case-data\comments-test-sets.json" />
+	<EmbeddedResource Include="test-case-data\data-blocks-test-sets.json" />
+	<EmbeddedResource Include="test-case-data\data-spec-test-sets.json" />
+	<EmbeddedResource Include="test-case-data\em-generated-test-sets.json" />
+	<EmbeddedResource Include="test-case-data\horizontal-rule-test-sets.json" />
+	<EmbeddedResource Include="test-case-data\small-generated-test-sets.json" />
+	<EmbeddedResource Include="test-case-data\span-generated-test-sets.json" />
+	<EmbeddedResource Include="test-case-data\strike-generated-test-sets.json" />
+	<EmbeddedResource Include="test-case-data\strong-generated-test-sets.json" />
+	<EmbeddedResource Include="test-case-data\sub-generated-test-sets.json" />
+	<EmbeddedResource Include="test-case-data\sup-generated-test-sets.json" />
+	<EmbeddedResource Include="test-case-data\test-generator-templates.json" />
+	<EmbeddedResource Include="test-case-data\u-generated-test-sets.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\parser\line-down.Parser.CmdLine\line-down.Parser.CmdLine.csproj">
@@ -68,6 +85,7 @@
       <Name>line-down.Parser</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
