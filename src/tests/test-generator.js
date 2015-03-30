@@ -18,7 +18,6 @@
 
 var gutil = require("gulp-util");
 var fs = require("fs");
-var templates = require("./test-generator-templates.json");
 var col = require("../js/parser/lib/collections.js");
 
 function exportJsonResult(sg, targetFile){

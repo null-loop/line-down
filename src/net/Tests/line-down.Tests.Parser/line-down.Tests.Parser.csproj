@@ -36,6 +36,10 @@
     <Reference Include="FluentAssertions.Core">
       <HintPath>..\..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -48,28 +52,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataDrivenSpecTests.cs" />
+	<Compile Include="test-case-data\auto-generated-id-test-sets.json.Generated.cs" />
+	<Compile Include="test-case-data\bugs-test-sets.json.Generated.cs" />
+	<Compile Include="test-case-data\code-generated-test-sets.json.Generated.cs" />
+	<Compile Include="test-case-data\comments-test-sets.json.Generated.cs" />
+	<Compile Include="test-case-data\data-blocks-test-sets.json.Generated.cs" />
+	<Compile Include="test-case-data\data-spec-test-sets.json.Generated.cs" />
+	<Compile Include="test-case-data\em-generated-test-sets.json.Generated.cs" />
+	<Compile Include="test-case-data\horizontal-rule-test-sets.json.Generated.cs" />
+	<Compile Include="test-case-data\small-generated-test-sets.json.Generated.cs" />
+	<Compile Include="test-case-data\span-generated-test-sets.json.Generated.cs" />
+	<Compile Include="test-case-data\strike-generated-test-sets.json.Generated.cs" />
+	<Compile Include="test-case-data\strong-generated-test-sets.json.Generated.cs" />
+	<Compile Include="test-case-data\sub-generated-test-sets.json.Generated.cs" />
+	<Compile Include="test-case-data\sup-generated-test-sets.json.Generated.cs" />
+	<Compile Include="test-case-data\test-generator-templates.json.Generated.cs" />
+	<Compile Include="test-case-data\u-generated-test-sets.json.Generated.cs" />
+    <Compile Include="HtmlParserBaseTestFixture.cs" />
     <Compile Include="ParserDefaultApiTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-	<EmbeddedResource Include="test-case-data\auto-generated-id-test-sets.json" />
-	<EmbeddedResource Include="test-case-data\bugs-test-sets.json" />
-	<EmbeddedResource Include="test-case-data\code-generated-test-sets.json" />
-	<EmbeddedResource Include="test-case-data\comments-test-sets.json" />
-	<EmbeddedResource Include="test-case-data\data-blocks-test-sets.json" />
-	<EmbeddedResource Include="test-case-data\data-spec-test-sets.json" />
-	<EmbeddedResource Include="test-case-data\em-generated-test-sets.json" />
-	<EmbeddedResource Include="test-case-data\horizontal-rule-test-sets.json" />
-	<EmbeddedResource Include="test-case-data\small-generated-test-sets.json" />
-	<EmbeddedResource Include="test-case-data\span-generated-test-sets.json" />
-	<EmbeddedResource Include="test-case-data\strike-generated-test-sets.json" />
-	<EmbeddedResource Include="test-case-data\strong-generated-test-sets.json" />
-	<EmbeddedResource Include="test-case-data\sub-generated-test-sets.json" />
-	<EmbeddedResource Include="test-case-data\sup-generated-test-sets.json" />
-	<EmbeddedResource Include="test-case-data\test-generator-templates.json" />
-	<EmbeddedResource Include="test-case-data\u-generated-test-sets.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\parser\line-down.Parser.CmdLine\line-down.Parser.CmdLine.csproj">
@@ -85,7 +89,12 @@
       <Name>line-down.Parser</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="test-case-data\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

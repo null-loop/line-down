@@ -1,3 +1,5 @@
+//TODO:https://github.com/travis-ci/travis-ci/issues/538
+//TODO:Get travis to build the .net projects
 /*
  Copyright (C) 2015 Daniel Gray, Grayholme Ltd
 
@@ -124,17 +126,53 @@ function getJsonFiles(directory)
     return jsonFiles;
 }
 
-function generateInjected(allJsonFiles){
+function generateInjected(allCsFiles){
     var output = [];
-    col.each(allJsonFiles,function(k,j){
-        output.push('\t<EmbeddedResource Include="test-case-data\\' + j + '" />');
+    col.each(allCsFiles,function(k,j){
+        // <Compile Include="
+        output.push('\t<Compile Include="test-case-data\\' + j + '" />');
     });
     return output;
+}
+
+function generateCsFilesFromJsonFiles(allJsonFiles){
+    var output = [];
+    col.each(allJsonFiles,function(k,v){
+        // load the json
+        var jsonObj = require('./src/net/Tests/line-down.Tests.Parser/test-case-data/' + v);
+        // generate the CS output from the test cases
+        var csContent = generateCsContent(jsonObj,v);
+        // write it
+        var sName = v + ".Generated.cs";
+        var csFile = './src/net/Tests/line-down.Tests.Parser/test-case-data/' + sName;
+        fs.writeFileSync(csFile, csContent);
+        // push the file name onto output
+        output.push(sName);
+    });
+    return output;
+}
+
+function generateCsContent(jsonObj,fileName){
+    var namespaces = ["System","System.Collections.Generic","System.IO","System.Linq","System.Reflection",
+                      "System.Text","System.Threading.Tasks","FluentAssertions","NUnit.Framework","line_down.Parser.Core"];
+
+    var namespaceHeader = '';
+
+    col.each(namespaces,function(k,n){
+       namespaceHeader=namespaceHeader+"using " + n + ";\r\n";
+    });
+
+    var namespaceDeclaration = "namespace line_down.Tests.Parser.DataDriven {\r\n";
+
+    var csContent = namespaceHeader + "\r\n" + namespaceDeclaration + "\r\n}";
+
+    return csContent;
 }
 
 function injectJsonTestCases()
 {
     var allJson = getJsonFiles(netParserTests);
+    var allCsFiles = generateCsFilesFromJsonFiles(allJson);
     var csProj = fs.readFileSync(netParserTestProject, {encoding:'utf8'});
     var re = /\r\n|\n\r|\n|\r/g;
 
@@ -145,17 +183,27 @@ function injectJsonTestCases()
         var trimmed = line.trim();
         if (trimmed.length === 0) {
             newCsProjLines.push('');
-        } else if (trimmed.length > 17) {
+        } else if (trimmed.length > 32) {
             var last = trimmed.substring(trimmed.length-9);
-            if (trimmed.substring(0,17)==='<EmbeddedResource' && last==='.json" />'){
+            if (trimmed.substring(0,32)==='<Compile Include="test-case-data'){
                 // ignore this line
                 if (!injectedJson){
-                    var injected = generateInjected(allJson);
+                    var injected = generateInjected(allCsFiles);
                     col.each(injected, function(ki,injectedLine){
                        newCsProjLines.push(injectedLine);
                     });
                     injectedJson = true;
                 }
+            }
+            else if (trimmed.substring(0,18)==='<Compile Include="'){
+                if (!injectedJson){
+                    var injected = generateInjected(allJson);
+                    col.each(injected, function(ki,injectedLine){
+                        newCsProjLines.push(injectedLine);
+                    });
+                    injectedJson = true;
+                }
+                newCsProjLines.push(line);
             }
             else {
                 newCsProjLines.push(line);
@@ -252,7 +300,7 @@ gulp.task('test-npm-parser',['build-js','test-js-parser'],function(done){
    run('npm test',{cwd:'src/node/parser'}).exec('',done);
 });
 
-gulp.task('install-all',['install-npm-parser','install-gulp-line-down'],function(done){
+gulp.task('install-all',['install-npm-parser','install-gulp-line-down','install-dot-net-parser'],function(done){
     done();
 });
 
@@ -262,6 +310,10 @@ gulp.task('install-npm-parser',function(done){
 
 gulp.task('install-gulp-line-down',function(done){
     run('npm install',{cwd:'src/node/gulp-line-down'}).exec('',done);
+});
+
+gulp.task('install-dot-net-parser',function(done){
+    //TODO:Hook nuget!
 });
 
 gulp.task('test-all',['test-js','test-web'], function(done){
