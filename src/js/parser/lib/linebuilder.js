@@ -19,6 +19,39 @@
 var col = require('./collections.js');
 var inl = require('./inline.js');
 
+exports.formatDataKey = function(key, sep){
+//TODO:This is so naive... - http://stackoverflow.com/questions/9862761/how-to-check-if-character-is-a-letter-in-javascript
+    function isLetter(str) {
+        return str.length === 1 && str.match(/[a-z]/i);
+    }
+    var k = '';
+    var kc = key.split('');
+    var wasLower = false;
+    col.each(kc,function(i,v){
+        if (isLetter(v)){
+            var uv = v.toLocaleUpperCase();
+            if (uv === v) {
+                if (wasLower) {
+                    v = sep + v;
+                    wasLower = false;
+                }
+            }
+            else {
+                wasLower = true;
+            }
+        }
+        else
+        {
+            v=sep;
+        }
+        k = k + v.toLocaleLowerCase();
+    });
+    while (k.indexOf(sep + sep) > -1){
+        k = k.replace(sep + sep,sep);
+    }
+    return k;
+};
+
 exports.createBuilder = function(options, scope){
     return {
         _outputLines: [],
@@ -76,36 +109,7 @@ exports.createBuilder = function(options, scope){
         },
 
         formatDataKey:function(key){
-            //TODO:This is so naive... - http://stackoverflow.com/questions/9862761/how-to-check-if-character-is-a-letter-in-javascript
-            function isLetter(str) {
-                return str.length === 1 && str.match(/[a-z]/i);
-            }
-            var k = '';
-            var kc = key.split('');
-            var wasLower = false;
-            col.each(kc,function(i,v){
-                if (isLetter(v)){
-                    var uv = v.toLocaleUpperCase();
-                    if (uv === v) {
-                        if (wasLower) {
-                            v = '-' + v;
-                            wasLower = false;
-                        }
-                    }
-                    else {
-                        wasLower = true;
-                    }
-                }
-                else
-                {
-                    v='-';
-                }
-                k = k + v.toLocaleLowerCase();
-            });
-            while (k.indexOf('--') > -1){
-                k = k.replace('--','-');
-            }
-            return k;
+            return exports.formatDataKey(key,'-');
         },
         tagWithEnd: function (tag, id, classes, data,extraAttributes, end) {
             //TODO:Check against white lists!

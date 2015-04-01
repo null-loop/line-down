@@ -66,7 +66,6 @@
 	<Compile Include="test-case-data\strong-generated-test-sets.json.Generated.cs" />
 	<Compile Include="test-case-data\sub-generated-test-sets.json.Generated.cs" />
 	<Compile Include="test-case-data\sup-generated-test-sets.json.Generated.cs" />
-	<Compile Include="test-case-data\test-generator-templates.json.Generated.cs" />
 	<Compile Include="test-case-data\u-generated-test-sets.json.Generated.cs" />
     <Compile Include="HtmlParserBaseTestFixture.cs" />
     <Compile Include="ParserDefaultApiTests.cs" />

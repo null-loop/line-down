@@ -73,7 +73,7 @@ function generateInlineTestCasesForSpec(s, allInlineSpecs){
         cases.push(g(' ##Inline  ', '<p><##>Inline</##>\r\n</p>','Inline ## taking up whole line with trailing and leading space',s,n));
         cases.push(g('\t##Inline\t\t', '<p><##>Inline</##>\r\n</p>','Inline ## taking up whole line with trailing and leading tab',s,n));
         cases.push(g('   ##Inline  ', '<p><##>Inline</##>\r\n</p>','Inline ## taking up whole line with trailing and leading spaces',s,n));
-        cases.push(g('\t\t##Inline\t\t', '<p><##>Inline</##>\r\n</p>','Inline ## taking up whole line with trailing and leading tabs and spaces',s,n));
+        cases.push(g('\t\t##Inline\t\t', '<p><##>Inline</##>\r\n</p>','Inline ## taking up whole line with trailing and leading tabs',s,n));
         cases.push(g('\t \t##Inline\t \t', '<p><##>Inline</##>\r\n</p>','Inline ## taking up whole line with trailing and leading tabs and spaces',s,n));
         cases.push(g(' \t \t ##Inline \t \t ', '<p><##>Inline</##>\r\n</p>','Inline ## taking up whole line with trailing and leading tabs and spaces in interlace',s,n));
         cases.push(g('\r\n \t \t ##Inline \t \t ', '<p><##>Inline</##>\r\n</p>','Inline ## taking up whole line with trailing and leading tabs and spaces in interlace with leading empty line',s,n));
@@ -176,12 +176,12 @@ module.exports.generateInlineSpecTestSetsFile = function(inlineSpecs, targetFile
         var myFile = replaceAll('\\*',spec.element,targetFile);
         exportJsonResult(function(){
             var sets = {
-                name:"Test inline specs",
+                name:spec.name + " inline specification tests",
                 object:"parser",
                 testSets:[]
             };
             var testSet = {
-                name:"Test " + spec.name + " inline specification",
+                name:"Tests for inline " + spec.name + " with no options",
                 method:"parse-no-options",
                 testCases:generateInlineTestCasesForSpec(spec, inlineSpecs)
             };

@@ -17,6 +17,7 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+var lb = require('./src/js/parser/lib/linebuilder.js');
 var p = require('./package.json');
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
@@ -139,11 +140,13 @@ function generateCsFilesFromJsonFiles(allJsonFiles){
     var output = [];
     col.each(allJsonFiles,function(k,v){
         // load the json
-        var jsonObj = require('./src/net/Tests/line-down.Tests.Parser/test-case-data/' + v);
+        var jsonT = fs.readFileSync('./src/net/Tests/line-down.Tests.Parser/test-case-data/' + v);
+        var jsonObj = JSON.parse(jsonT);
         // generate the CS output from the test cases
         var csContent = generateCsContent(jsonObj,v);
         // write it
         var sName = v + ".Generated.cs";
+
         var csFile = './src/net/Tests/line-down.Tests.Parser/test-case-data/' + sName;
         fs.writeFileSync(csFile, csContent);
         // push the file name onto output
@@ -164,9 +167,54 @@ function generateCsContent(jsonObj,fileName){
 
     var namespaceDeclaration = "namespace line_down.Tests.Parser.DataDriven {\r\n";
 
-    var csContent = namespaceHeader + "\r\n" + namespaceDeclaration + "\r\n}";
+    var outerClass = "\t[TestFixture]\r\n\tpublic class " + lb.formatDataKey(jsonObj.name,'_') + " {\r\n";
+
+    var innerClasses = generateInnerTestClasses(jsonObj.testSets);
+
+    var csContent = namespaceHeader + "\r\n" + namespaceDeclaration + "\r\n" + outerClass + innerClasses + "\t}\r\n}";
 
     return csContent;
+}
+
+function generateTestMethod(methodToTest, mName, input, output, name, options){
+
+    var funcPrefix = "\r\n\t\t\t[Test]\r\n\t\t\tpublic void " + mName + "() {\r\n";
+    var funcSuffix= "\t\t\t}\r\n\r\n";
+    var funcBody = "";
+
+    if (methodToTest === 'parse-no-options')
+    {
+
+    }
+    else if (methodToTest === 'parse-with-options')
+    {
+
+    }
+    else if (methodToTest === 'parse-default-options')
+    {
+
+    }
+
+    return funcPrefix + funcBody +funcSuffix;
+}
+
+function generateTestMethods(method,testCases){
+    var b = '';
+    col.each(testCases,function(k,tc){
+       b = b + generateTestMethod(method, lb.formatDataKey(tc.n,'_'),tc.i,tc.o,tc.n,tc.opt);
+    });
+    return b;
+}
+
+function generateInnerTestClasses(testSets){
+    var b = '';
+    col.each(testSets,function(k,s){
+        b = b + '\r\n\t\t[TestFixture]\r\n';
+        b = b + '\t\tpublic class ' + lb.formatDataKey(s.name,'_') + ' {\r\n';
+        b = b + generateTestMethods(s.method, s.testCases);
+        b = b + '\t\t}\r\n\r\n';
+    });
+    return b;
 }
 
 function injectJsonTestCases()
@@ -217,11 +265,14 @@ function injectJsonTestCases()
     fs.writeFileSync(netParserTestProject, newCsProjLines.join('\r\n'));
 }
 
-gulp.task('inject-dot-net-test-cases',['generate-parser-test-cases'],function(done){
-    gulp.src([parserTestJsonGlob])
-        .pipe(gulp.dest(netParserTests));
+gulp.task('inject-dot-net-test-cases',['copy-dot-net-test-cases'],function(done){
     injectJsonTestCases();
     done();
+});
+
+gulp.task('copy-dot-net-test-cases',['generate-parser-test-cases'],function(){
+    return gulp.src([parserTestJsonGlob])
+        .pipe(gulp.dest(netParserTests));
 });
 
 gulp.task('build-js',['lint-js','generate-parser-test-cases'],function(done){

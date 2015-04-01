@@ -93,13 +93,13 @@
         {
           "i": "Generate for me too!",
           "o": "<p id='generate-for-me-too'>Generate for me too!\r\n</p>",
-          "n": "Generate id for implicit paragraph without leaving trailing hyphen",
+          "n": "Generate id for implicit paragraph without leaving trailing hyphen from paragraph",
           "opt": {"generateIds": true}
         },
         {
           "i": "+ **Wow**",
           "o": "<ol><li id='wow'><strong>Wow</strong></li>\r\n</ol>",
-          "n": "Generate id for implicit paragraph without leaving trailing hyphen",
+          "n": "Generate id for implicit paragraph without leaving trailing hyphen from ordered list",
           "opt": {"generateIds": true}
         }
       ]
